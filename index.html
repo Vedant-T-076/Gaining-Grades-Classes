@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gaining Grades Classes</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+overflow-x:hidden;
+}
+
+/* HEADER */
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px;
+background:white;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo-box img{
+width:110px;
+}
+
+.menu{
+font-size:28px;
+cursor:pointer;
+}
+
+/* MENU */
+.nav{
+display:none;
+position:fixed;
+top:70px;
+right:10px;
+background:white;
+padding:15px;
+box-shadow:0 0 15px rgba(0,0,0,0.3);
+border-radius:10px;
+z-index:2000;
+width:180px;
+}
+
+.nav button{
+width:100%;
+margin:6px 0;
+padding:10px;
+border:none;
+background:#0a192f;
+color:white;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* BANNER */
+.banner{
+background:linear-gradient(135deg,#0a192f,#112d4e);
+padding:40px 20px;
+text-align:center;
+}
+
+.banner h1{
+font-size:32px;
+color:white;
+line-height:1.4;
+letter-spacing:2px;
+text-shadow:0 2px 6px rgba(0,0,0,0.5);
+}
+
+.banner p{
+margin-top:15px;
+font-size:18px;
+color:#dbeafe;
+font-style:italic;
+letter-spacing:1px;
+}
+
+/* SECTION */
+section{
+padding:20px;
+}
+
+h2{
+color:#0a192f;
+}
+
+.main::before{
+content:"■ ";
+color:#0a192f;
+}
+
+/* 🔥 FIX: SCROLL POSITION */
+section, .quality-banner, .contact {
+scroll-margin-top: 80px;
+}
+
+/* CLASSROOM */
+.row{
+display:flex;
+gap:10px;
+}
+
+.row img{
+width:50%;
+border-radius:12px;
+}
+
+.big{
+width:100%;
+margin-top:10px;
+border-radius:12px;
+}
+
+/* COURSES */
+.course{
+margin-bottom:20px;
+}
+
+.course img{
+width:100%;
+border-radius:12px;
+}
+
+.course-text{
+text-align:center;
+font-weight:bold;
+}
+
+/* QUALITY */
+.quality-banner{
+background:url('Banner1.jpg') center/cover no-repeat;
+padding:40px 20px;
+color:white;
+}
+
+.quality-banner h2{
+text-align:center;
+color:white;
+}
+
+/* BULLETS */
+.quality-list{
+list-style:none;
+padding:0;
+max-width:300px;
+margin:auto;
+}
+
+.quality-list li{
+margin:10px 0;
+font-weight:bold;
+position:relative;
+padding-left:20px;
+}
+
+.quality-list li::before{
+content:"●";
+position:absolute;
+left:0;
+color:#ffffff;
+}
+
+/* FOUNDER */
+.founder{
+text-align:center;
+}
+
+.founder img{
+width:120px;
+border-radius:50%;
+}
+
+/* CONTACT */
+.contact{
+background:#0a192f;
+color:white;
+text-align:center;
+padding:25px;
+}
+
+button.main-btn{
+background:white;
+color:#0a192f;
+padding:10px 20px;
+border:none;
+border-radius:6px;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* WHATSAPP */
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25D366;
+color:white;
+padding:12px;
+border-radius:50%;
+}
+
+/* SCROLL ANIMATION */
+.reveal{
+opacity:0;
+transform:translateY(60px);
+transition:all 0.8s ease;
+}
+
+.reveal.active{
+opacity:1;
+transform:translateY(0);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+<div class="logo-box">
+<img src="logo.jpg">
+</div>
+<div class="menu" id="menuBtn">☰</div>
+</div>
+
+<!-- MENU -->
+<div class="nav" id="menu">
+<button onclick="scrollToSection('classroom')">🏫 Classrooms</button>
+<button onclick="scrollToSection('quality')">⭐ Why Choose Us</button>
+<button onclick="scrollToSection('courses')">📘 Courses</button>
+<button onclick="scrollToSection('founder')">👨‍🏫 Founder</button>
+<button onclick="scrollToSection('contact')">📞 Contact</button>
+</div>
+
+<!-- BANNER -->
+<div class="banner">
+<h1>
+Gaining Grades<br>
+----Classes----
+</h1>
+<p>Empowering the future of Bharat</p>
+</div>
+
+<!-- CLASSROOM -->
+<section id="classroom">
+<h2 class="main">Our Classrooms</h2>
+
+<div class="row">
+<img src="Class2.jpg">
+<img src="Class3.jpg">
+</div>
+
+<img src="Class1.jpg" class="big">
+
+<button class="main-btn" style="margin-top:15px; cursor:default; pointer-events:none;">
+Timming<br>
+Mon – Sat 8:00 Am – 9:00 PM.
+</button>
+
+</section>
+
+<!-- QUALITY -->
+<div class="quality-banner reveal" id="quality">
+<h2>Why Choose Us?</h2>
+
+<ul class="quality-list">
+<li>Strong Concept Building</li>
+<li>Personal Attention to Every Student</li>
+<li>Daily Doubt Solving Sessions</li>
+<li>Weekly Tests & Performance Analysis</li>
+<li>Small Batch Size for Better Focus</li>
+<li>Exam Strategy & Time Management</li>
+</ul>
+
+</div>
+
+<!-- COURSES -->
+<section id="courses">
+<h2 class="main">Our Courses</h2>
+
+<div class="course reveal"><img src="foundation.jpg"><div class="course-text">Class 1–5<br>₹800/- Monthly<br>₹7500/- Yearly</div></div>
+<div class="course reveal"><img src="6th.jpg"><div class="course-text">Class 6<br>₹900/- Monthly<br>₹8500/- Yearly</div></div>
+<div class="course reveal"><img src="7th.jpg"><div class="course-text">Class 7<br>₹1000/- Monthly<br>₹12000/- Yearly</div></div>
+<div class="course reveal"><img src="8th.jpg"><div class="course-text">Class 8<br>₹1100/- Monthly<br>₹13000/- Yearly</div></div>
+<div class="course reveal"><img src="9th.jpg"><div class="course-text">Class 9<br>₹1800/- Monthly<br>₹15000/- Yearly</div></div>
+<div class="course reveal"><img src="10th.jpg"><div class="course-text">Class 10<br>₹2500/- Monthly<br>₹20000/- Yearly</div></div>
+<div class="course reveal"><img src="11th and 12th(science).jpg"><div class="course-text">11–12 Science<br>₹35000/- / ₹60000/-</div></div>
+<div class="course reveal"><img src="11th and 12th(commerce).jpg"><div class="course-text">11–12 Commerce<br>₹15000/- / ₹25000/-</div></div>
+<div class="course reveal"><img src="jee.jpg"><div class="course-text">JEE<br>₹50000/- / ₹80000/-</div></div>
+<div class="course reveal"><img src="neet.jpg"><div class="course-text">NEET<br>₹50000/- / ₹80000/-</div></div>
+<div class="course reveal"><img src="NDA.jpg"><div class="course-text">NDA / Airforce / Navy Available</div></div>
+
+</section>
+
+<!-- FOUNDER -->
+<section class="founder reveal" id="founder">
+<h2 class="main">Founder</h2>
+<img src="Founder1.jpg">
+<p><b>Ashwani Dubey</b></p>
+<p>MSc Mathematics | 10+ Years Experience</p>
+</section>
+
+<!-- CONTACT -->
+<div class="contact reveal" id="contact">
+<h2>Contact Us</h2>
+
+<a href="tel:8433601642">
+<button class="main-btn">Call Now</button>
+</a>
+
+<br><br>
+
+<a href="mailto:gaininggradesofficial@gmail.com">
+<button class="main-btn">Send Gmail</button>
+</a>
+
+<p>8433601642 / 8433589382</p>
+
+<p>
+(H.O) Shree Apartment opposite Narayan nagar society near Ganpati Mandir Titwala East<br>
+(B.O) Gaining Grades Classes opposite Abhishek Residency near Shiv Shena Sakha Titwala East<br>
+(B.O) Gaining Grades Classes Indra Nagar, Near G.R Patil College, Titwala East<br>
+Maharashtra 🇮🇳
+</p>
+
+</div>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/918433601642" class="whatsapp">💬</a>
+
+<script>
+
+const menuBtn = document.getElementById("menuBtn");
+const menu = document.getElementById("menu");
+
+menuBtn.onclick = function(e){
+menu.style.display = "block";
+e.stopPropagation();
+}
+
+menu.onclick = function(e){
+e.stopPropagation();
+}
+
+document.onclick = function(){
+menu.style.display = "none";
+}
+
+function scrollToSection(id){
+document.getElementById(id).scrollIntoView({behavior:"smooth"});
+menu.style.display = "none";
+}
+
+/* ANIMATION */
+function reveal(){
+let reveals = document.querySelectorAll(".reveal");
+
+for(let i=0;i<reveals.length;i++){
+let windowHeight = window.innerHeight;
+let elementTop = reveals[i].getBoundingClientRect().top;
+
+if(elementTop < windowHeight - 100){
+reveals[i].classList.add("active");
+}
+}
+}
+
+window.addEventListener("scroll", reveal);
+
+</script>
+
+</body>
+</html>
