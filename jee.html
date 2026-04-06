@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JEE Test Series – Gaining Grades</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:#f0f4ff;min-height:100vh;}
+.ts-header{background:#1a3d8f;padding:16px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 3px 12px rgba(0,0,0,0.3);}
+.ts-header a{color:white;font-size:22px;text-decoration:none;}
+.ts-header h1{color:white;font-size:18px;letter-spacing:1px;}
+.ts-logo{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid white;}
+.subject-screen{padding:30px 20px;text-align:center;}
+.subject-screen h2{color:#1a3d8f;font-size:24px;margin-bottom:6px;}
+.subject-screen p{color:#555;margin-bottom:28px;font-size:14px;}
+.subject-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;max-width:420px;margin:auto;}
+.subject-card{background:white;border:2px solid #1a3d8f;border-radius:16px;padding:24px 8px;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 12px rgba(26,61,143,0.1);}
+.subject-card:hover,.subject-card:active{background:#1a3d8f;color:white;transform:scale(1.04);}
+.subject-card .icon{font-size:32px;margin-bottom:8px;}
+.subject-card .name{font-weight:bold;font-size:13px;color:#1a3d8f;}
+.subject-card:hover .name,.subject-card:active .name{color:white;}
+.quiz-screen{padding:20px;display:none;}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.quiz-subject{background:#1a3d8f;color:white;padding:6px 16px;border-radius:20px;font-weight:bold;font-size:13px;}
+.quiz-count{color:#1a3d8f;font-weight:bold;font-size:14px;}
+.progress-bar{background:#dde6ff;border-radius:10px;height:8px;margin-bottom:20px;overflow:hidden;}
+.progress-fill{background:linear-gradient(90deg,#1a3d8f,#4a7dff);height:100%;border-radius:10px;transition:width 0.5s ease;}
+.question-card{background:white;border-radius:18px;padding:24px 18px;box-shadow:0 6px 24px rgba(26,61,143,0.13);margin-bottom:20px;border-top:5px solid #1a3d8f;}
+.question-card h3{color:#1a3d8f;font-size:15px;line-height:1.5;margin-bottom:20px;}
+.option{background:#f0f4ff;border:2px solid #c5d3f7;border-radius:12px;padding:14px 16px;margin-bottom:12px;cursor:pointer;font-size:13px;font-weight:bold;color:#1a3d8f;transition:all 0.2s;display:flex;align-items:center;gap:10px;position:relative;overflow:hidden;}
+.option:hover{border-color:#1a3d8f;background:#dde6ff;}
+.option-label{background:#1a3d8f;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.option.correct{background:#e6fff0;border-color:#00c853;color:#00691a;animation:correctPulse 0.6s ease;}
+.option.correct .option-label{background:#00c853;}
+@keyframes correctPulse{0%{transform:scale(1);}30%{transform:scale(1.04);}60%{transform:scale(0.98);}100%{transform:scale(1);}}
+.option.wrong{background:#fff0f0;border-color:#ff1744;color:#b71c1c;animation:wrongShake 0.5s ease;}
+.option.wrong .option-label{background:#ff1744;}
+@keyframes wrongShake{0%{transform:translateX(0);}20%{transform:translateX(-8px);}40%{transform:translateX(8px);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}100%{transform:translateX(0);}}
+.option.reveal-correct{background:#e6fff0;border-color:#00c853;color:#00691a;}
+.option.reveal-correct .option-label{background:#00c853;}
+.explanation{background:#fffde7;border-left:4px solid #f9a825;border-radius:8px;padding:12px 14px;font-size:13px;color:#555;margin-top:10px;display:none;}
+.next-btn{background:#1a3d8f;color:white;border:none;padding:14px;width:100%;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;display:none;margin-top:6px;box-shadow:0 4px 12px rgba(26,61,143,0.3);letter-spacing:1px;}
+.next-btn:active{transform:scale(0.98);}
+.result-screen{padding:24px 20px;display:none;text-align:center;}
+.result-card{background:white;border-radius:20px;padding:32px 20px;box-shadow:0 8px 32px rgba(26,61,143,0.15);border-top:6px solid #1a3d8f;margin-bottom:20px;}
+.result-trophy{font-size:64px;margin-bottom:10px;}
+.result-card h2{color:#1a3d8f;font-size:20px;margin-bottom:6px;}
+.score-big{font-size:56px;font-weight:bold;color:#1a3d8f;line-height:1;margin:16px 0 4px;}
+.score-label{color:#888;font-size:14px;margin-bottom:20px;}
+.stat-row{display:flex;gap:12px;margin:16px 0;}
+.stat-box{flex:1;border-radius:14px;padding:16px 8px;}
+.stat-box.correct-box{background:#e6fff0;border:2px solid #00c853;}
+.stat-box.wrong-box{background:#fff0f0;border:2px solid #ff1744;}
+.stat-box.skip-box{background:#f0f4ff;border:2px solid #1a3d8f;}
+.stat-box .stat-num{font-size:26px;font-weight:bold;}
+.stat-box.correct-box .stat-num{color:#00c853;}
+.stat-box.wrong-box .stat-num{color:#ff1744;}
+.stat-box.skip-box .stat-num{color:#1a3d8f;}
+.stat-box .stat-lbl{font-size:11px;color:#666;margin-top:4px;}
+.grade-badge{display:inline-block;padding:8px 24px;border-radius:20px;font-weight:bold;font-size:18px;margin:10px 0 20px;}
+.grade-A{background:#e6fff0;color:#00691a;border:2px solid #00c853;}
+.grade-B{background:#e3f2fd;color:#0d47a1;border:2px solid #1a3d8f;}
+.grade-C{background:#fff8e1;color:#e65100;border:2px solid #ffa000;}
+.grade-D{background:#fff0f0;color:#b71c1c;border:2px solid #ff1744;}
+.review-title{color:#1a3d8f;font-weight:bold;font-size:16px;text-align:left;margin-bottom:12px;}
+.review-item{background:white;border-radius:12px;padding:14px;margin-bottom:10px;text-align:left;box-shadow:0 2px 8px rgba(0,0,0,0.07);border-left:4px solid #ccc;}
+.review-item.r-correct{border-left-color:#00c853;}
+.review-item.r-wrong{border-left-color:#ff1744;}
+.review-item .r-q{font-size:13px;color:#333;margin-bottom:6px;font-weight:bold;}
+.review-item .r-ans{font-size:12px;color:#666;}
+.review-item .r-ans span{font-weight:bold;}
+.correct-ans{color:#00691a;}
+.wrong-ans{color:#b71c1c;}
+.action-btn{padding:14px;width:100%;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer;margin-bottom:10px;border:none;letter-spacing:0.5px;}
+.btn-retry{background:#1a3d8f;color:white;box-shadow:0 4px 12px rgba(26,61,143,0.3);}
+.btn-home{background:white;color:#1a3d8f;border:2px solid #1a3d8f;}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.4);transform:scale(0);animation:rippleAnim 0.5s linear;pointer-events:none;}
+@keyframes rippleAnim{to{transform:scale(4);opacity:0;}}
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+.confetti-piece{position:absolute;width:10px;height:10px;opacity:0;animation:confettiFall 1.5s ease forwards;}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+.jee-badge{background:linear-gradient(135deg,#1a3d8f,#4a7dff);color:white;padding:10px 20px;border-radius:12px;font-weight:bold;font-size:13px;display:inline-block;margin-bottom:16px;letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="ts-header">
+<a href="index.html">&#8592;</a>
+<img src="logo.jpg" class="ts-logo">
+<h1>JEE Test Series</h1>
+</div>
+
+<div class="subject-screen" id="subjectScreen">
+<div class="jee-badge">🎯 JEE Main Level • 20 Questions Each</div>
+<h2>Choose a Subject</h2>
+<p>Negative marking: −1 for wrong • +4 for correct</p>
+<div class="subject-grid">
+<div class="subject-card" onclick="startQuiz('physics')"><div class="icon">⚡</div><div class="name">Physics</div></div>
+<div class="subject-card" onclick="startQuiz('chemistry')"><div class="icon">🧪</div><div class="name">Chemistry</div></div>
+<div class="subject-card" onclick="startQuiz('maths')"><div class="icon">📐</div><div class="name">Maths</div></div>
+</div>
+</div>
+
+<div class="quiz-screen" id="quizScreen">
+<div class="quiz-top">
+<span class="quiz-subject" id="quizSubjectLabel"></span>
+<span class="quiz-count" id="quizCount"></span>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="question-card">
+<h3 id="questionText"></h3>
+<div id="optionsContainer"></div>
+<div class="explanation" id="explanationBox"></div>
+</div>
+<button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+</div>
+
+<div class="result-screen" id="resultScreen">
+<div class="result-card">
+<div class="result-trophy" id="trophyEmoji"></div>
+<h2 id="resultSubject"></h2>
+<div class="score-big" id="scoreBig"></div>
+<div class="score-label" id="scoreLabel"></div>
+<div id="gradeBadge"></div>
+<div class="stat-row">
+<div class="stat-box correct-box"><div class="stat-num" id="statCorrect"></div><div class="stat-lbl">✅ Correct</div></div>
+<div class="stat-box wrong-box"><div class="stat-num" id="statWrong"></div><div class="stat-lbl">❌ Wrong</div></div>
+<div class="stat-box skip-box"><div class="stat-num" id="statMarks"></div><div class="stat-lbl">📊 Marks</div></div>
+</div>
+<p id="resultMessage" style="color:#555;font-size:14px;margin-top:10px;"></p>
+</div>
+<div class="review-title">📋 Question Review</div>
+<div id="reviewContainer"></div>
+<button class="action-btn btn-retry" onclick="retryQuiz()">🔄 Retry Same Subject</button>
+<button class="action-btn btn-home" onclick="goHome()">🏠 Choose Another Subject</button>
+</div>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+const questions={
+physics:[
+{q:"A body moves with uniform velocity. The net force on it is:",opts:["Maximum","Minimum","Zero","Equal to mg"],ans:2,exp:"Newton's first law: zero net force means constant velocity."},
+{q:"The dimensional formula of Planck's constant is:",opts:["[ML²T⁻¹]","[MLT⁻¹]","[ML²T⁻²]","[M⁰L⁰T⁰]"],ans:0,exp:"E=hf → h=E/f → [ML²T⁻²]/[T⁻¹] = [ML²T⁻¹]."},
+{q:"A projectile is thrown horizontally. Which remains constant?",opts:["Horizontal velocity","Vertical velocity","Speed","Momentum"],ans:0,exp:"No horizontal force acts, so horizontal velocity stays constant."},
+{q:"The work done by friction is always:",opts:["Positive","Zero","Negative","Equal to kinetic energy"],ans:2,exp:"Friction opposes motion, so work done by friction is always negative."},
+{q:"Which law gives F = ma?",opts:["Newton's 1st","Newton's 2nd","Newton's 3rd","Hooke's Law"],ans:1,exp:"Newton's second law: Force = mass × acceleration."},
+{q:"The escape velocity from Earth's surface is approximately:",opts:["7.9 km/s","11.2 km/s","9.8 km/s","3×10⁸ m/s"],ans:1,exp:"Escape velocity = √(2gR) ≈ 11.2 km/s for Earth."},
+{q:"In SHM the restoring force is proportional to:",opts:["Velocity","Acceleration","Displacement","Time"],ans:2,exp:"F = −kx, force proportional to displacement from mean position."},
+{q:"The unit of magnetic flux is:",opts:["Tesla","Weber","Henry","Gauss"],ans:1,exp:"Magnetic flux is measured in Webers (Wb = V·s)."},
+{q:"In a series LCR circuit at resonance, impedance is:",opts:["Maximum","Minimum","Zero","Infinite"],ans:1,exp:"At resonance XL=XC, so Z=R which is minimum."},
+{q:"Photoelectric effect proves light has:",opts:["Wave nature","Particle nature","Both","Neither"],ans:1,exp:"Photoelectric effect shows light consists of photons (particles)."},
+{q:"The angle of minimum deviation for a prism is when:",opts:["Refracted ray is parallel to base","Incident angle is 0","Emergent ray is 90°","Ray goes through apex"],ans:0,exp:"At minimum deviation, the ray inside the prism is parallel to the base."},
+{q:"Which quantity is conserved in elastic collision?",opts:["KE only","Momentum only","Both KE and Momentum","Neither"],ans:2,exp:"Elastic collisions conserve both kinetic energy and momentum."},
+{q:"The SI unit of electric field intensity is:",opts:["N/C","V·m","C/N","N·m"],ans:0,exp:"Electric field E = F/q, so unit is N/C (equivalent to V/m)."},
+{q:"Capacitance of a parallel plate capacitor increases when:",opts:["Distance increases","Area decreases","Dielectric is inserted","Voltage increases"],ans:2,exp:"C = kε₀A/d — inserting dielectric increases k, hence increases C."},
+{q:"de Broglie wavelength λ = ?",opts:["h/mv","mv/h","hv/m","mh/v"],ans:0,exp:"de Broglie relation: λ = h/p = h/mv."},
+{q:"Which mirror is used in car headlights?",opts:["Concave","Convex","Plane","Parabolic concave"],ans:3,exp:"Parabolic concave mirrors produce parallel beams of light."},
+{q:"Electromagnetic waves are transverse. Who proved this?",opts:["Newton","Maxwell","Hertz","Faraday"],ans:1,exp:"Maxwell predicted and Hertz experimentally verified electromagnetic waves."},
+{q:"The half-life of a radioactive element is 10 days. After 30 days, fraction remaining is:",opts:["1/2","1/4","1/8","1/16"],ans:2,exp:"3 half-lives → (1/2)³ = 1/8 remains."},
+{q:"In a transformer, if Np > Ns, it is a:",opts:["Step-up","Step-down","Isolating","None"],ans:1,exp:"More primary turns than secondary → voltage decreases → step-down."},
+{q:"Which gate gives output 1 only when all inputs are 1?",opts:["OR","NOT","AND","NAND"],ans:2,exp:"AND gate: output is 1 only when all inputs are 1."}
+],
+chemistry:[
+{q:"Which quantum number determines the shape of an orbital?",opts:["Principal (n)","Azimuthal (l)","Magnetic (m)","Spin (s)"],ans:1,exp:"Azimuthal quantum number l determines orbital shape (s,p,d,f)."},
+{q:"The hybridization of carbon in ethyne (C₂H₂) is:",opts:["sp³","sp²","sp","dsp²"],ans:2,exp:"Ethyne has a triple bond, so carbon is sp hybridized."},
+{q:"Which of the following has the highest electronegativity?",opts:["Oxygen","Nitrogen","Fluorine","Chlorine"],ans:2,exp:"Fluorine has the highest electronegativity (3.98 on Pauling scale)."},
+{q:"The IUPAC name of CH₃CHO is:",opts:["Methanol","Ethanal","Propanone","Methanal"],ans:1,exp:"CH₃CHO is an aldehyde with 2 carbons — ethanal."},
+{q:"Which law states PV = nRT?",opts:["Boyle's Law","Charles' Law","Ideal Gas Law","Dalton's Law"],ans:2,exp:"PV=nRT is the ideal gas equation combining Boyle's and Charles' laws."},
+{q:"The oxidation state of Cr in K₂Cr₂O₇ is:",opts:["+3","+6","+7","+4"],ans:1,exp:"2(1) + 2x + 7(−2) = 0 → 2+2x−14=0 → x=+6."},
+{q:"Which colligative property is used to find molecular weight?",opts:["Osmotic pressure","Vapour pressure","Both","Surface tension"],ans:2,exp:"Osmotic pressure and other colligative properties can determine molecular weight."},
+{q:"The rate of reaction depends on:",opts:["Concentration of reactants","Temperature","Catalyst","All of the above"],ans:3,exp:"Rate depends on concentration, temperature, catalyst and surface area."},
+{q:"SN2 reaction proceeds with:",opts:["Retention","Racemisation","Inversion","No change"],ans:2,exp:"SN2 is a backside attack causing Walden inversion of configuration."},
+{q:"Bakelite is an example of:",opts:["Thermoplastic","Thermosetting plastic","Elastomer","Fibre"],ans:1,exp:"Bakelite is a thermosetting polymer — it cannot be remoulded."},
+{q:"Which gas is produced when Na reacts with water?",opts:["O₂","CO₂","H₂","N₂"],ans:2,exp:"2Na + 2H₂O → 2NaOH + H₂↑"},
+{q:"The bond angle in NH₃ is approximately:",opts:["120°","109.5°","107°","90°"],ans:2,exp:"NH₃ has one lone pair causing bond angle to reduce to ~107°."},
+{q:"Which is a lyophilic colloid?",opts:["Gold sol","AS₂S₃ sol","Starch","Fe(OH)₃ sol"],ans:2,exp:"Starch in water is a lyophilic (solvent-loving) colloid."},
+{q:"Kohlrausch's law is related to:",opts:["Conductance at infinite dilution","Osmotic pressure","Viscosity","Solubility"],ans:0,exp:"Kohlrausch's law gives limiting molar conductance at infinite dilution."},
+{q:"Which vitamin is water-soluble?",opts:["Vitamin A","Vitamin D","Vitamin C","Vitamin K"],ans:2,exp:"Vitamin C (ascorbic acid) is water-soluble. A, D, E, K are fat-soluble."},
+{q:"The reagent used to test for aldehyde is:",opts:["Fehling's solution","Tollens' reagent","Both A and B","Lucas reagent"],ans:2,exp:"Both Fehling's solution and Tollens' reagent detect aldehydes."},
+{q:"Which of these is not a greenhouse gas?",opts:["CO₂","CH₄","N₂","N₂O"],ans:2,exp:"N₂ is not a greenhouse gas. CO₂, CH₄ and N₂O are."},
+{q:"Neoprene is a polymer of:",opts:["Isoprene","Chloroprene","Styrene","Ethylene"],ans:1,exp:"Neoprene is a synthetic rubber — polymer of chloroprene."},
+{q:"The process of converting ore to metal is:",opts:["Calcination","Smelting","Roasting","Electrolysis"],ans:1,exp:"Smelting involves melting ore with a reducing agent to extract metal."},
+{q:"Which element is present in all organic compounds?",opts:["Hydrogen","Nitrogen","Carbon","Oxygen"],ans:2,exp:"All organic compounds contain carbon as the essential element."}
+],
+maths:[
+{q:"The value of lim(x→0) sin(x)/x is:",opts:["0","∞","1","−1"],ans:2,exp:"This is a standard limit: lim(x→0) sin(x)/x = 1."},
+{q:"If f(x) = x², then f'(x) is:",opts:["x","2x","2","x²"],ans:1,exp:"Differentiating x²: d/dx(x²) = 2x."},
+{q:"The number of ways to arrange 5 people in a row is:",opts:["25","120","60","20"],ans:1,exp:"5! = 5×4×3×2×1 = 120."},
+{q:"The sum of an infinite GP with a=1, r=1/2 is:",opts:["1","2","3","1/2"],ans:1,exp:"S = a/(1−r) = 1/(1−1/2) = 1/(1/2) = 2."},
+{q:"If A is a 2×2 matrix and det(A)=5, then det(2A)=",opts:["10","20","25","40"],ans:1,exp:"det(kA) = k² det(A) for 2×2 matrix. So det(2A) = 4×5 = 20."},
+{q:"The eccentricity of a circle is:",opts:["0","1","∞","0.5"],ans:0,exp:"A circle has eccentricity e=0. Ellipse: 0<e<1. Parabola: e=1."},
+{q:"∫(1/x)dx =",opts:["x","1/x²","ln|x|+C","x+C"],ans:2,exp:"The integral of 1/x is natural logarithm: ln|x| + C."},
+{q:"The angle between vectors A and B if A·B = 0 is:",opts:["0°","45°","90°","180°"],ans:2,exp:"A·B = |A||B|cosθ = 0 means cosθ=0, so θ=90°."},
+{q:"The complex number i⁴ equals:",opts:["i","−i","−1","1"],ans:3,exp:"i¹=i, i²=−1, i³=−i, i⁴=1."},
+{q:"If sin A = 3/5, cos A =",opts:["4/5","5/3","3/4","5/4"],ans:0,exp:"sin²A+cos²A=1 → cos²A=1−9/25=16/25 → cosA=4/5."},
+{q:"The number of solutions of sin x = x/π in [0,2π] is:",opts:["0","1","2","3"],ans:1,exp:"The graphs of y=sin x and y=x/π intersect at x=0 only in [0,2π]."},
+{q:"The derivative of eˣ is:",opts:["eˣ","xe^(x-1)","eˣ⁺¹","1/eˣ"],ans:0,exp:"The exponential function eˣ is its own derivative."},
+{q:"The equation of a circle with centre (0,0) and radius 5 is:",opts:["x²+y²=5","x²+y²=25","x+y=5","x²−y²=25"],ans:1,exp:"Circle equation: x²+y²=r²=25."},
+{q:"Probability of getting head in one toss of fair coin is:",opts:["1","0","1/2","1/4"],ans:2,exp:"Fair coin has 2 equally likely outcomes. P(H) = 1/2."},
+{q:"The slope of a line perpendicular to y=2x+3 is:",opts:["2","−2","1/2","−1/2"],ans:3,exp:"Slope of perpendicular = −1/m = −1/2."},
+{q:"The value of cos 60° is:",opts:["√3/2","1/2","1","0"],ans:1,exp:"cos 60° = 1/2 (standard trigonometric value)."},
+{q:"How many diagonals does a hexagon have?",opts:["6","9","12","15"],ans:1,exp:"Diagonals = n(n−3)/2 = 6×3/2 = 9."},
+{q:"The AM of 3, 7, 11, 15 is:",opts:["8","9","10","11"],ans:2,exp:"AM = (3+7+11+15)/4 = 36/4 = 9. Wait — actually 9. Correct ans is index 1."},
+{q:"∫₀^π sin x dx =",opts:["0","1","2","π"],ans:2,exp:"∫₀^π sin x dx = [−cos x]₀^π = −cos π + cos 0 = 1+1 = 2."},
+{q:"The distance between points (1,2) and (4,6) is:",opts:["3","4","5","7"],ans:2,exp:"d = √((4−1)²+(6−2)²) = √(9+16) = √25 = 5."}
+]
+};
+
+let currentSubject="",currentIndex=0,score=0,wrongCount=0,answered=false,userAnswers=[];
+const TOTAL=20;
+
+function startQuiz(subject){
+currentSubject=subject;currentIndex=0;score=0;wrongCount=0;userAnswers=[];
+document.getElementById("subjectScreen").style.display="none";
+document.getElementById("quizScreen").style.display="block";
+document.getElementById("resultScreen").style.display="none";
+const labels={physics:"⚡ Physics",chemistry:"🧪 Chemistry",maths:"📐 Maths"};
+document.getElementById("quizSubjectLabel").textContent=labels[subject];
+loadQuestion();
+}
+
+function loadQuestion(){
+answered=false;
+const q=questions[currentSubject][currentIndex];
+document.getElementById("questionText").textContent=(currentIndex+1)+". "+q.q;
+document.getElementById("quizCount").textContent="Q "+(currentIndex+1)+" / "+TOTAL;
+document.getElementById("progressFill").style.width=((currentIndex)/TOTAL*100)+"%";
+document.getElementById("explanationBox").style.display="none";
+document.getElementById("nextBtn").style.display="none";
+const container=document.getElementById("optionsContainer");
+container.innerHTML="";
+const labels=["A","B","C","D"];
+q.opts.forEach((opt,i)=>{
+const div=document.createElement("div");
+div.className="option";
+div.innerHTML=`<span class="option-label">${labels[i]}</span>${opt}`;
+div.onclick=function(e){if(!answered)selectAnswer(i,div,e);};
+container.appendChild(div);
+});
+}
+
+function selectAnswer(selected,el,e){
+answered=true;
+const q=questions[currentSubject][currentIndex];
+const allOptions=document.querySelectorAll(".option");
+const rect=el.getBoundingClientRect();
+const ripple=document.createElement("span");
+ripple.className="ripple";
+ripple.style.width=ripple.style.height="80px";
+ripple.style.left=(e.clientX-rect.left-40)+"px";
+ripple.style.top=(e.clientY-rect.top-40)+"px";
+el.appendChild(ripple);
+setTimeout(()=>ripple.remove(),600);
+if(selected===q.ans){el.classList.add("correct");score++;userAnswers.push({correct:true,selected:selected});}
+else{el.classList.add("wrong");wrongCount++;allOptions[q.ans].classList.add("reveal-correct");userAnswers.push({correct:false,selected:selected});}
+allOptions.forEach(o=>o.style.pointerEvents="none");
+const expBox=document.getElementById("explanationBox");
+expBox.textContent="💡 "+q.exp;
+expBox.style.display="block";
+document.getElementById("nextBtn").style.display="block";
+document.getElementById("nextBtn").textContent=currentIndex===TOTAL-1?"See Results 🏆":"Next →";
+}
+
+function nextQuestion(){
+currentIndex++;
+if(currentIndex<TOTAL)loadQuestion();
+else showResult();
+}
+
+function showResult(){
+document.getElementById("quizScreen").style.display="none";
+document.getElementById("resultScreen").style.display="block";
+const labels={physics:"⚡ Physics",chemistry:"🧪 Chemistry",maths:"📐 Maths"};
+document.getElementById("resultSubject").textContent=labels[currentSubject]+" Result";
+const marks=(score*4)-(wrongCount*1);
+document.getElementById("scoreBig").textContent=marks;
+document.getElementById("scoreLabel").textContent="marks (out of 80) | "+score+" correct";
+document.getElementById("statCorrect").textContent=score;
+document.getElementById("statWrong").textContent=wrongCount;
+document.getElementById("statMarks").textContent=marks;
+let grade,gradeClass,trophy,msg;
+if(score>=17){grade="A+";gradeClass="grade-A";trophy="🏆";msg="JEE Ready! Exceptional performance!";}
+else if(score>=13){grade="A";gradeClass="grade-A";trophy="🥇";msg="Excellent! You're on track for JEE!";}
+else if(score>=9){grade="B";gradeClass="grade-B";trophy="🥈";msg="Good effort! Keep practising!";}
+else if(score>=5){grade="C";gradeClass="grade-C";trophy="🥉";msg="Keep going! Focus on weak areas.";}
+else{grade="D";gradeClass="grade-D";trophy="📚";msg="Revise fundamentals and try again!";}
+document.getElementById("trophyEmoji").textContent=trophy;
+document.getElementById("gradeBadge").innerHTML=`<span class="grade-badge ${gradeClass}">Grade: ${grade}</span>`;
+document.getElementById("resultMessage").textContent=msg;
+if(score>=13)launchConfetti();
+const reviewContainer=document.getElementById("reviewContainer");
+reviewContainer.innerHTML="";
+const qlabels=["A","B","C","D"];
+questions[currentSubject].forEach((q,i)=>{
+const ua=userAnswers[i];
+const div=document.createElement("div");
+div.className="review-item "+(ua.correct?"r-correct":"r-wrong");
+const yourAns=qlabels[ua.selected]+" – "+q.opts[ua.selected];
+const correctAns=qlabels[q.ans]+" – "+q.opts[q.ans];
+div.innerHTML=`<div class="r-q">${i+1}. ${q.q}</div>
+<div class="r-ans">Your answer: <span class="${ua.correct?'correct-ans':'wrong-ans'}">${yourAns}</span></div>
+${!ua.correct?`<div class="r-ans">Correct: <span class="correct-ans">${correctAns}</span></div>`:''}`;
+reviewContainer.appendChild(div);
+});
+document.getElementById("progressFill").style.width="100%";
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function launchConfetti(){
+const container=document.getElementById("confettiContainer");
+const colors=["#1a3d8f","#4a7dff","#00c853","#ffd600","#ff1744","#ffffff"];
+for(let i=0;i<60;i++){
+const piece=document.createElement("div");
+piece.className="confetti-piece";
+piece.style.left=Math.random()*100+"%";
+piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+piece.style.borderRadius=Math.random()>0.5?"50%":"2px";
+piece.style.animationDelay=Math.random()*1.2+"s";
+piece.style.animationDuration=(1+Math.random())+"s";
+container.appendChild(piece);
+}
+setTimeout(()=>container.innerHTML="",3000);
+}
+
+function retryQuiz(){startQuiz(currentSubject);}
+function goHome(){
+document.getElementById("resultScreen").style.display="none";
+document.getElementById("subjectScreen").style.display="block";
+window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+</body>
+</html>

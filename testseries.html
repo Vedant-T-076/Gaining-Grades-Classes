@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Test Series – Gaining Grades</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:#f0f4ff;min-height:100vh;}
+
+/* HEADER */
+.ts-header{
+background:#1a3d8f;
+padding:16px 20px;
+display:flex;
+align-items:center;
+gap:12px;
+position:sticky;
+top:0;
+z-index:100;
+box-shadow:0 3px 12px rgba(0,0,0,0.3);
+}
+.ts-header a{color:white;font-size:22px;text-decoration:none;}
+.ts-header h1{color:white;font-size:20px;letter-spacing:1px;}
+.ts-logo{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid white;}
+
+/* SUBJECT SELECT */
+.subject-screen{
+padding:30px 20px;
+text-align:center;
+}
+.subject-screen h2{
+color:#1a3d8f;
+font-size:24px;
+margin-bottom:6px;
+}
+.subject-screen p{
+color:#555;
+margin-bottom:28px;
+font-size:14px;
+}
+.subject-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:16px;
+max-width:400px;
+margin:auto;
+}
+.subject-card{
+background:white;
+border:2px solid #1a3d8f;
+border-radius:16px;
+padding:28px 10px;
+cursor:pointer;
+transition:all 0.3s;
+box-shadow:0 4px 12px rgba(26,61,143,0.1);
+}
+.subject-card:hover,.subject-card:active{
+background:#1a3d8f;
+color:white;
+transform:scale(1.04);
+}
+.subject-card .icon{font-size:36px;margin-bottom:10px;}
+.subject-card .name{font-weight:bold;font-size:15px;color:#1a3d8f;}
+.subject-card:hover .name,.subject-card:active .name{color:white;}
+
+/* QUIZ SCREEN */
+.quiz-screen{
+padding:20px;
+display:none;
+}
+.quiz-top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:16px;
+}
+.quiz-subject{
+background:#1a3d8f;
+color:white;
+padding:6px 16px;
+border-radius:20px;
+font-weight:bold;
+font-size:13px;
+}
+.quiz-count{
+color:#1a3d8f;
+font-weight:bold;
+font-size:14px;
+}
+
+/* PROGRESS BAR */
+.progress-bar{
+background:#dde6ff;
+border-radius:10px;
+height:8px;
+margin-bottom:20px;
+overflow:hidden;
+}
+.progress-fill{
+background:linear-gradient(90deg,#1a3d8f,#4a7dff);
+height:100%;
+border-radius:10px;
+transition:width 0.5s ease;
+}
+
+/* QUESTION CARD */
+.question-card{
+background:white;
+border-radius:18px;
+padding:24px 18px;
+box-shadow:0 6px 24px rgba(26,61,143,0.13);
+margin-bottom:20px;
+border-top:5px solid #1a3d8f;
+}
+.question-card h3{
+color:#1a3d8f;
+font-size:16px;
+line-height:1.5;
+margin-bottom:20px;
+}
+
+/* OPTIONS */
+.option{
+background:#f0f4ff;
+border:2px solid #c5d3f7;
+border-radius:12px;
+padding:14px 16px;
+margin-bottom:12px;
+cursor:pointer;
+font-size:14px;
+font-weight:bold;
+color:#1a3d8f;
+transition:all 0.2s;
+display:flex;
+align-items:center;
+gap:10px;
+position:relative;
+overflow:hidden;
+}
+.option:hover{
+border-color:#1a3d8f;
+background:#dde6ff;
+}
+.option-label{
+background:#1a3d8f;
+color:white;
+width:28px;
+height:28px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:13px;
+flex-shrink:0;
+}
+
+/* CORRECT ANIMATION */
+.option.correct{
+background:#e6fff0;
+border-color:#00c853;
+color:#00691a;
+animation:correctPulse 0.6s ease;
+}
+.option.correct .option-label{background:#00c853;}
+@keyframes correctPulse{
+0%{transform:scale(1);}
+30%{transform:scale(1.04);}
+60%{transform:scale(0.98);}
+100%{transform:scale(1);}
+}
+
+/* WRONG ANIMATION */
+.option.wrong{
+background:#fff0f0;
+border-color:#ff1744;
+color:#b71c1c;
+animation:wrongShake 0.5s ease;
+}
+.option.wrong .option-label{background:#ff1744;}
+@keyframes wrongShake{
+0%{transform:translateX(0);}
+20%{transform:translateX(-8px);}
+40%{transform:translateX(8px);}
+60%{transform:translateX(-5px);}
+80%{transform:translateX(5px);}
+100%{transform:translateX(0);}
+}
+
+/* CORRECT ANSWER REVEAL */
+.option.reveal-correct{
+background:#e6fff0;
+border-color:#00c853;
+color:#00691a;
+}
+.option.reveal-correct .option-label{background:#00c853;}
+
+/* EXPLANATION */
+.explanation{
+background:#fffde7;
+border-left:4px solid #f9a825;
+border-radius:8px;
+padding:12px 14px;
+font-size:13px;
+color:#555;
+margin-top:10px;
+display:none;
+}
+
+/* NEXT BUTTON */
+.next-btn{
+background:#1a3d8f;
+color:white;
+border:none;
+padding:14px;
+width:100%;
+border-radius:12px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+display:none;
+margin-top:6px;
+box-shadow:0 4px 12px rgba(26,61,143,0.3);
+letter-spacing:1px;
+}
+.next-btn:active{transform:scale(0.98);}
+
+/* RESULT SCREEN */
+.result-screen{
+padding:24px 20px;
+display:none;
+text-align:center;
+}
+.result-card{
+background:white;
+border-radius:20px;
+padding:32px 20px;
+box-shadow:0 8px 32px rgba(26,61,143,0.15);
+border-top:6px solid #1a3d8f;
+margin-bottom:20px;
+}
+.result-trophy{font-size:64px;margin-bottom:10px;}
+.result-card h2{color:#1a3d8f;font-size:22px;margin-bottom:6px;}
+.result-card .score-big{
+font-size:56px;
+font-weight:bold;
+color:#1a3d8f;
+line-height:1;
+margin:16px 0 4px;
+}
+.result-card .score-label{color:#888;font-size:14px;margin-bottom:20px;}
+
+/* STAT BOXES */
+.stat-row{display:flex;gap:12px;margin:16px 0;}
+.stat-box{
+flex:1;
+border-radius:14px;
+padding:16px 8px;
+}
+.stat-box.correct-box{background:#e6fff0;border:2px solid #00c853;}
+.stat-box.wrong-box{background:#fff0f0;border:2px solid #ff1744;}
+.stat-box.skip-box{background:#f0f4ff;border:2px solid #1a3d8f;}
+.stat-box .stat-num{font-size:28px;font-weight:bold;}
+.stat-box.correct-box .stat-num{color:#00c853;}
+.stat-box.wrong-box .stat-num{color:#ff1744;}
+.stat-box.skip-box .stat-num{color:#1a3d8f;}
+.stat-box .stat-lbl{font-size:12px;color:#666;margin-top:4px;}
+
+/* GRADE BADGE */
+.grade-badge{
+display:inline-block;
+padding:8px 24px;
+border-radius:20px;
+font-weight:bold;
+font-size:18px;
+margin:10px 0 20px;
+}
+.grade-A{background:#e6fff0;color:#00691a;border:2px solid #00c853;}
+.grade-B{background:#e3f2fd;color:#0d47a1;border:2px solid #1a3d8f;}
+.grade-C{background:#fff8e1;color:#e65100;border:2px solid #ffa000;}
+.grade-D{background:#fff0f0;color:#b71c1c;border:2px solid #ff1744;}
+
+/* QUESTION REVIEW */
+.review-title{
+color:#1a3d8f;
+font-weight:bold;
+font-size:16px;
+text-align:left;
+margin-bottom:12px;
+}
+.review-item{
+background:white;
+border-radius:12px;
+padding:14px;
+margin-bottom:10px;
+text-align:left;
+box-shadow:0 2px 8px rgba(0,0,0,0.07);
+border-left:4px solid #ccc;
+}
+.review-item.r-correct{border-left-color:#00c853;}
+.review-item.r-wrong{border-left-color:#ff1744;}
+.review-item .r-q{font-size:13px;color:#333;margin-bottom:6px;font-weight:bold;}
+.review-item .r-ans{font-size:12px;color:#666;}
+.review-item .r-ans span{font-weight:bold;}
+.review-item .r-ans .correct-ans{color:#00691a;}
+.review-item .r-ans .wrong-ans{color:#b71c1c;}
+
+/* ACTION BUTTONS */
+.action-btn{
+padding:14px;
+width:100%;
+border-radius:12px;
+font-size:15px;
+font-weight:bold;
+cursor:pointer;
+margin-bottom:10px;
+border:none;
+letter-spacing:0.5px;
+}
+.btn-retry{background:#1a3d8f;color:white;box-shadow:0 4px 12px rgba(26,61,143,0.3);}
+.btn-home{background:white;color:#1a3d8f;border:2px solid #1a3d8f;}
+
+/* RIPPLE */
+.ripple{
+position:absolute;
+border-radius:50%;
+background:rgba(255,255,255,0.4);
+transform:scale(0);
+animation:rippleAnim 0.5s linear;
+pointer-events:none;
+}
+@keyframes rippleAnim{
+to{transform:scale(4);opacity:0;}
+}
+
+/* CONFETTI */
+.confetti-container{
+position:fixed;top:0;left:0;width:100%;height:100%;
+pointer-events:none;z-index:9999;
+}
+.confetti-piece{
+position:absolute;
+width:10px;height:10px;
+opacity:0;
+animation:confettiFall 1.5s ease forwards;
+}
+@keyframes confettiFall{
+0%{transform:translateY(-20px) rotate(0deg);opacity:1;}
+100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="ts-header">
+<a href="index.html">&#8592;</a>
+<img src="logo.jpg" class="ts-logo">
+<h1>Test Series – Std 10</h1>
+</div>
+
+<!-- SUBJECT SELECT -->
+<div class="subject-screen" id="subjectScreen">
+<h2>Choose a Subject</h2>
+<p>10 questions • Class 10 Level • Instant Results</p>
+<div class="subject-grid">
+<div class="subject-card" onclick="startQuiz('maths')">
+<div class="icon">📐</div>
+<div class="name">Mathematics</div>
+</div>
+<div class="subject-card" onclick="startQuiz('biology')">
+<div class="icon">🧬</div>
+<div class="name">Biology</div>
+</div>
+<div class="subject-card" onclick="startQuiz('physics')">
+<div class="icon">⚡</div>
+<div class="name">Physics</div>
+</div>
+<div class="subject-card" onclick="startQuiz('chemistry')">
+<div class="icon">🧪</div>
+<div class="name">Chemistry</div>
+</div>
+</div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div class="quiz-screen" id="quizScreen">
+<div class="quiz-top">
+<span class="quiz-subject" id="quizSubjectLabel"></span>
+<span class="quiz-count" id="quizCount"></span>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="question-card">
+<h3 id="questionText"></h3>
+<div id="optionsContainer"></div>
+<div class="explanation" id="explanationBox"></div>
+</div>
+<button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+</div>
+
+<!-- RESULT SCREEN -->
+<div class="result-screen" id="resultScreen">
+<div class="result-card">
+<div class="result-trophy" id="trophyEmoji"></div>
+<h2 id="resultSubject"></h2>
+<div class="score-big" id="scoreBig"></div>
+<div class="score-label">out of 10</div>
+<div id="gradeBadge"></div>
+<div class="stat-row">
+<div class="stat-box correct-box"><div class="stat-num" id="statCorrect"></div><div class="stat-lbl">✅ Correct</div></div>
+<div class="stat-box wrong-box"><div class="stat-num" id="statWrong"></div><div class="stat-lbl">❌ Wrong</div></div>
+<div class="stat-box skip-box"><div class="stat-num" id="statPercent"></div><div class="stat-lbl">📊 Score%</div></div>
+</div>
+<p id="resultMessage" style="color:#555;font-size:14px;margin-top:10px;"></p>
+</div>
+
+<div class="review-title">📋 Question Review</div>
+<div id="reviewContainer"></div>
+
+<button class="action-btn btn-retry" onclick="retryQuiz()">🔄 Retry Same Subject</button>
+<button class="action-btn btn-home" onclick="goHome()">🏠 Choose Another Subject</button>
+</div>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+const questions = {
+maths:[
+{q:"What is the value of sin²θ + cos²θ?",opts:["0","1","2","−1"],ans:1,exp:"This is a fundamental trigonometric identity always equal to 1."},
+{q:"The HCF of 12 and 18 is:",opts:["2","4","6","9"],ans:2,exp:"Factors of 12: 1,2,3,4,6,12. Factors of 18: 1,2,3,6,9,18. HCF = 6."},
+{q:"The roots of x² − 5x + 6 = 0 are:",opts:["2 and 3","1 and 6","2 and 4","3 and 4"],ans:0,exp:"Factoring: (x−2)(x−3)=0, so x=2 or x=3."},
+{q:"The sum of first 10 natural numbers is:",opts:["45","50","55","60"],ans:2,exp:"Sum = n(n+1)/2 = 10×11/2 = 55."},
+{q:"If the radius of a circle is 7 cm, its area is:",opts:["154 cm²","44 cm²","22 cm²","308 cm²"],ans:0,exp:"Area = πr² = (22/7)×7×7 = 154 cm²."},
+{q:"What is the slope of the line y = 3x + 5?",opts:["5","3","8","1/3"],ans:1,exp:"In y=mx+c, m is the slope. Here m=3."},
+{q:"The median of 3, 7, 8, 10, 15 is:",opts:["7","8","10","9"],ans:1,exp:"Arrange in order and pick middle value: 3,7,8,10,15 → median = 8."},
+{q:"The volume of a cube with side 4 cm is:",opts:["16 cm³","64 cm³","48 cm³","32 cm³"],ans:1,exp:"Volume = side³ = 4³ = 64 cm³."},
+{q:"LCM of 4 and 6 is:",opts:["12","24","6","8"],ans:0,exp:"LCM of 4 and 6 = 12."},
+{q:"If one zero of polynomial 3x²−kx−6 is 2, then k =",opts:["3","6","9","1"],ans:0,exp:"Substituting x=2: 3(4)−2k−6=0 → 12−2k−6=0 → k=3."}
+],
+biology:[
+{q:"The powerhouse of the cell is:",opts:["Nucleus","Ribosome","Mitochondria","Chloroplast"],ans:2,exp:"Mitochondria produce ATP (energy) through cellular respiration."},
+{q:"Which blood group is the universal donor?",opts:["A","B","AB","O"],ans:3,exp:"Blood group O negative can donate to all blood groups."},
+{q:"Photosynthesis takes place in:",opts:["Mitochondria","Chloroplast","Nucleus","Cytoplasm"],ans:1,exp:"Chloroplasts contain chlorophyll which is needed for photosynthesis."},
+{q:"The basic unit of heredity is:",opts:["Cell","Gene","Chromosome","DNA"],ans:1,exp:"Genes are segments of DNA that carry hereditary information."},
+{q:"Which organ produces insulin?",opts:["Liver","Kidney","Pancreas","Thyroid"],ans:2,exp:"The pancreas produces insulin which regulates blood sugar."},
+{q:"The process by which plants lose water is called:",opts:["Osmosis","Transpiration","Respiration","Absorption"],ans:1,exp:"Transpiration is loss of water vapour through stomata."},
+{q:"How many chambers does the human heart have?",opts:["2","3","4","5"],ans:2,exp:"The human heart has 4 chambers: 2 atria and 2 ventricles."},
+{q:"Which vitamin is produced when skin is exposed to sunlight?",opts:["Vitamin A","Vitamin B","Vitamin C","Vitamin D"],ans:3,exp:"Sunlight triggers synthesis of Vitamin D in the skin."},
+{q:"The functional unit of kidney is:",opts:["Neuron","Nephron","Alveolus","Villus"],ans:1,exp:"Nephron is the structural and functional unit of the kidney."},
+{q:"Which gas is released during photosynthesis?",opts:["CO₂","N₂","O₂","H₂"],ans:2,exp:"Plants release oxygen (O₂) as a byproduct of photosynthesis."}
+],
+physics:[
+{q:"The SI unit of force is:",opts:["Joule","Watt","Newton","Pascal"],ans:2,exp:"Force is measured in Newtons (N). F = ma."},
+{q:"Speed of light in vacuum is approximately:",opts:["3×10⁶ m/s","3×10⁸ m/s","3×10¹⁰ m/s","3×10⁴ m/s"],ans:1,exp:"Speed of light c ≈ 3×10⁸ m/s."},
+{q:"Ohm's law states V =",opts:["I/R","IR","I+R","I²R"],ans:1,exp:"Ohm's law: Voltage = Current × Resistance (V = IR)."},
+{q:"The image formed by a plane mirror is:",opts:["Real and inverted","Virtual and inverted","Virtual and erect","Real and erect"],ans:2,exp:"Plane mirror forms virtual, erect, and laterally inverted images."},
+{q:"Which of these is a scalar quantity?",opts:["Force","Velocity","Displacement","Speed"],ans:3,exp:"Speed has only magnitude, not direction — so it's a scalar."},
+{q:"1 kWh is equal to how many joules?",opts:["3.6×10³ J","3.6×10⁶ J","3.6×10⁹ J","3.6×10⁴ J"],ans:1,exp:"1 kWh = 1000 W × 3600 s = 3.6×10⁶ J."},
+{q:"The angle of incidence equals the angle of reflection. This is:",opts:["Refraction","Dispersion","Reflection","Diffraction"],ans:2,exp:"This is the law of reflection."},
+{q:"Resistance of a wire depends on:",opts:["Color","Length and area","Weight","Temperature only"],ans:1,exp:"R = ρL/A — resistance depends on length and cross-sectional area."},
+{q:"A convex lens is also called a:",opts:["Diverging lens","Converging lens","Concave lens","Plane lens"],ans:1,exp:"Convex (converging) lens bends rays toward a focal point."},
+{q:"The unit of electric power is:",opts:["Volt","Ampere","Ohm","Watt"],ans:3,exp:"Electric power is measured in Watts. P = VI."}
+],
+chemistry:[
+{q:"The chemical formula of water is:",opts:["H₂O₂","H₂O","HO","H₃O"],ans:1,exp:"Water is made of 2 hydrogen atoms and 1 oxygen atom: H₂O."},
+{q:"Atomic number of Carbon is:",opts:["6","8","12","14"],ans:0,exp:"Carbon has atomic number 6, meaning 6 protons."},
+{q:"Which gas is used in fire extinguishers?",opts:["O₂","N₂","CO₂","H₂"],ans:2,exp:"CO₂ displaces oxygen and smothers fire."},
+{q:"pH of a neutral solution is:",opts:["0","7","14","1"],ans:1,exp:"pH 7 is neutral. Below 7 is acidic, above 7 is basic."},
+{q:"NaOH is an example of:",opts:["Acid","Salt","Base","Oxide"],ans:2,exp:"NaOH (Sodium hydroxide) is a strong base."},
+{q:"Which element has the symbol 'Fe'?",opts:["Fluorine","Iron","Francium","Fermium"],ans:1,exp:"Fe comes from Ferrum, the Latin name for iron."},
+{q:"The process of gaining electrons is called:",opts:["Oxidation","Reduction","Combustion","Neutralization"],ans:1,exp:"Reduction = gain of electrons. Oxidation = loss of electrons."},
+{q:"Baking soda has the formula:",opts:["Na₂CO₃","NaHCO₃","NaCl","NaOH"],ans:1,exp:"Baking soda is sodium bicarbonate: NaHCO₃."},
+{q:"Which of the following is a noble gas?",opts:["Nitrogen","Oxygen","Argon","Chlorine"],ans:2,exp:"Argon (Ar) is a noble gas — it has a full outer shell."},
+{q:"The chemical name of common salt is:",opts:["Sodium hydroxide","Sodium carbonate","Sodium chloride","Potassium chloride"],ans:2,exp:"Common salt = NaCl = Sodium Chloride."}
+]
+};
+
+let currentSubject="";
+let currentIndex=0;
+let score=0;
+let wrongCount=0;
+let answered=false;
+let userAnswers=[];
+
+function startQuiz(subject){
+currentSubject=subject;
+currentIndex=0;
+score=0;
+wrongCount=0;
+userAnswers=[];
+document.getElementById("subjectScreen").style.display="none";
+document.getElementById("quizScreen").style.display="block";
+document.getElementById("resultScreen").style.display="none";
+const labels={maths:"📐 Mathematics",biology:"🧬 Biology",physics:"⚡ Physics",chemistry:"🧪 Chemistry"};
+document.getElementById("quizSubjectLabel").textContent=labels[subject];
+loadQuestion();
+}
+
+function loadQuestion(){
+answered=false;
+const q=questions[currentSubject][currentIndex];
+document.getElementById("questionText").textContent=(currentIndex+1)+". "+q.q;
+document.getElementById("quizCount").textContent="Q "+(currentIndex+1)+" / 10";
+document.getElementById("progressFill").style.width=((currentIndex)/10*100)+"%";
+document.getElementById("explanationBox").style.display="none";
+document.getElementById("explanationBox").textContent="";
+document.getElementById("nextBtn").style.display="none";
+
+const container=document.getElementById("optionsContainer");
+container.innerHTML="";
+const labels=["A","B","C","D"];
+q.opts.forEach((opt,i)=>{
+const div=document.createElement("div");
+div.className="option";
+div.innerHTML=`<span class="option-label">${labels[i]}</span>${opt}`;
+div.onclick=function(e){
+if(!answered) selectAnswer(i,div,e);
+};
+container.appendChild(div);
+});
+}
+
+function selectAnswer(selected,el,e){
+answered=true;
+const q=questions[currentSubject][currentIndex];
+const allOptions=document.querySelectorAll(".option");
+
+// ripple effect
+const rect=el.getBoundingClientRect();
+const ripple=document.createElement("span");
+ripple.className="ripple";
+ripple.style.width=ripple.style.height="80px";
+ripple.style.left=(e.clientX-rect.left-40)+"px";
+ripple.style.top=(e.clientY-rect.top-40)+"px";
+el.appendChild(ripple);
+setTimeout(()=>ripple.remove(),600);
+
+if(selected===q.ans){
+el.classList.add("correct");
+score++;
+userAnswers.push({correct:true,selected:selected});
+} else {
+el.classList.add("wrong");
+wrongCount++;
+allOptions[q.ans].classList.add("reveal-correct");
+userAnswers.push({correct:false,selected:selected});
+}
+
+// disable all
+allOptions.forEach(o=>o.style.pointerEvents="none");
+
+// show explanation
+const expBox=document.getElementById("explanationBox");
+expBox.textContent="💡 "+q.exp;
+expBox.style.display="block";
+
+document.getElementById("nextBtn").style.display="block";
+document.getElementById("nextBtn").textContent=currentIndex===9?"See Results 🏆":"Next →";
+}
+
+function nextQuestion(){
+currentIndex++;
+if(currentIndex<10){
+loadQuestion();
+} else {
+showResult();
+}
+}
+
+function showResult(){
+document.getElementById("quizScreen").style.display="none";
+document.getElementById("resultScreen").style.display="block";
+
+const labels={maths:"📐 Mathematics",biology:"🧬 Biology",physics:"⚡ Physics",chemistry:"🧪 Chemistry"};
+document.getElementById("resultSubject").textContent=labels[currentSubject]+" Result";
+document.getElementById("scoreBig").textContent=score;
+document.getElementById("statCorrect").textContent=score;
+document.getElementById("statWrong").textContent=wrongCount;
+document.getElementById("statPercent").textContent=score*10+"%";
+
+let grade,gradeClass,trophy,msg;
+if(score>=9){grade="A+";gradeClass="grade-A";trophy="🏆";msg="Outstanding! You're a star student!";}
+else if(score>=7){grade="A";gradeClass="grade-A";trophy="🥇";msg="Excellent work! Keep it up!";}
+else if(score>=5){grade="B";gradeClass="grade-B";trophy="🥈";msg="Good effort! A little more practice and you'll ace it!";}
+else if(score>=3){grade="C";gradeClass="grade-C";trophy="🥉";msg="Keep practising! You can do better!";}
+else{grade="D";gradeClass="grade-D";trophy="📚";msg="Don't give up! Revise and try again!";}
+
+document.getElementById("trophyEmoji").textContent=trophy;
+document.getElementById("gradeBadge").innerHTML=`<span class="grade-badge ${gradeClass}">Grade: ${grade}</span>`;
+document.getElementById("resultMessage").textContent=msg;
+
+if(score>=7) launchConfetti();
+
+// review
+const reviewContainer=document.getElementById("reviewContainer");
+reviewContainer.innerHTML="";
+const qlabels=["A","B","C","D"];
+questions[currentSubject].forEach((q,i)=>{
+const ua=userAnswers[i];
+const div=document.createElement("div");
+div.className="review-item "+(ua.correct?"r-correct":"r-wrong");
+const yourAns=qlabels[ua.selected]+" – "+q.opts[ua.selected];
+const correctAns=qlabels[q.ans]+" – "+q.opts[q.ans];
+div.innerHTML=`<div class="r-q">${i+1}. ${q.q}</div>
+<div class="r-ans">Your answer: <span class="${ua.correct?'correct-ans':'wrong-ans'}">${yourAns}</span></div>
+${!ua.correct?`<div class="r-ans">Correct: <span class="correct-ans">${correctAns}</span></div>`:''}`;
+reviewContainer.appendChild(div);
+});
+
+document.getElementById("progressFill").style.width="100%";
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function launchConfetti(){
+const container=document.getElementById("confettiContainer");
+const colors=["#1a3d8f","#4a7dff","#00c853","#ffd600","#ff1744","#ffffff"];
+for(let i=0;i<60;i++){
+const piece=document.createElement("div");
+piece.className="confetti-piece";
+piece.style.left=Math.random()*100+"%";
+piece.style.top="-10px";
+piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+piece.style.borderRadius=Math.random()>0.5?"50%":"2px";
+piece.style.animationDelay=Math.random()*1.2+"s";
+piece.style.animationDuration=(1+Math.random())+"s";
+container.appendChild(piece);
+}
+setTimeout(()=>container.innerHTML="",3000);
+}
+
+function retryQuiz(){
+startQuiz(currentSubject);
+}
+
+function goHome(){
+document.getElementById("resultScreen").style.display="none";
+document.getElementById("subjectScreen").style.display="block";
+window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+</body>
+</html>

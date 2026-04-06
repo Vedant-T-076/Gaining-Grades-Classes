@@ -4,274 +4,129 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gaining Grades Classes</title>
-
 <style>
+*{box-sizing:border-box;}
+html{overflow-x:hidden;}
+body{margin:0;font-family:Arial;overflow-x:hidden;max-width:100vw;}
 
-body{
-margin:0;
-font-family:Arial;
-overflow-x:hidden;
-}
+a{text-decoration:none;color:inherit;}
 
-/* HEADER */
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px;
-background:white;
-position:sticky;
-top:0;
-z-index:1000;
-}
+.header{position:sticky;top:0;z-index:1000;width:100%;overflow:hidden;}
+.banner-img{width:100%;display:block;}
+.logo-overlay{position:absolute;top:10px;left:55px;}
+.logo-overlay img{width:130px;}
+.call-icon{position:absolute;bottom:15px;right:15px;background:#1a3d8f;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,0.3);cursor:pointer;}
+.menu{position:absolute;top:15px;right:15px;background:#1a3d8f;color:white;padding:10px 14px;border-radius:8px;font-size:20px;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,0.3);z-index:1100;}
+.nav{display:none;position:fixed;top:100px;right:10px;background:white;padding:15px;box-shadow:0 0 15px rgba(0,0,0,0.3);border-radius:10px;z-index:2000;width:190px;}
+.nav button{width:100%;margin:6px 0;padding:10px;border:none;background:#1a3d8f;color:white;border-radius:6px;font-weight:bold;cursor:pointer;font-size:13px;}
 
-.logo-box img{
-width:110px;
-}
+.banner{background:url('Banner.jpg') center/cover no-repeat;padding:40px 20px;text-align:center;}
+.banner h1{font-size:32px;color:white;line-height:1.4;letter-spacing:2px;text-shadow:0 2px 6px rgba(0,0,0,0.5);}
+.banner p{margin-top:15px;font-size:18px;color:#dbeafe;font-style:italic;letter-spacing:1px;}
 
-.menu{
-font-size:28px;
-cursor:pointer;
-}
+.seats-banner{background:linear-gradient(135deg,#1a3d8f,#2a5bbf);padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;width:100%;}
+.seats-banner .pulse-dot{width:12px;height:12px;background:#ff4444;border-radius:50%;animation:pulseDot 1.2s infinite;flex-shrink:0;}
+@keyframes pulseDot{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.5);opacity:0.6;}}
+.seats-banner p{color:white;font-weight:bold;font-size:14px;margin:0;text-align:center;}
+.seats-banner .seats-highlight{color:#ffd700;font-size:15px;}
+.seats-tag{background:#ff4444;color:white;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;animation:pulseDot 1.2s infinite;}
 
-/* MENU */
-.nav{
-display:none;
-position:fixed;
-top:70px;
-right:10px;
-background:white;
-padding:15px;
-box-shadow:0 0 15px rgba(0,0,0,0.3);
-border-radius:10px;
-z-index:2000;
-width:180px;
-}
+section{padding:20px;width:100%;}
+h2{color:#1a3d8f;}
+.main::before{content:"■ ";color:#1a3d8f;}
+.row{display:flex;gap:10px;width:100%;}
+.row img{width:50%;border-radius:12px;display:block;}
+.big{width:100%;margin-top:10px;border-radius:12px;display:block;}
+.course{margin-bottom:20px;width:100%;}
+.course img{width:100%;border-radius:12px;display:block;}
+.course-text{text-align:center;font-weight:bold;}
 
-.nav button{
-width:100%;
-margin:6px 0;
-padding:10px;
-border:none;
-background:#0a192f;
-color:white;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-}
+.quality-banner{background:url('Banner1.jpg') center/cover no-repeat;padding:40px 20px;color:white;width:100%;}
+.quality-banner h2{color:white;text-align:center;}
+.quality-list{list-style:none;padding:0;max-width:300px;margin:auto;}
+.quality-list li{margin:10px 0;font-weight:bold;position:relative;padding-left:20px;}
+.quality-list li::before{content:"●";position:absolute;left:0;color:white;}
 
-/* BANNER */
-.banner{
-background:linear-gradient(135deg,#0a192f,#112d4e);
-padding:40px 20px;
-text-align:center;
-}
+.founder{text-align:center;}
+.founder img{width:120px;border-radius:50%;}
 
-.banner h1{
-font-size:32px;
-color:white;
-line-height:1.4;
-letter-spacing:2px;
-text-shadow:0 2px 6px rgba(0,0,0,0.5);
-}
+.map-section{padding:20px;width:100%;}
+.map-section h2{color:#1a3d8f;margin-bottom:4px;}
+.map-section .map-sub{color:#555;font-size:13px;margin-bottom:14px;}
+.map-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.map-tab{padding:8px 14px;border:2px solid #1a3d8f;border-radius:20px;font-size:12px;font-weight:bold;color:#1a3d8f;background:white;cursor:pointer;transition:all 0.2s;}
+.map-tab.active{background:#1a3d8f;color:white;}
+.map-frame{border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(26,61,143,0.15);border:3px solid #1a3d8f;display:none;width:100%;}
+.map-frame.active{display:block;}
+.map-frame iframe{width:100%;height:220px;border:none;display:block;}
+.map-address{background:#f0f4ff;border-left:4px solid #1a3d8f;padding:12px 14px;border-radius:0 10px 10px 0;margin-top:10px;font-size:13px;color:#333;}
+.map-address strong{color:#1a3d8f;display:block;margin-bottom:4px;}
+.directions-btn{display:block;margin-top:10px;background:#1a3d8f;color:white;padding:11px;border-radius:10px;text-align:center;font-weight:bold;font-size:14px;}
 
-.banner p{
-margin-top:15px;
-font-size:18px;
-color:#dbeafe;
-font-style:italic;
-letter-spacing:1px;
-}
+.contact{background:#1a3d8f;color:white;text-align:center;padding:25px;width:100%;}
+.main-btn{background:#1a3d8f;color:white;padding:12px;border:none;border-radius:8px;font-weight:bold;margin:6px auto;display:block;width:80%;text-align:center;}
+.white-btn{background:white;color:#1a3d8f;padding:12px;border-radius:8px;font-weight:bold;margin:6px auto;display:block;width:80%;text-align:center;border:2px solid #1a3d8f;}
+.call-title{display:inline-block;padding:8px 20px;border:2px solid white;border-radius:6px;margin-bottom:10px;}
 
-/* SECTION */
-section{
-padding:20px;
-}
+.whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,0.25);z-index:999;cursor:pointer;}
 
-h2{
-color:#0a192f;
-}
-
-.main::before{
-content:"■ ";
-color:#0a192f;
-}
-
-/* SCROLL FIX */
-section, .quality-banner, .contact {
-scroll-margin-top: 80px;
-}
-
-/* CLASSROOM */
-.row{
-display:flex;
-gap:10px;
-}
-
-.row img{
-width:50%;
-border-radius:12px;
-}
-
-.big{
-width:100%;
-margin-top:10px;
-border-radius:12px;
-}
-
-/* COURSES */
-.course{
-margin-bottom:20px;
-}
-
-.course img{
-width:100%;
-border-radius:12px;
-}
-
-.course-text{
-text-align:center;
-font-weight:bold;
-}
-
-/* QUALITY */
-.quality-banner{
-background:url('Banner1.jpg') center/cover no-repeat;
-padding:40px 20px;
-color:white;
-}
-
-.quality-banner h2{
-text-align:center;
-color:white;
-}
-
-/* BULLETS */
-.quality-list{
-list-style:none;
-padding:0;
-max-width:300px;
-margin:auto;
-}
-
-.quality-list li{
-margin:10px 0;
-font-weight:bold;
-position:relative;
-padding-left:20px;
-}
-
-.quality-list li::before{
-content:"●";
-position:absolute;
-left:0;
-color:#ffffff;
-}
-
-/* FOUNDER */
-.founder{
-text-align:center;
-}
-
-.founder img{
-width:120px;
-border-radius:50%;
-}
-
-/* CONTACT */
-.contact{
-background:#0a192f;
-color:white;
-text-align:center;
-padding:25px;
-}
-
-button.main-btn{
-background:white;
-color:#0a192f;
-padding:10px 20px;
-border:none;
-border-radius:6px;
-font-weight:bold;
-cursor:pointer;
-}
-
-/* WHATSAPP */
-.whatsapp{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-color:white;
-padding:12px;
-border-radius:50%;
-}
-
-/* SCROLL ANIMATION */
-.reveal{
-opacity:0;
-transform:translateY(60px);
-transition:all 0.8s ease;
-}
-
-.reveal.active{
-opacity:1;
-transform:translateY(0);
-}
-
+.reveal{opacity:0;transform:translateY(60px);transition:all 0.8s ease;}
+.reveal.active{opacity:1;transform:translateY(0);}
 </style>
 </head>
-
 <body>
 
-<!-- HEADER -->
 <div class="header">
-<div class="logo-box">
-<img src="logo.jpg">
-</div>
+<img src="bannerimage.jpg" class="banner-img">
+<div class="logo-overlay"><img src="logo.jpg"></div>
 <div class="menu" id="menuBtn">☰</div>
+<a href="tel:8433601642" class="call-icon">
+<svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+<path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.3 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.1 21 3 13.9 3 5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.3 1l-2.2 2.2z"/>
+</svg>
+</a>
 </div>
 
-<!-- MENU -->
 <div class="nav" id="menu">
 <button onclick="scrollToSection('classroom')">🏫 Classrooms</button>
 <button onclick="scrollToSection('quality')">⭐ Why Choose Us</button>
 <button onclick="scrollToSection('courses')">📘 Courses</button>
 <button onclick="scrollToSection('founder')">👨‍🏫 Founder</button>
+<button onclick="scrollToSection('location')">📍 Location</button>
 <button onclick="scrollToSection('contact')">📞 Contact</button>
+<button onclick="window.location.href='testseries.html'">📝 Class 10 Test Series</button>
+<button onclick="window.location.href='jee.html'">🔬 JEE Test Series</button>
+<button onclick="window.location.href='neet.html'">🩺 NEET Test Series</button>
 </div>
 
-<!-- BANNER -->
 <div class="banner">
-<h1>
-Gaining Grades<br>
-----Classes----
-</h1>
+<h1>Gaining Grades<br>----Classes----</h1>
 <p>Empowering the future of Bharat</p>
 </div>
 
-<!-- CLASSROOM -->
+<div class="seats-banner">
+<div class="pulse-dot"></div>
+<p>
+<span class="seats-highlight">⚠️ Limited Seats Available!</span>
+&nbsp;Class 10 — <strong>Only 4 seats left</strong> &nbsp;|&nbsp;
+Class 9 — <strong>Only 3 seats left</strong> &nbsp;|&nbsp;
+JEE Batch — <strong>Only 5 seats left</strong>
+</p>
+<span class="seats-tag">HURRY!</span>
+</div>
+
 <section id="classroom">
 <h2 class="main">Our Classrooms</h2>
-
 <div class="row">
 <img src="Class2.jpg">
 <img src="Class3.jpg">
 </div>
-
 <img src="Class1.jpg" class="big">
-
-<button class="main-btn" style="margin-top:15px; cursor:default; pointer-events:none;">
-Timming<br>
-Mon – Sat 8:00 Am – 9:00 PM.
-</button>
-
+<button class="main-btn">Timming<br>Mon – Sat 8:00 Am – 9:00 PM.</button>
 </section>
 
-<!-- QUALITY -->
 <div class="quality-banner reveal" id="quality">
 <h2>Why Choose Us?</h2>
-
 <ul class="quality-list">
 <li>Strong Concept Building</li>
 <li>Personal Attention to Every Student</li>
@@ -280,47 +135,23 @@ Mon – Sat 8:00 Am – 9:00 PM.
 <li>Small Batch Size for Better Focus</li>
 <li>Exam Strategy & Time Management</li>
 </ul>
-
 </div>
 
-<!-- COURSES -->
-<section id="courses">
+<section id="courses" class="reveal">
 <h2 class="main">Our Courses</h2>
-
-<div class="course reveal"><img src="foundation.jpg"><div class="course-text">Class 1–5<br>₹800/- Monthly<br>₹7500/- Yearly</div></div>
-<div class="course reveal"><img src="6th.jpg"><div class="course-text">Class 6<br>₹900/- Monthly<br>₹8500/- Yearly</div></div>
-<div class="course reveal"><img src="7th.jpg"><div class="course-text">Class 7<br>₹1000/- Monthly<br>₹12000/- Yearly</div></div>
-<div class="course reveal"><img src="8th.jpg"><div class="course-text">Class 8<br>₹1100/- Monthly<br>₹13000/- Yearly</div></div>
-<div class="course reveal"><img src="9th.jpg"><div class="course-text">Class 9<br>₹1800/- Monthly<br>₹15000/- Yearly</div></div>
-<div class="course reveal"><img src="10th.jpg"><div class="course-text">Class 10<br>₹2500/- Monthly<br>₹20000/- Yearly</div></div>
-<div class="course reveal"><img src="11th and 12th(science).jpg"><div class="course-text">11–12 Science<br>₹35000/- / ₹60000/-</div></div>
-<div class="course reveal"><img src="11th and 12th(commerce).jpg"><div class="course-text">11–12 Commerce<br>₹15000/- / ₹25000/-</div></div>
-
-<!-- ✅ UPDATED JEE -->
-<div class="course reveal">
-<img src="Jee.jpg">
-<div class="course-text">
-JEE<br>
-₹50000/- (1 Year)<br>
-₹80000/- (2 Years)
-</div>
-</div>
-
-<!-- ✅ UPDATED NEET -->
-<div class="course reveal">
-<img src="Neet.jpg">
-<div class="course-text">
-NEET<br>
-₹50000/- (1 Year)<br>
-₹80000/- (2 Years)
-</div>
-</div>
-
-<div class="course reveal"><img src="NDA.jpg"><div class="course-text">NDA / Airforce / Navy Available</div></div>
-
+<div class="course"><img src="foundation.jpg"><div class="course-text">Class 1–5<br>₹800/- Monthly<br>₹7500/- Yearly</div></div>
+<div class="course"><img src="6th.jpg"><div class="course-text">Class 6<br>₹900/- Monthly<br>₹8500/- Yearly</div></div>
+<div class="course"><img src="7th.jpg"><div class="course-text">Class 7<br>₹1000/- Monthly<br>₹12000/- Yearly</div></div>
+<div class="course"><img src="8th.jpg"><div class="course-text">Class 8<br>₹1100/- Monthly<br>₹13000/- Yearly</div></div>
+<div class="course"><img src="9th.jpg"><div class="course-text">Class 9<br>₹1800/- Monthly<br>₹15000/- Yearly</div></div>
+<div class="course"><img src="10th.jpg"><div class="course-text">Class 10<br>₹2500/- Monthly<br>₹20000/- Yearly</div></div>
+<div class="course"><img src="11th and 12th(science).jpg"><div class="course-text">11–12 Science<br>₹35000/- (1 Year)<br>₹60000/- (2 Years)</div></div>
+<div class="course"><img src="11th and 12th(commerce).jpg"><div class="course-text">11–12 Commerce<br>₹15000/- (1 Year)<br>₹25000/- (2 Years)</div></div>
+<div class="course"><img src="jee.jpg"><div class="course-text">JEE<br>₹50000/- (1 Year)<br>₹80000/- (2 Years)</div></div>
+<div class="course"><img src="neet.jpg"><div class="course-text">NEET<br>₹50000/- (1 Year)<br>₹80000/- (2 Years)</div></div>
+<div class="course"><img src="NDA.jpg"><div class="course-text">NDA / Airforce / Navy Available</div></div>
 </section>
 
-<!-- FOUNDER -->
 <section class="founder reveal" id="founder">
 <h2 class="main">Founder</h2>
 <img src="Founder1.jpg">
@@ -328,74 +159,71 @@ NEET<br>
 <p>MSc Mathematics | 10+ Years Experience</p>
 </section>
 
-<!-- CONTACT -->
+<section class="map-section reveal" id="location">
+<h2 class="main">📍 Find Us</h2>
+<p class="map-sub">Three convenient locations in Titwala East</p>
+<div class="map-tabs">
+<div class="map-tab active" onclick="switchMap(0,this)">🏠 Head Office</div>
+<div class="map-tab" onclick="switchMap(1,this)">🏫 Branch 1</div>
+<div class="map-tab" onclick="switchMap(2,this)">🏫 Branch 2</div>
+</div>
+<div class="map-frame active" id="map0">
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3767.0!2d73.2!3d19.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sTitwala+East%2C+Maharashtra!5e0!3m2!1sen!2sin!4v1" allowfullscreen="" loading="lazy"></iframe>
+<div class="map-address"><strong>🏠 Head Office</strong>Shree Apartment, opposite Narayan Nagar Society, near Ganpati Mandir, Titwala East</div>
+<a href="https://maps.google.com/?q=Titwala+East+Maharashtra" target="_blank" class="directions-btn">🗺️ Get Directions</a>
+</div>
+<div class="map-frame" id="map1">
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3767.0!2d73.2!3d19.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sTitwala+East%2C+Maharashtra!5e0!3m2!1sen!2sin!4v1" allowfullscreen="" loading="lazy"></iframe>
+<div class="map-address"><strong>🏫 Branch 1</strong>Opposite Abhishek Residency, near Shiv Sena Sakha, Titwala East</div>
+<a href="https://maps.google.com/?q=Titwala+East+Maharashtra" target="_blank" class="directions-btn">🗺️ Get Directions</a>
+</div>
+<div class="map-frame" id="map2">
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3767.0!2d73.2!3d19.3!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sTitwala+East%2C+Maharashtra!5e0!3m2!1sen!2sin!4v1" allowfullscreen="" loading="lazy"></iframe>
+<div class="map-address"><strong>🏫 Branch 2</strong>Indra Nagar, near G.R. Patil College, Titwala East</div>
+<a href="https://maps.google.com/?q=Titwala+East+Maharashtra" target="_blank" class="directions-btn">🗺️ Get Directions</a>
+</div>
+</section>
+
 <div class="contact reveal" id="contact">
 <h2>Contact Us</h2>
-
-<a href="tel:8433601642">
-<button class="main-btn">Call Now</button>
-</a>
-
-<br><br>
-
-<a href="mailto:gaininggradesofficial@gmail.com">
-<button class="main-btn">Send Gmail</button>
-</a>
-
-<p>8433601642 / 8433589382</p>
-
+<div class="call-title">Call Now</div>
+<a href="tel:8433601642"><div class="white-btn">📞 8433601642</div></a>
+<a href="tel:8433589382"><div class="white-btn">📞 8433589382</div></a>
+<a href="mailto:gaininggradesofficial@gmail.com"><div class="white-btn">Gmail</div></a>
 <p>
-(H.O) Shree Apartment opposite Narayan nagar society near Ganpati Mandir Titwala East<br>
-(B.O) Gaining Grades Classes opposite Abhishek Residency near Shiv Shena Sakha Titwala East<br>
-(B.O) Gaining Grades Classes Indra Nagar, Near G.R Patil College, Titwala East<br>
+(H.O) Shree Apartment opposite Narayan nagar society near Ganpati Mandir Titwala East<br><br>
+(B.O) Gaining Grades Classes opposite Abhishek Residency near Shiv Sena Sakha Titwala East<br><br>
+(B.O) Gaining Grades Classes Indra Nagar, Near G.R Patil College, Titwala East<br><br>
 Maharashtra 🇮🇳
 </p>
-
 </div>
 
-<!-- WHATSAPP -->
-<a href="https://wa.me/918433601642" class="whatsapp">💬</a>
+<a href="https://wa.me/918433601642" class="whatsapp" target="_blank">
+<svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+<path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+</svg>
+</a>
 
 <script>
-
-const menuBtn = document.getElementById("menuBtn");
-const menu = document.getElementById("menu");
-
-menuBtn.onclick = function(e){
-menu.style.display = "block";
-e.stopPropagation();
+const menuBtn=document.getElementById("menuBtn");
+const menu=document.getElementById("menu");
+menuBtn.onclick=function(e){menu.style.display="block";e.stopPropagation();}
+document.onclick=function(){menu.style.display="none";}
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:"smooth"});}
+function switchMap(index,el){
+  document.querySelectorAll(".map-tab").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll(".map-frame").forEach(f=>f.classList.remove("active"));
+  el.classList.add("active");
+  document.getElementById("map"+index).classList.add("active");
 }
-
-menu.onclick = function(e){
-e.stopPropagation();
-}
-
-document.onclick = function(){
-menu.style.display = "none";
-}
-
-function scrollToSection(id){
-document.getElementById(id).scrollIntoView({behavior:"smooth"});
-menu.style.display = "none";
-}
-
-/* ANIMATION */
 function reveal(){
-let reveals = document.querySelectorAll(".reveal");
-
-for(let i=0;i<reveals.length;i++){
-let windowHeight = window.innerHeight;
-let elementTop = reveals[i].getBoundingClientRect().top;
-
-if(elementTop < windowHeight - 100){
-reveals[i].classList.add("active");
+  let reveals=document.querySelectorAll(".reveal");
+  for(let i=0;i<reveals.length;i++){
+    if(reveals[i].getBoundingClientRect().top<window.innerHeight-100)
+      reveals[i].classList.add("active");
+  }
 }
-}
-}
-
-window.addEventListener("scroll", reveal);
-
+window.addEventListener("scroll",reveal);
 </script>
-
 </body>
 </html>

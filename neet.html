@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEET Test Series – Gaining Grades</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Arial,sans-serif;background:#f0f4ff;min-height:100vh;}
+.ts-header{background:#1a3d8f;padding:16px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 3px 12px rgba(0,0,0,0.3);}
+.ts-header a{color:white;font-size:22px;text-decoration:none;}
+.ts-header h1{color:white;font-size:18px;letter-spacing:1px;}
+.ts-logo{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid white;}
+.subject-screen{padding:30px 20px;text-align:center;}
+.subject-screen h2{color:#1a3d8f;font-size:24px;margin-bottom:6px;}
+.subject-screen p{color:#555;margin-bottom:28px;font-size:14px;}
+.subject-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:420px;margin:auto;}
+.subject-card{background:white;border:2px solid #1a3d8f;border-radius:16px;padding:24px 10px;cursor:pointer;transition:all 0.3s;box-shadow:0 4px 12px rgba(26,61,143,0.1);}
+.subject-card:hover,.subject-card:active{background:#1a3d8f;color:white;transform:scale(1.04);}
+.subject-card .icon{font-size:34px;margin-bottom:10px;}
+.subject-card .name{font-weight:bold;font-size:14px;color:#1a3d8f;}
+.subject-card:hover .name,.subject-card:active .name{color:white;}
+.quiz-screen{padding:20px;display:none;}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.quiz-subject{background:#1a3d8f;color:white;padding:6px 16px;border-radius:20px;font-weight:bold;font-size:13px;}
+.quiz-count{color:#1a3d8f;font-weight:bold;font-size:14px;}
+.progress-bar{background:#dde6ff;border-radius:10px;height:8px;margin-bottom:20px;overflow:hidden;}
+.progress-fill{background:linear-gradient(90deg,#1a3d8f,#4a7dff);height:100%;border-radius:10px;transition:width 0.5s ease;}
+.question-card{background:white;border-radius:18px;padding:24px 18px;box-shadow:0 6px 24px rgba(26,61,143,0.13);margin-bottom:20px;border-top:5px solid #1a3d8f;}
+.question-card h3{color:#1a3d8f;font-size:15px;line-height:1.5;margin-bottom:20px;}
+.option{background:#f0f4ff;border:2px solid #c5d3f7;border-radius:12px;padding:14px 16px;margin-bottom:12px;cursor:pointer;font-size:13px;font-weight:bold;color:#1a3d8f;transition:all 0.2s;display:flex;align-items:center;gap:10px;position:relative;overflow:hidden;}
+.option:hover{border-color:#1a3d8f;background:#dde6ff;}
+.option-label{background:#1a3d8f;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.option.correct{background:#e6fff0;border-color:#00c853;color:#00691a;animation:correctPulse 0.6s ease;}
+.option.correct .option-label{background:#00c853;}
+@keyframes correctPulse{0%{transform:scale(1);}30%{transform:scale(1.04);}60%{transform:scale(0.98);}100%{transform:scale(1);}}
+.option.wrong{background:#fff0f0;border-color:#ff1744;color:#b71c1c;animation:wrongShake 0.5s ease;}
+.option.wrong .option-label{background:#ff1744;}
+@keyframes wrongShake{0%{transform:translateX(0);}20%{transform:translateX(-8px);}40%{transform:translateX(8px);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}100%{transform:translateX(0);}}
+.option.reveal-correct{background:#e6fff0;border-color:#00c853;color:#00691a;}
+.option.reveal-correct .option-label{background:#00c853;}
+.explanation{background:#fffde7;border-left:4px solid #f9a825;border-radius:8px;padding:12px 14px;font-size:13px;color:#555;margin-top:10px;display:none;}
+.next-btn{background:#1a3d8f;color:white;border:none;padding:14px;width:100%;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;display:none;margin-top:6px;box-shadow:0 4px 12px rgba(26,61,143,0.3);letter-spacing:1px;}
+.next-btn:active{transform:scale(0.98);}
+.result-screen{padding:24px 20px;display:none;text-align:center;}
+.result-card{background:white;border-radius:20px;padding:32px 20px;box-shadow:0 8px 32px rgba(26,61,143,0.15);border-top:6px solid #1a3d8f;margin-bottom:20px;}
+.result-trophy{font-size:64px;margin-bottom:10px;}
+.result-card h2{color:#1a3d8f;font-size:20px;margin-bottom:6px;}
+.score-big{font-size:56px;font-weight:bold;color:#1a3d8f;line-height:1;margin:16px 0 4px;}
+.score-label{color:#888;font-size:14px;margin-bottom:20px;}
+.stat-row{display:flex;gap:12px;margin:16px 0;}
+.stat-box{flex:1;border-radius:14px;padding:16px 8px;}
+.stat-box.correct-box{background:#e6fff0;border:2px solid #00c853;}
+.stat-box.wrong-box{background:#fff0f0;border:2px solid #ff1744;}
+.stat-box.skip-box{background:#f0f4ff;border:2px solid #1a3d8f;}
+.stat-box .stat-num{font-size:26px;font-weight:bold;}
+.stat-box.correct-box .stat-num{color:#00c853;}
+.stat-box.wrong-box .stat-num{color:#ff1744;}
+.stat-box.skip-box .stat-num{color:#1a3d8f;}
+.stat-box .stat-lbl{font-size:11px;color:#666;margin-top:4px;}
+.grade-badge{display:inline-block;padding:8px 24px;border-radius:20px;font-weight:bold;font-size:18px;margin:10px 0 20px;}
+.grade-A{background:#e6fff0;color:#00691a;border:2px solid #00c853;}
+.grade-B{background:#e3f2fd;color:#0d47a1;border:2px solid #1a3d8f;}
+.grade-C{background:#fff8e1;color:#e65100;border:2px solid #ffa000;}
+.grade-D{background:#fff0f0;color:#b71c1c;border:2px solid #ff1744;}
+.review-title{color:#1a3d8f;font-weight:bold;font-size:16px;text-align:left;margin-bottom:12px;}
+.review-item{background:white;border-radius:12px;padding:14px;margin-bottom:10px;text-align:left;box-shadow:0 2px 8px rgba(0,0,0,0.07);border-left:4px solid #ccc;}
+.review-item.r-correct{border-left-color:#00c853;}
+.review-item.r-wrong{border-left-color:#ff1744;}
+.review-item .r-q{font-size:13px;color:#333;margin-bottom:6px;font-weight:bold;}
+.review-item .r-ans{font-size:12px;color:#666;}
+.review-item .r-ans span{font-weight:bold;}
+.correct-ans{color:#00691a;}
+.wrong-ans{color:#b71c1c;}
+.action-btn{padding:14px;width:100%;border-radius:12px;font-size:15px;font-weight:bold;cursor:pointer;margin-bottom:10px;border:none;letter-spacing:0.5px;}
+.btn-retry{background:#1a3d8f;color:white;box-shadow:0 4px 12px rgba(26,61,143,0.3);}
+.btn-home{background:white;color:#1a3d8f;border:2px solid #1a3d8f;}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.4);transform:scale(0);animation:rippleAnim 0.5s linear;pointer-events:none;}
+@keyframes rippleAnim{to{transform:scale(4);opacity:0;}}
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+.confetti-piece{position:absolute;width:10px;height:10px;opacity:0;animation:confettiFall 1.5s ease forwards;}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+.neet-badge{background:linear-gradient(135deg,#1a3d8f,#4a7dff);color:white;padding:10px 20px;border-radius:12px;font-weight:bold;font-size:13px;display:inline-block;margin-bottom:16px;letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<div class="ts-header">
+<a href="index.html">&#8592;</a>
+<img src="logo.jpg" class="ts-logo">
+<h1>NEET Test Series</h1>
+</div>
+
+<div class="subject-screen" id="subjectScreen">
+<div class="neet-badge">🩺 NEET Level • 20 Questions Each</div>
+<h2>Choose a Subject</h2>
+<p>Negative marking: −1 for wrong • +4 for correct</p>
+<div class="subject-grid">
+<div class="subject-card" onclick="startQuiz('physics')"><div class="icon">⚡</div><div class="name">Physics</div></div>
+<div class="subject-card" onclick="startQuiz('chemistry')"><div class="icon">🧪</div><div class="name">Chemistry</div></div>
+<div class="subject-card" onclick="startQuiz('botany')"><div class="icon">🌿</div><div class="name">Botany</div></div>
+<div class="subject-card" onclick="startQuiz('zoology')"><div class="icon">🦠</div><div class="name">Zoology</div></div>
+</div>
+</div>
+
+<div class="quiz-screen" id="quizScreen">
+<div class="quiz-top">
+<span class="quiz-subject" id="quizSubjectLabel"></span>
+<span class="quiz-count" id="quizCount"></span>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+<div class="question-card">
+<h3 id="questionText"></h3>
+<div id="optionsContainer"></div>
+<div class="explanation" id="explanationBox"></div>
+</div>
+<button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+</div>
+
+<div class="result-screen" id="resultScreen">
+<div class="result-card">
+<div class="result-trophy" id="trophyEmoji"></div>
+<h2 id="resultSubject"></h2>
+<div class="score-big" id="scoreBig"></div>
+<div class="score-label" id="scoreLabel"></div>
+<div id="gradeBadge"></div>
+<div class="stat-row">
+<div class="stat-box correct-box"><div class="stat-num" id="statCorrect"></div><div class="stat-lbl">✅ Correct</div></div>
+<div class="stat-box wrong-box"><div class="stat-num" id="statWrong"></div><div class="stat-lbl">❌ Wrong</div></div>
+<div class="stat-box skip-box"><div class="stat-num" id="statMarks"></div><div class="stat-lbl">📊 Marks</div></div>
+</div>
+<p id="resultMessage" style="color:#555;font-size:14px;margin-top:10px;"></p>
+</div>
+<div class="review-title">📋 Question Review</div>
+<div id="reviewContainer"></div>
+<button class="action-btn btn-retry" onclick="retryQuiz()">🔄 Retry Same Subject</button>
+<button class="action-btn btn-home" onclick="goHome()">🏠 Choose Another Subject</button>
+</div>
+
+<div class="confetti-container" id="confettiContainer"></div>
+
+<script>
+const questions={
+physics:[
+{q:"The unit of electric charge is:",opts:["Ampere","Coulomb","Volt","Ohm"],ans:1,exp:"Electric charge is measured in Coulombs (C)."},
+{q:"Which principle is applied in MRI scanning?",opts:["Photoelectric effect","Nuclear Magnetic Resonance","Ultrasound","X-ray diffraction"],ans:1,exp:"MRI uses Nuclear Magnetic Resonance of hydrogen nuclei."},
+{q:"A body in free fall has acceleration equal to:",opts:["Zero","g","g/2","2g"],ans:1,exp:"In free fall, only gravity acts, so acceleration = g ≈ 9.8 m/s²."},
+{q:"The phenomenon of bending of light around obstacles is:",opts:["Reflection","Refraction","Diffraction","Polarisation"],ans:2,exp:"Diffraction is the bending of waves around obstacles or through slits."},
+{q:"The first law of thermodynamics is based on:",opts:["Conservation of momentum","Conservation of energy","Conservation of mass","Newton's third law"],ans:1,exp:"First law: ΔU = Q − W, a statement of energy conservation."},
+{q:"X-rays are produced when:",opts:["Electrons hit a metal target","Protons collide","Neutrons decay","Photons are absorbed"],ans:0,exp:"X-rays are produced when fast electrons decelerate hitting a metal target."},
+{q:"The working of optical fibre is based on:",opts:["Refraction","Total internal reflection","Diffraction","Dispersion"],ans:1,exp:"Optical fibres use total internal reflection to transmit light signals."},
+{q:"The Doppler effect relates to change in:",opts:["Speed","Wavelength","Frequency","Amplitude"],ans:2,exp:"Doppler effect is the change in observed frequency due to relative motion."},
+{q:"Radioactivity was discovered by:",opts:["Curie","Rutherford","Becquerel","Bohr"],ans:2,exp:"Henri Becquerel discovered radioactivity in 1896."},
+{q:"Which type of lens is used to correct myopia?",opts:["Convex","Concave","Cylindrical","Bifocal"],ans:1,exp:"Myopia (short-sightedness) is corrected using a concave (diverging) lens."},
+{q:"The power of a lens is measured in:",opts:["Metre","Dioptre","Candela","Lumen"],ans:1,exp:"Power P = 1/f (metres), measured in Dioptres (D)."},
+{q:"The nucleus of an atom contains:",opts:["Electrons and protons","Protons and neutrons","Electrons and neutrons","Only protons"],ans:1,exp:"The nucleus contains positively charged protons and neutral neutrons."},
+{q:"In a nuclear fission reaction, mass:",opts:["Increases","Decreases","Stays same","Doubles"],ans:1,exp:"Mass decreases and is converted to energy as per E=mc²."},
+{q:"Which radiation has the highest penetrating power?",opts:["Alpha","Beta","Gamma","X-ray"],ans:2,exp:"Gamma rays have the highest penetrating power among nuclear radiations."},
+{q:"The motion of planets around the sun is governed by:",opts:["Newton's 1st law","Kepler's laws","Coulomb's law","Hooke's law"],ans:1,exp:"Kepler's three laws describe planetary motion around the sun."},
+{q:"The SI unit of pressure is:",opts:["Newton","Pascal","Bar","Torr"],ans:1,exp:"Pressure is measured in Pascals (Pa = N/m²)."},
+{q:"Bernoulli's principle is based on conservation of:",opts:["Mass","Energy","Momentum","Charge"],ans:1,exp:"Bernoulli's principle applies conservation of energy to fluid flow."},
+{q:"The refractive index of glass with respect to air is 1.5. The speed of light in glass is:",opts:["3×10⁸","2×10⁸","1.5×10⁸","4.5×10⁸"],ans:1,exp:"v = c/n = 3×10⁸/1.5 = 2×10⁸ m/s."},
+{q:"Which device converts sound to electrical signal?",opts:["Speaker","Amplifier","Microphone","Oscillator"],ans:2,exp:"A microphone converts sound waves into electrical signals."},
+{q:"Lenz's law is related to:",opts:["Electrostatics","Electromagnetic induction","Nuclear physics","Thermodynamics"],ans:1,exp:"Lenz's law states induced current opposes the change causing it."}
+],
+chemistry:[
+{q:"Which biomolecule is the primary source of energy?",opts:["Proteins","Fats","Carbohydrates","Vitamins"],ans:2,exp:"Carbohydrates are the primary source of energy, yielding 4 kcal/g."},
+{q:"The monomer of DNA is called:",opts:["Amino acid","Nucleotide","Fatty acid","Glucose"],ans:1,exp:"DNA is a polynucleotide — its monomers are nucleotides."},
+{q:"Which enzyme breaks down starch in saliva?",opts:["Pepsin","Lipase","Amylase","Trypsin"],ans:2,exp:"Salivary amylase (ptyalin) begins starch digestion in the mouth."},
+{q:"The pH of blood is maintained at approximately:",opts:["6.0","7.4","8.0","5.5"],ans:1,exp:"Blood pH is tightly maintained between 7.35−7.45, approximately 7.4."},
+{q:"Insulin is a type of:",opts:["Carbohydrate","Lipid","Protein","Nucleic acid"],ans:2,exp:"Insulin is a polypeptide hormone (protein) secreted by the pancreas."},
+{q:"Which of the following is an antioxidant vitamin?",opts:["Vitamin B","Vitamin C","Vitamin D","Vitamin K"],ans:1,exp:"Vitamin C (ascorbic acid) is a powerful antioxidant vitamin."},
+{q:"ATP is produced in:",opts:["Nucleus","Ribosome","Mitochondria","Golgi body"],ans:2,exp:"Mitochondria are the sites of ATP production through cellular respiration."},
+{q:"The linkage between amino acids in a protein is called:",opts:["Glycosidic bond","Peptide bond","Phosphodiester bond","Hydrogen bond"],ans:1,exp:"Amino acids are joined by peptide bonds to form proteins."},
+{q:"Which pigment is responsible for the green colour of plants?",opts:["Carotene","Xanthophyll","Chlorophyll","Phycocyanin"],ans:2,exp:"Chlorophyll is the green photosynthetic pigment in plant chloroplasts."},
+{q:"Urea is excreted by the:",opts:["Lungs","Skin","Liver","Kidneys"],ans:3,exp:"Urea formed in the liver is filtered and excreted by the kidneys."},
+{q:"The enzyme used in DNA replication is:",opts:["RNA polymerase","DNA polymerase","Ligase","Helicase"],ans:1,exp:"DNA polymerase synthesises new DNA strands during replication."},
+{q:"Which base pairs with Adenine in DNA?",opts:["Cytosine","Guanine","Thymine","Uracil"],ans:2,exp:"In DNA, Adenine pairs with Thymine via 2 hydrogen bonds."},
+{q:"The Hardy-Weinberg principle applies to:",opts:["Evolving populations","Non-evolving populations","Asexual reproducers","Bacteria only"],ans:1,exp:"Hardy-Weinberg equilibrium describes allele frequencies in non-evolving populations."},
+{q:"Phospholipids are the main component of:",opts:["Cell wall","Cell membrane","Nucleus","Vacuole"],ans:1,exp:"The cell membrane is a phospholipid bilayer."},
+{q:"Which vitamin is necessary for blood clotting?",opts:["Vitamin A","Vitamin C","Vitamin D","Vitamin K"],ans:3,exp:"Vitamin K is essential for synthesis of clotting factors."},
+{q:"The genetic material of HIV is:",opts:["DNA","RNA","Both","Neither"],ans:1,exp:"HIV is a retrovirus — its genetic material is RNA."},
+{q:"Cellulose is a polymer of:",opts:["Fructose","Galactose","Glucose","Maltose"],ans:2,exp:"Cellulose is a structural polysaccharide made of glucose monomers."},
+{q:"Which organelle is called the suicide bag?",opts:["Ribosome","Lysosome","Peroxisome","Vacuole"],ans:1,exp:"Lysosomes contain digestive enzymes and can cause cell death — hence 'suicide bags'."},
+{q:"Acetylcholine is a type of:",opts:["Hormone","Enzyme","Neurotransmitter","Vitamin"],ans:2,exp:"Acetylcholine is a neurotransmitter at neuromuscular junctions."},
+{q:"Which is the largest cell in the human body?",opts:["Neuron","Ovum","RBC","Platelet"],ans:1,exp:"The ovum (egg cell) is the largest cell in the human body."}
+],
+botany:[
+{q:"The process by which plants make food is:",opts:["Respiration","Transpiration","Photosynthesis","Digestion"],ans:2,exp:"Photosynthesis uses sunlight, CO₂ and water to make glucose and oxygen."},
+{q:"Which part of the plant conducts water upwards?",opts:["Phloem","Xylem","Cortex","Epidermis"],ans:1,exp:"Xylem vessels conduct water and minerals from roots to leaves."},
+{q:"The male reproductive part of a flower is the:",opts:["Pistil","Sepal","Stamen","Petal"],ans:2,exp:"The stamen is the male reproductive organ containing pollen."},
+{q:"Stomata are found mainly on:",opts:["Roots","Stem","Leaves","Flowers"],ans:2,exp:"Stomata are tiny pores on leaves for gas exchange and transpiration."},
+{q:"The plant hormone responsible for fruit ripening is:",opts:["Auxin","Gibberellin","Cytokinin","Ethylene"],ans:3,exp:"Ethylene gas promotes fruit ripening."},
+{q:"Chlorophyll is located in the:",opts:["Mitochondria","Nucleus","Chloroplast","Vacuole"],ans:2,exp:"Chlorophyll is found in the thylakoid membranes of chloroplasts."},
+{q:"Bryophytes are also called:",opts:["Vascular plants","Amphibians of plant kingdom","Seed plants","Ferns"],ans:1,exp:"Bryophytes need water for reproduction — hence called plant kingdom amphibians."},
+{q:"The Calvin cycle occurs in the:",opts:["Thylakoid","Stroma","Cytoplasm","Mitochondria"],ans:1,exp:"The Calvin cycle (dark reactions) occurs in the stroma of chloroplasts."},
+{q:"Which part of the plant absorbs water from the soil?",opts:["Leaves","Stem","Root hair","Flower"],ans:2,exp:"Root hairs increase surface area for water and mineral absorption."},
+{q:"Pollination by wind is called:",opts:["Entomophily","Zoophily","Anemophily","Hydrophily"],ans:2,exp:"Anemophily is pollination by wind (e.g., grasses, maize)."},
+{q:"The outermost layer of a plant cell is:",opts:["Cell membrane","Cell wall","Vacuole","Nucleus"],ans:1,exp:"Plant cells have a rigid cell wall made of cellulose outside the membrane."},
+{q:"Apical dominance is controlled by:",opts:["Gibberellin","Cytokinin","Auxin","Ethylene"],ans:2,exp:"Auxin produced at the shoot tip suppresses lateral bud growth."},
+{q:"The study of fruits is called:",opts:["Anthology","Pomology","Phycology","Pedology"],ans:1,exp:"Pomology is the branch of botany dealing with the study of fruits."},
+{q:"C4 plants are adapted to:",opts:["Cold climates","High CO₂","Hot and sunny conditions","Water-logged soil"],ans:2,exp:"C4 plants (maize, sugarcane) efficiently fix CO₂ in hot, sunny conditions."},
+{q:"Lichens are a symbiotic association of:",opts:["Algae and bacteria","Fungi and algae","Moss and fungi","Bacteria and fungi"],ans:1,exp:"Lichens are a mutualistic association of fungi and algae (or cyanobacteria)."},
+{q:"The opening and closing of stomata is controlled by:",opts:["Mesophyll cells","Guard cells","Epidermal cells","Root cells"],ans:1,exp:"Guard cells regulate stomatal opening by changing turgor pressure."},
+{q:"Which pigment absorbs light for photosynthesis?",opts:["Haemoglobin","Melanin","Chlorophyll","Carotene"],ans:2,exp:"Chlorophyll absorbs red and blue light for photosynthesis."},
+{q:"Vegetative propagation through leaves occurs in:",opts:["Rose","Bryophyllum","Potato","Onion"],ans:1,exp:"Bryophyllum produces adventitious buds on leaf margins for propagation."},
+{q:"The scientific name of mango is:",opts:["Mangifera indica","Solanum lycopersicum","Oryza sativa","Zea mays"],ans:0,exp:"Mangifera indica is the binomial name of mango."},
+{q:"Guttation is the exudation of:",opts:["CO₂","Water droplets","Oxygen","Resin"],ans:1,exp:"Guttation is the exudation of water droplets from leaf tips due to root pressure."}
+],
+zoology:[
+{q:"The functional unit of kidney is:",opts:["Neuron","Nephron","Alveolus","Hepatocyte"],ans:1,exp:"The nephron is the structural and functional unit of the kidney."},
+{q:"Which blood cells are responsible for immunity?",opts:["RBC","Platelets","WBC","Plasma"],ans:2,exp:"White blood cells (WBC/leukocytes) are the immune cells of the body."},
+{q:"The double helix model of DNA was proposed by:",opts:["Mendel and Darwin","Watson and Crick","Meselson and Stahl","Hershey and Chase"],ans:1,exp:"Watson and Crick proposed the double helix structure of DNA in 1953."},
+{q:"The largest gland in the human body is:",opts:["Pancreas","Thyroid","Liver","Adrenal"],ans:2,exp:"The liver is the largest gland and organ in the human body."},
+{q:"Haemoglobin contains which metal?",opts:["Zinc","Copper","Magnesium","Iron"],ans:3,exp:"Haemoglobin contains iron in its haem group which binds oxygen."},
+{q:"The process of conversion of glucose to pyruvate is:",opts:["Krebs cycle","Glycolysis","Oxidative phosphorylation","Beta oxidation"],ans:1,exp:"Glycolysis breaks glucose into 2 pyruvate molecules in the cytoplasm."},
+{q:"Which part of the brain controls balance and coordination?",opts:["Cerebrum","Cerebellum","Medulla","Hypothalamus"],ans:1,exp:"The cerebellum coordinates voluntary movements and maintains balance."},
+{q:"The hormone produced during fight-or-flight response is:",opts:["Insulin","Thyroxine","Adrenaline","Oestrogen"],ans:2,exp:"Adrenaline (epinephrine) is released by adrenal medulla in stress."},
+{q:"The number of chromosomes in a human somatic cell is:",opts:["23","44","46","48"],ans:2,exp:"Human somatic cells have 46 chromosomes (23 pairs)."},
+{q:"Which vitamin deficiency causes night blindness?",opts:["Vitamin A","Vitamin B","Vitamin C","Vitamin D"],ans:0,exp:"Vitamin A (retinol) deficiency causes night blindness."},
+{q:"The genetic disorder sickle cell anaemia is caused by:",opts:["Chromosome deletion","Point mutation","Gene duplication","Trisomy"],ans:1,exp:"A single point mutation changes glutamic acid to valine in haemoglobin."},
+{q:"The site of protein synthesis in a cell is:",opts:["Nucleus","Mitochondria","Ribosome","Golgi body"],ans:2,exp:"Ribosomes are the sites where mRNA is translated into protein."},
+{q:"In humans, sex is determined by:",opts:["Autosomes","X chromosome","Y chromosome","Both X and Y"],ans:2,exp:"The Y chromosome carries SRY gene which determines male sex."},
+{q:"Vaccines work by stimulating:",opts:["RBC production","Antibody production","Hormone release","Enzyme activity"],ans:1,exp:"Vaccines stimulate the immune system to produce antibodies (immunological memory)."},
+{q:"The type of immunity acquired after vaccination is:",opts:["Natural active","Natural passive","Artificial active","Artificial passive"],ans:2,exp:"Vaccination provides artificial active immunity."},
+{q:"Which organ produces bile?",opts:["Pancreas","Stomach","Liver","Gallbladder"],ans:2,exp:"Bile is produced in the liver and stored in the gallbladder."},
+{q:"Peristalsis is the movement of:",opts:["Blood in veins","Food in oesophagus","Urine in ureter","All of the above"],ans:3,exp:"Peristalsis is wave-like muscular contractions in the digestive tract, ureters, etc."},
+{q:"The contractile protein in muscles is:",opts:["Keratin","Collagen","Actin and Myosin","Fibrin"],ans:2,exp:"Actin and myosin are the contractile proteins forming myofibrils in muscles."},
+{q:"Alzheimer's disease affects the:",opts:["Liver","Kidney","Brain","Heart"],ans:2,exp:"Alzheimer's is a neurodegenerative disease affecting memory and brain function."},
+{q:"Which is the longest bone in the human body?",opts:["Humerus","Tibia","Femur","Fibula"],ans:2,exp:"The femur (thigh bone) is the longest and strongest bone in the human body."}
+]
+};
+
+let currentSubject="",currentIndex=0,score=0,wrongCount=0,answered=false,userAnswers=[];
+const TOTAL=20;
+
+function startQuiz(subject){
+currentSubject=subject;currentIndex=0;score=0;wrongCount=0;userAnswers=[];
+document.getElementById("subjectScreen").style.display="none";
+document.getElementById("quizScreen").style.display="block";
+document.getElementById("resultScreen").style.display="none";
+const labels={physics:"⚡ Physics",chemistry:"🧪 Chemistry",botany:"🌿 Botany",zoology:"🦠 Zoology"};
+document.getElementById("quizSubjectLabel").textContent=labels[subject];
+loadQuestion();
+}
+
+function loadQuestion(){
+answered=false;
+const q=questions[currentSubject][currentIndex];
+document.getElementById("questionText").textContent=(currentIndex+1)+". "+q.q;
+document.getElementById("quizCount").textContent="Q "+(currentIndex+1)+" / "+TOTAL;
+document.getElementById("progressFill").style.width=((currentIndex)/TOTAL*100)+"%";
+document.getElementById("explanationBox").style.display="none";
+document.getElementById("nextBtn").style.display="none";
+const container=document.getElementById("optionsContainer");
+container.innerHTML="";
+const labels=["A","B","C","D"];
+q.opts.forEach((opt,i)=>{
+const div=document.createElement("div");
+div.className="option";
+div.innerHTML=`<span class="option-label">${labels[i]}</span>${opt}`;
+div.onclick=function(e){if(!answered)selectAnswer(i,div,e);};
+container.appendChild(div);
+});
+}
+
+function selectAnswer(selected,el,e){
+answered=true;
+const q=questions[currentSubject][currentIndex];
+const allOptions=document.querySelectorAll(".option");
+const rect=el.getBoundingClientRect();
+const ripple=document.createElement("span");
+ripple.className="ripple";
+ripple.style.width=ripple.style.height="80px";
+ripple.style.left=(e.clientX-rect.left-40)+"px";
+ripple.style.top=(e.clientY-rect.top-40)+"px";
+el.appendChild(ripple);
+setTimeout(()=>ripple.remove(),600);
+if(selected===q.ans){el.classList.add("correct");score++;userAnswers.push({correct:true,selected:selected});}
+else{el.classList.add("wrong");wrongCount++;allOptions[q.ans].classList.add("reveal-correct");userAnswers.push({correct:false,selected:selected});}
+allOptions.forEach(o=>o.style.pointerEvents="none");
+const expBox=document.getElementById("explanationBox");
+expBox.textContent="💡 "+q.exp;
+expBox.style.display="block";
+document.getElementById("nextBtn").style.display="block";
+document.getElementById("nextBtn").textContent=currentIndex===TOTAL-1?"See Results 🏆":"Next →";
+}
+
+function nextQuestion(){
+currentIndex++;
+if(currentIndex<TOTAL)loadQuestion();
+else showResult();
+}
+
+function showResult(){
+document.getElementById("quizScreen").style.display="none";
+document.getElementById("resultScreen").style.display="block";
+const labels={physics:"⚡ Physics",chemistry:"🧪 Chemistry",botany:"🌿 Botany",zoology:"🦠 Zoology"};
+document.getElementById("resultSubject").textContent=labels[currentSubject]+" Result";
+const marks=(score*4)-(wrongCount*1);
+document.getElementById("scoreBig").textContent=marks;
+document.getElementById("scoreLabel").textContent="marks (out of 80) | "+score+" correct";
+document.getElementById("statCorrect").textContent=score;
+document.getElementById("statWrong").textContent=wrongCount;
+document.getElementById("statMarks").textContent=marks;
+let grade,gradeClass,trophy,msg;
+if(score>=17){grade="A+";gradeClass="grade-A";trophy="🏆";msg="NEET Ready! Brilliant performance!";}
+else if(score>=13){grade="A";gradeClass="grade-A";trophy="🥇";msg="Excellent! Strong NEET preparation!";}
+else if(score>=9){grade="B";gradeClass="grade-B";trophy="🥈";msg="Good effort! Keep practising daily!";}
+else if(score>=5){grade="C";gradeClass="grade-C";trophy="🥉";msg="Needs improvement. Focus on NCERT!";}
+else{grade="D";gradeClass="grade-D";trophy="📚";msg="Revise NCERT thoroughly and retry!"}
+document.getElementById("trophyEmoji").textContent=trophy;
+document.getElementById("gradeBadge").innerHTML=`<span class="grade-badge ${gradeClass}">Grade: ${grade}</span>`;
+document.getElementById("resultMessage").textContent=msg;
+if(score>=13)launchConfetti();
+const reviewContainer=document.getElementById("reviewContainer");
+reviewContainer.innerHTML="";
+const qlabels=["A","B","C","D"];
+questions[currentSubject].forEach((q,i)=>{
+const ua=userAnswers[i];
+const div=document.createElement("div");
+div.className="review-item "+(ua.correct?"r-correct":"r-wrong");
+const yourAns=qlabels[ua.selected]+" – "+q.opts[ua.selected];
+const correctAns=qlabels[q.ans]+" – "+q.opts[q.ans];
+div.innerHTML=`<div class="r-q">${i+1}. ${q.q}</div>
+<div class="r-ans">Your answer: <span class="${ua.correct?'correct-ans':'wrong-ans'}">${yourAns}</span></div>
+${!ua.correct?`<div class="r-ans">Correct: <span class="correct-ans">${correctAns}</span></div>`:''}`;
+reviewContainer.appendChild(div);
+});
+document.getElementById("progressFill").style.width="100%";
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function launchConfetti(){
+const container=document.getElementById("confettiContainer");
+const colors=["#1a3d8f","#4a7dff","#00c853","#ffd600","#ff1744","#ffffff"];
+for(let i=0;i<60;i++){
+const piece=document.createElement("div");
+piece.className="confetti-piece";
+piece.style.left=Math.random()*100+"%";
+piece.style.background=colors[Math.floor(Math.random()*colors.length)];
+piece.style.borderRadius=Math.random()>0.5?"50%":"2px";
+piece.style.animationDelay=Math.random()*1.2+"s";
+piece.style.animationDuration=(1+Math.random())+"s";
+container.appendChild(piece);
+}
+setTimeout(()=>container.innerHTML="",3000);
+}
+
+function retryQuiz(){startQuiz(currentSubject);}
+function goHome(){
+document.getElementById("resultScreen").style.display="none";
+document.getElementById("subjectScreen").style.display="block";
+window.scrollTo({top:0,behavior:"smooth"});
+}
+</script>
+</body>
+</html>
