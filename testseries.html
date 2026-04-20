@@ -3,420 +3,547 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Test Series – Gaining Grades</title>
+<title>Class 10 Test Series — Gaining Grades Classes</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+:root{
+--blue:#1a3d8f;
+--blue2:#2a5bbf;
+--blue3:#0d2560;
+--gold:#f5c518;
+--white:#ffffff;
+--offwhite:#f4f7ff;
+--green:#00c853;
+--red:#ff1744;
+}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:Arial,sans-serif;background:#f0f4ff;min-height:100vh;}
+html{overflow-x:hidden;scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--offwhite);color:#1a1a2e;overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
 
-/* HEADER */
+/* ══ PRELOADER ══ */
+#preloader{
+position:fixed;inset:0;
+background:linear-gradient(135deg,var(--blue3),var(--blue));
+z-index:99999;display:flex;flex-direction:column;
+align-items:center;justify-content:center;gap:20px;
+transition:opacity 0.7s ease,visibility 0.7s ease;
+}
+#preloader.hide{opacity:0;visibility:hidden;}
+.pre-logo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,0.2);animation:logoPulse 2s infinite;}
+@keyframes logoPulse{0%{box-shadow:0 0 0 0 rgba(245,197,24,0.5);}70%{box-shadow:0 0 0 18px rgba(245,197,24,0);}100%{box-shadow:0 0 0 0 rgba(245,197,24,0);}}
+.pre-title{font-family:'Playfair Display',serif;font-size:22px;color:white;letter-spacing:2px;}
+.pre-sub{font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:3px;text-transform:uppercase;margin-top:2px;}
+.pre-bar-wrap{width:180px;height:4px;background:rgba(255,255,255,0.15);border-radius:10px;overflow:hidden;}
+.pre-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),#fff176);border-radius:10px;animation:loadBar 2s ease forwards;}
+@keyframes loadBar{0%{width:0%;}40%{width:40%;}80%{width:85%;}100%{width:100%;}}
+.pre-dots{display:flex;gap:7px;}
+.pre-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);animation:dotBounce 1.2s infinite;}
+.pre-dot:nth-child(1){animation-delay:0s;background:var(--gold);}
+.pre-dot:nth-child(2){animation-delay:0.2s;}
+.pre-dot:nth-child(3){animation-delay:0.4s;}
+@keyframes dotBounce{0%,80%,100%{transform:scale(1);opacity:0.4;}40%{transform:scale(1.5);opacity:1;}}
+
+/* ══ HEADER ══ */
 .ts-header{
-background:#1a3d8f;
+background:linear-gradient(135deg,var(--blue3),var(--blue));
 padding:16px 20px;
-display:flex;
-align-items:center;
-gap:12px;
-position:sticky;
-top:0;
-z-index:100;
-box-shadow:0 3px 12px rgba(0,0,0,0.3);
+display:flex;align-items:center;gap:12px;
+position:sticky;top:0;z-index:100;
+box-shadow:0 4px 20px rgba(13,37,96,0.4);
 }
-.ts-header a{color:white;font-size:22px;text-decoration:none;}
-.ts-header h1{color:white;font-size:20px;letter-spacing:1px;}
-.ts-logo{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid white;}
+.ts-header a{color:white;font-size:22px;font-weight:600;}
+.ts-logo{width:42px;height:42px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.3);}
+.ts-header-text{}
+.ts-header-title{font-family:'Playfair Display',serif;color:white;font-size:17px;line-height:1.2;}
+.ts-header-sub{color:rgba(255,255,255,0.6);font-size:11px;letter-spacing:1px;}
+.ts-header-back{margin-right:4px;}
 
-/* SUBJECT SELECT */
-.subject-screen{
-padding:30px 20px;
-text-align:center;
-}
-.subject-screen h2{
-color:#1a3d8f;
-font-size:24px;
-margin-bottom:6px;
-}
-.subject-screen p{
-color:#555;
-margin-bottom:28px;
-font-size:14px;
-}
-.subject-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:16px;
-max-width:400px;
-margin:auto;
-}
-.subject-card{
-background:white;
-border:2px solid #1a3d8f;
-border-radius:16px;
-padding:28px 10px;
-cursor:pointer;
-transition:all 0.3s;
-box-shadow:0 4px 12px rgba(26,61,143,0.1);
-}
-.subject-card:hover,.subject-card:active{
-background:#1a3d8f;
-color:white;
-transform:scale(1.04);
-}
-.subject-card .icon{font-size:36px;margin-bottom:10px;}
-.subject-card .name{font-weight:bold;font-size:15px;color:#1a3d8f;}
-.subject-card:hover .name,.subject-card:active .name{color:white;}
-
-/* QUIZ SCREEN */
-.quiz-screen{
-padding:20px;
-display:none;
-}
-.quiz-top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:16px;
-}
-.quiz-subject{
-background:#1a3d8f;
-color:white;
-padding:6px 16px;
+/* ══ HOME SCREEN ══ */
+.home-screen{padding:24px 20px;}
+.home-hero{
+background:linear-gradient(135deg,var(--blue3),var(--blue2));
 border-radius:20px;
-font-weight:bold;
-font-size:13px;
-}
-.quiz-count{
-color:#1a3d8f;
-font-weight:bold;
-font-size:14px;
-}
-
-/* PROGRESS BAR */
-.progress-bar{
-background:#dde6ff;
-border-radius:10px;
-height:8px;
-margin-bottom:20px;
-overflow:hidden;
-}
-.progress-fill{
-background:linear-gradient(90deg,#1a3d8f,#4a7dff);
-height:100%;
-border-radius:10px;
-transition:width 0.5s ease;
-}
-
-/* QUESTION CARD */
-.question-card{
-background:white;
-border-radius:18px;
-padding:24px 18px;
-box-shadow:0 6px 24px rgba(26,61,143,0.13);
-margin-bottom:20px;
-border-top:5px solid #1a3d8f;
-}
-.question-card h3{
-color:#1a3d8f;
-font-size:16px;
-line-height:1.5;
-margin-bottom:20px;
-}
-
-/* OPTIONS */
-.option{
-background:#f0f4ff;
-border:2px solid #c5d3f7;
-border-radius:12px;
-padding:14px 16px;
-margin-bottom:12px;
-cursor:pointer;
-font-size:14px;
-font-weight:bold;
-color:#1a3d8f;
-transition:all 0.2s;
-display:flex;
-align-items:center;
-gap:10px;
+padding:28px 20px;
+text-align:center;
+color:white;
+margin-bottom:24px;
 position:relative;
 overflow:hidden;
 }
-.option:hover{
-border-color:#1a3d8f;
-background:#dde6ff;
-}
-.option-label{
-background:#1a3d8f;
-color:white;
-width:28px;
-height:28px;
+.home-hero::before{
+content:'';position:absolute;
+top:-40px;right:-40px;
+width:140px;height:140px;
+background:rgba(245,197,24,0.08);
 border-radius:50%;
-display:flex;
-align-items:center;
+}
+.home-hero::after{
+content:'';position:absolute;
+bottom:-30px;left:-30px;
+width:100px;height:100px;
+background:rgba(255,255,255,0.04);
+border-radius:50%;
+}
+.home-hero-content{position:relative;z-index:1;}
+.home-badge{
+display:inline-block;
+background:var(--gold);
+color:var(--blue3);
+padding:4px 14px;
+border-radius:20px;
+font-size:10px;
+font-weight:700;
+letter-spacing:2px;
+text-transform:uppercase;
+margin-bottom:12px;
+}
+.home-hero h1{
+font-family:'Playfair Display',serif;
+font-size:26px;color:white;
+line-height:1.3;margin-bottom:8px;
+}
+.home-hero h1 span{color:var(--gold);}
+.home-hero p{font-size:13px;color:rgba(255,255,255,0.75);line-height:1.6;}
+.home-stats{
+display:flex;gap:10px;
+margin-top:18px;
 justify-content:center;
+}
+.h-stat{
+background:rgba(255,255,255,0.1);
+border:1px solid rgba(255,255,255,0.15);
+border-radius:12px;
+padding:10px 16px;
+text-align:center;
+}
+.h-stat-num{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold);font-weight:900;}
+.h-stat-lbl{font-size:10px;color:rgba(255,255,255,0.6);margin-top:2px;letter-spacing:0.5px;}
+
+.home-section-title{
+font-family:'Playfair Display',serif;
+color:var(--blue);
+font-size:18px;
+margin-bottom:4px;
+}
+.home-section-sub{color:#666;font-size:13px;margin-bottom:16px;}
+.subject-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;}
+.subject-card{
+background:white;
+border-radius:18px;
+padding:20px 14px;
+text-align:center;
+cursor:pointer;
+border:2px solid transparent;
+box-shadow:0 4px 16px rgba(26,61,143,0.08);
+transition:all 0.3s;
+position:relative;
+overflow:hidden;
+}
+.subject-card::before{
+content:'';
+position:absolute;bottom:0;left:0;right:0;
+height:4px;
+border-radius:0 0 16px 16px;
+}
+.subject-card.sci1::before{background:linear-gradient(90deg,#1a3d8f,#4a7dff);}
+.subject-card.sci2::before{background:linear-gradient(90deg,#00897b,#26c6da);}
+.subject-card.math1::before{background:linear-gradient(90deg,#e65100,#ff9800);}
+.subject-card.math2::before{background:linear-gradient(90deg,#6a1b9a,#ab47bc);}
+.subject-card:hover{
+transform:translateY(-5px);
+border-color:var(--blue);
+box-shadow:0 12px 28px rgba(26,61,143,0.15);
+}
+.subject-card:active{transform:scale(0.97);}
+.s-icon{font-size:40px;margin-bottom:10px;}
+.s-name{font-family:'Playfair Display',serif;font-size:15px;color:var(--blue);font-weight:700;margin-bottom:4px;}
+.s-desc{font-size:11px;color:#888;line-height:1.4;margin-bottom:10px;}
+.s-info{
+display:flex;gap:6px;justify-content:center;flex-wrap:wrap;
+}
+.s-tag{
+background:var(--offwhite);
+border:1px solid rgba(26,61,143,0.12);
+color:var(--blue);
+padding:3px 9px;
+border-radius:12px;
+font-size:10px;
+font-weight:600;
+}
+.instruction-card{
+background:white;
+border-radius:16px;
+padding:18px;
+border-left:4px solid var(--gold);
+box-shadow:0 2px 12px rgba(26,61,143,0.06);
+}
+.instruction-card h3{color:var(--blue);font-size:14px;margin-bottom:12px;}
+.instruction-item{
+display:flex;align-items:flex-start;gap:10px;
+margin-bottom:10px;font-size:13px;color:#444;
+}
+.i-dot{
+width:22px;height:22px;
+background:var(--blue);color:white;
+border-radius:50%;display:flex;
+align-items:center;justify-content:center;
+font-size:11px;font-weight:700;flex-shrink:0;
+}
+
+/* ══ QUIZ SCREEN ══ */
+.quiz-screen{padding:16px 20px;display:none;}
+.quiz-top{
+display:flex;justify-content:space-between;
+align-items:center;margin-bottom:12px;
+}
+.quiz-subject-badge{
+background:var(--blue);
+color:white;
+padding:6px 16px;
+border-radius:20px;
+font-weight:600;
+font-size:12px;
+letter-spacing:0.5px;
+}
+.quiz-qcount{
+color:var(--blue);
+font-weight:700;
 font-size:13px;
-flex-shrink:0;
 }
-
-/* CORRECT ANIMATION */
+.progress-wrap{margin-bottom:16px;}
+.progress-bar{
+background:#dde6ff;
+border-radius:10px;height:8px;
+overflow:hidden;
+}
+.progress-fill{
+background:linear-gradient(90deg,var(--blue),var(--gold));
+height:100%;border-radius:10px;
+transition:width 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.progress-text{
+font-size:11px;color:#888;
+text-align:right;margin-top:4px;
+}
+.question-card{
+background:white;
+border-radius:20px;
+padding:22px 18px;
+box-shadow:0 6px 24px rgba(26,61,143,0.1);
+margin-bottom:16px;
+border-top:5px solid var(--blue);
+position:relative;
+overflow:hidden;
+}
+.question-card::after{
+content:'';
+position:absolute;
+top:0;right:0;
+width:60px;height:60px;
+background:linear-gradient(135deg,rgba(26,61,143,0.04),transparent);
+border-radius:0 0 0 60px;
+}
+.q-number{
+font-size:10px;
+font-weight:700;
+color:var(--blue);
+letter-spacing:2px;
+text-transform:uppercase;
+margin-bottom:8px;
+opacity:0.6;
+}
+.question-card h3{
+font-family:'Playfair Display',serif;
+color:#1a1a2e;
+font-size:16px;
+line-height:1.55;
+font-weight:700;
+}
+.options-wrap{margin-bottom:12px;}
+.option{
+background:var(--offwhite);
+border:2px solid #dde6ff;
+border-radius:14px;
+padding:14px 16px;
+margin-bottom:10px;
+cursor:pointer;
+font-size:13px;
+font-weight:500;
+color:#333;
+transition:all 0.2s;
+display:flex;align-items:center;gap:12px;
+position:relative;overflow:hidden;
+}
+.option:hover{border-color:var(--blue);background:#e8eeff;}
+.option-label{
+background:var(--blue);color:white;
+width:28px;height:28px;border-radius:50%;
+display:flex;align-items:center;justify-content:center;
+font-size:12px;font-weight:700;flex-shrink:0;
+transition:all 0.2s;
+}
+.option-text{flex:1;line-height:1.4;}
 .option.correct{
-background:#e6fff0;
-border-color:#00c853;
-color:#00691a;
-animation:correctPulse 0.6s ease;
+background:#e6fff0;border-color:var(--green);color:#00691a;
+animation:correctPulse 0.5s ease;
 }
-.option.correct .option-label{background:#00c853;}
-@keyframes correctPulse{
-0%{transform:scale(1);}
-30%{transform:scale(1.04);}
-60%{transform:scale(0.98);}
-100%{transform:scale(1);}
-}
-
-/* WRONG ANIMATION */
+.option.correct .option-label{background:var(--green);}
+@keyframes correctPulse{0%{transform:scale(1);}30%{transform:scale(1.02);}100%{transform:scale(1);}}
 .option.wrong{
-background:#fff0f0;
-border-color:#ff1744;
-color:#b71c1c;
-animation:wrongShake 0.5s ease;
+background:#fff0f0;border-color:var(--red);color:#b71c1c;
+animation:wrongShake 0.4s ease;
 }
-.option.wrong .option-label{background:#ff1744;}
-@keyframes wrongShake{
-0%{transform:translateX(0);}
-20%{transform:translateX(-8px);}
-40%{transform:translateX(8px);}
-60%{transform:translateX(-5px);}
-80%{transform:translateX(5px);}
-100%{transform:translateX(0);}
-}
-
-/* CORRECT ANSWER REVEAL */
-.option.reveal-correct{
-background:#e6fff0;
-border-color:#00c853;
-color:#00691a;
-}
-.option.reveal-correct .option-label{background:#00c853;}
-
-/* EXPLANATION */
-.explanation{
-background:#fffde7;
-border-left:4px solid #f9a825;
-border-radius:8px;
+.option.wrong .option-label{background:var(--red);}
+@keyframes wrongShake{0%{transform:translateX(0);}20%{transform:translateX(-7px);}40%{transform:translateX(7px);}60%{transform:translateX(-4px);}80%{transform:translateX(4px);}100%{transform:translateX(0);}}
+.option.reveal-correct{background:#e6fff0;border-color:var(--green);color:#00691a;}
+.option.reveal-correct .option-label{background:var(--green);}
+.explanation-box{
+background:linear-gradient(135deg,#fffde7,#fff9c4);
+border-left:4px solid var(--gold);
+border-radius:0 12px 12px 0;
 padding:12px 14px;
 font-size:13px;
 color:#555;
 margin-top:10px;
 display:none;
+line-height:1.5;
 }
-
-/* NEXT BUTTON */
+.explanation-box strong{color:var(--blue3);display:block;margin-bottom:2px;font-size:11px;text-transform:uppercase;letter-spacing:1px;}
 .next-btn{
-background:#1a3d8f;
-color:white;
-border:none;
-padding:14px;
-width:100%;
-border-radius:12px;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-display:none;
-margin-top:6px;
-box-shadow:0 4px 12px rgba(26,61,143,0.3);
-letter-spacing:1px;
+background:linear-gradient(135deg,var(--blue),var(--blue2));
+color:white;border:none;
+padding:15px;width:100%;
+border-radius:14px;font-size:15px;
+font-weight:700;cursor:pointer;
+display:none;margin-top:4px;
+box-shadow:0 6px 18px rgba(26,61,143,0.35);
+letter-spacing:0.5px;
+font-family:'DM Sans',sans-serif;
+transition:all 0.2s;
 }
 .next-btn:active{transform:scale(0.98);}
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.35);transform:scale(0);animation:rippleAnim 0.5s linear;pointer-events:none;}
+@keyframes rippleAnim{to{transform:scale(4);opacity:0;}}
 
-/* RESULT SCREEN */
-.result-screen{
-padding:24px 20px;
-display:none;
-text-align:center;
-}
-.result-card{
-background:white;
-border-radius:20px;
-padding:32px 20px;
-box-shadow:0 8px 32px rgba(26,61,143,0.15);
-border-top:6px solid #1a3d8f;
+/* ══ RESULT SCREEN ══ */
+.result-screen{padding:20px;display:none;text-align:center;}
+.result-hero{
+background:linear-gradient(135deg,var(--blue3),var(--blue));
+border-radius:22px;
+padding:30px 20px;
 margin-bottom:20px;
+position:relative;overflow:hidden;
 }
-.result-trophy{font-size:64px;margin-bottom:10px;}
-.result-card h2{color:#1a3d8f;font-size:22px;margin-bottom:6px;}
-.result-card .score-big{
-font-size:56px;
-font-weight:bold;
-color:#1a3d8f;
-line-height:1;
-margin:16px 0 4px;
-}
-.result-card .score-label{color:#888;font-size:14px;margin-bottom:20px;}
-
-/* STAT BOXES */
-.stat-row{display:flex;gap:12px;margin:16px 0;}
-.stat-box{
-flex:1;
-border-radius:14px;
-padding:16px 8px;
-}
-.stat-box.correct-box{background:#e6fff0;border:2px solid #00c853;}
-.stat-box.wrong-box{background:#fff0f0;border:2px solid #ff1744;}
-.stat-box.skip-box{background:#f0f4ff;border:2px solid #1a3d8f;}
-.stat-box .stat-num{font-size:28px;font-weight:bold;}
-.stat-box.correct-box .stat-num{color:#00c853;}
-.stat-box.wrong-box .stat-num{color:#ff1744;}
-.stat-box.skip-box .stat-num{color:#1a3d8f;}
-.stat-box .stat-lbl{font-size:12px;color:#666;margin-top:4px;}
-
-/* GRADE BADGE */
+.result-hero::before{content:'';position:absolute;top:-50px;right:-50px;width:160px;height:160px;background:rgba(245,197,24,0.07);border-radius:50%;}
+.result-content{position:relative;z-index:1;}
+.result-trophy{font-size:60px;margin-bottom:8px;}
+.result-subject{font-size:12px;color:rgba(255,255,255,0.6);letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;}
+.result-hero h2{font-family:'Playfair Display',serif;color:white;font-size:20px;margin-bottom:16px;}
+.result-score-wrap{margin-bottom:16px;}
+.result-score-big{font-family:'Playfair Display',serif;font-size:64px;font-weight:900;color:var(--gold);line-height:1;}
+.result-score-denom{font-size:22px;color:rgba(255,255,255,0.5);font-weight:300;}
+.result-score-label{font-size:12px;color:rgba(255,255,255,0.55);margin-top:4px;}
 .grade-badge{
 display:inline-block;
-padding:8px 24px;
-border-radius:20px;
-font-weight:bold;
-font-size:18px;
-margin:10px 0 20px;
+padding:8px 22px;border-radius:20px;
+font-weight:700;font-size:16px;
+margin:10px 0;letter-spacing:1px;
 }
-.grade-A{background:#e6fff0;color:#00691a;border:2px solid #00c853;}
-.grade-B{background:#e3f2fd;color:#0d47a1;border:2px solid #1a3d8f;}
-.grade-C{background:#fff8e1;color:#e65100;border:2px solid #ffa000;}
-.grade-D{background:#fff0f0;color:#b71c1c;border:2px solid #ff1744;}
-
-/* QUESTION REVIEW */
+.g-aplus{background:linear-gradient(135deg,#00c853,#69f0ae);color:#00691a;}
+.g-a{background:linear-gradient(135deg,#1a3d8f,#4a7dff);color:white;}
+.g-b{background:linear-gradient(135deg,#f5c518,#ffe57f);color:#5a4000;}
+.g-c{background:linear-gradient(135deg,#ff9800,#ffcc02);color:#5a3000;}
+.g-d{background:linear-gradient(135deg,#ff1744,#ff8a80);color:white;}
+.result-msg{font-size:13px;color:rgba(255,255,255,0.7);margin-top:8px;line-height:1.5;}
+.stat-row{display:flex;gap:10px;margin:16px 0;}
+.stat-box{flex:1;border-radius:14px;padding:14px 8px;}
+.stat-box.correct-box{background:#e6fff0;border:2px solid var(--green);}
+.stat-box.wrong-box{background:#fff0f0;border:2px solid var(--red);}
+.stat-box.marks-box{background:var(--offwhite);border:2px solid var(--blue);}
+.stat-box .snum{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;}
+.correct-box .snum{color:var(--green);}
+.wrong-box .snum{color:var(--red);}
+.marks-box .snum{color:var(--blue);}
+.stat-box .slbl{font-size:10px;color:#666;margin-top:3px;letter-spacing:0.3px;}
+.review-section{text-align:left;margin-bottom:20px;}
 .review-title{
-color:#1a3d8f;
-font-weight:bold;
-font-size:16px;
-text-align:left;
+font-family:'Playfair Display',serif;
+color:var(--blue);font-size:18px;
 margin-bottom:12px;
+display:flex;align-items:center;gap:8px;
 }
 .review-item{
-background:white;
-border-radius:12px;
-padding:14px;
-margin-bottom:10px;
-text-align:left;
-box-shadow:0 2px 8px rgba(0,0,0,0.07);
-border-left:4px solid #ccc;
+background:white;border-radius:14px;
+padding:14px;margin-bottom:10px;
+box-shadow:0 2px 10px rgba(0,0,0,0.05);
+border-left:4px solid #ddd;
 }
-.review-item.r-correct{border-left-color:#00c853;}
-.review-item.r-wrong{border-left-color:#ff1744;}
-.review-item .r-q{font-size:13px;color:#333;margin-bottom:6px;font-weight:bold;}
-.review-item .r-ans{font-size:12px;color:#666;}
-.review-item .r-ans span{font-weight:bold;}
-.review-item .r-ans .correct-ans{color:#00691a;}
-.review-item .r-ans .wrong-ans{color:#b71c1c;}
-
-/* ACTION BUTTONS */
+.review-item.r-correct{border-left-color:var(--green);}
+.review-item.r-wrong{border-left-color:var(--red);}
+.r-q{font-size:13px;color:#222;margin-bottom:6px;font-weight:600;line-height:1.4;}
+.r-ans{font-size:12px;color:#666;margin-bottom:2px;}
+.r-ans span{font-weight:700;}
+.correct-ans{color:#00691a;}
+.wrong-ans{color:#b71c1c;}
 .action-btn{
-padding:14px;
-width:100%;
-border-radius:12px;
-font-size:15px;
-font-weight:bold;
-cursor:pointer;
-margin-bottom:10px;
-border:none;
-letter-spacing:0.5px;
+padding:15px;width:100%;border-radius:14px;
+font-size:14px;font-weight:700;cursor:pointer;
+margin-bottom:10px;border:none;
+font-family:'DM Sans',sans-serif;
+transition:all 0.2s;letter-spacing:0.5px;
 }
-.btn-retry{background:#1a3d8f;color:white;box-shadow:0 4px 12px rgba(26,61,143,0.3);}
-.btn-home{background:white;color:#1a3d8f;border:2px solid #1a3d8f;}
+.btn-retry{background:linear-gradient(135deg,var(--blue),var(--blue2));color:white;box-shadow:0 4px 14px rgba(26,61,143,0.3);}
+.btn-home{background:white;color:var(--blue);border:2px solid var(--blue);}
+.btn-retry:active,.btn-home:active{transform:scale(0.98);}
 
-/* RIPPLE */
-.ripple{
-position:absolute;
-border-radius:50%;
-background:rgba(255,255,255,0.4);
-transform:scale(0);
-animation:rippleAnim 0.5s linear;
-pointer-events:none;
-}
-@keyframes rippleAnim{
-to{transform:scale(4);opacity:0;}
-}
-
-/* CONFETTI */
-.confetti-container{
-position:fixed;top:0;left:0;width:100%;height:100%;
-pointer-events:none;z-index:9999;
-}
-.confetti-piece{
-position:absolute;
-width:10px;height:10px;
-opacity:0;
-animation:confettiFall 1.5s ease forwards;
-}
-@keyframes confettiFall{
-0%{transform:translateY(-20px) rotate(0deg);opacity:1;}
-100%{transform:translateY(100vh) rotate(720deg);opacity:0;}
-}
+/* ══ CONFETTI ══ */
+.confetti-container{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;}
+.confetti-piece{position:absolute;width:10px;height:10px;opacity:0;animation:confettiFall 1.5s ease forwards;}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="ts-header">
-<a href="index.html">&#8592;</a>
-<img src="logo.jpg" class="ts-logo">
-<h1>Test Series – Std 10</h1>
+<!-- PRELOADER -->
+<div id="preloader">
+<img src="logo.jpg" class="pre-logo" onerror="this.style.display='none'">
+<div style="text-align:center">
+<div class="pre-title">Class 10 Test Series</div>
+<div class="pre-sub">Gaining Grades Classes</div>
+</div>
+<div class="pre-bar-wrap"><div class="pre-bar"></div></div>
+<div class="pre-dots">
+<div class="pre-dot"></div>
+<div class="pre-dot"></div>
+<div class="pre-dot"></div>
+</div>
+<div style="font-size:11px;color:rgba(255,255,255,0.4);font-style:italic;">Maharashtra Board • SSC</div>
 </div>
 
-<!-- SUBJECT SELECT -->
-<div class="subject-screen" id="subjectScreen">
-<h2>Choose a Subject</h2>
-<p>10 questions • Class 10 Level • Instant Results</p>
+<!-- HEADER -->
+<div class="ts-header">
+<a href="index.html" class="ts-header-back">&#8592;</a>
+<img src="logo.jpg" class="ts-logo" onerror="this.style.display='none'">
+<div class="ts-header-text">
+<div class="ts-header-title">Class 10 Test Series</div>
+<div class="ts-header-sub">Maharashtra Board • SSC</div>
+</div>
+</div>
+
+<!-- HOME SCREEN -->
+<div class="home-screen" id="homeScreen">
+
+<div class="home-hero">
+<div class="home-hero-content">
+<div class="home-badge">🏆 Maharashtra SSC Board</div>
+<h1>Class 10<br><span>Test Series</span></h1>
+<p>25 most repeated questions from each subject — straight from Maharashtra Board exam pattern</p>
+<div class="home-stats">
+<div class="h-stat"><div class="h-stat-num">4</div><div class="h-stat-lbl">Subjects</div></div>
+<div class="h-stat"><div class="h-stat-num">25</div><div class="h-stat-lbl">Questions Each</div></div>
+<div class="h-stat"><div class="h-stat-num">100</div><div class="h-stat-lbl">Total Qs</div></div>
+</div>
+</div>
+</div>
+
+<div class="home-section-title">Choose a Subject</div>
+<div class="home-section-sub">Select any subject to begin your test</div>
+
 <div class="subject-grid">
-<div class="subject-card" onclick="startQuiz('maths')">
-<div class="icon">📐</div>
-<div class="name">Mathematics</div>
-</div>
-<div class="subject-card" onclick="startQuiz('biology')">
-<div class="icon">🧬</div>
-<div class="name">Biology</div>
-</div>
-<div class="subject-card" onclick="startQuiz('physics')">
-<div class="icon">⚡</div>
-<div class="name">Physics</div>
-</div>
-<div class="subject-card" onclick="startQuiz('chemistry')">
-<div class="icon">🧪</div>
-<div class="name">Chemistry</div>
+<div class="subject-card sci1" onclick="startQuiz('sci1')">
+<div class="s-icon">🔬</div>
+<div class="s-name">Science 1</div>
+<div class="s-desc">Physics & Chemistry — Maharashtra Board SSC</div>
+<div class="s-info">
+<span class="s-tag">25 Questions</span>
+<span class="s-tag">MCQ</span>
 </div>
 </div>
+<div class="subject-card sci2" onclick="startQuiz('sci2')">
+<div class="s-icon">🧬</div>
+<div class="s-name">Science 2</div>
+<div class="s-desc">Biology & Environment — Maharashtra Board SSC</div>
+<div class="s-info">
+<span class="s-tag">25 Questions</span>
+<span class="s-tag">MCQ</span>
+</div>
+</div>
+<div class="subject-card math1" onclick="startQuiz('math1')">
+<div class="s-icon">📐</div>
+<div class="s-name">Maths 1</div>
+<div class="s-desc">Algebra & Statistics — Maharashtra Board SSC</div>
+<div class="s-info">
+<span class="s-tag">25 Questions</span>
+<span class="s-tag">MCQ</span>
+</div>
+</div>
+<div class="subject-card math2" onclick="startQuiz('math2')">
+<div class="s-icon">📏</div>
+<div class="s-name">Maths 2</div>
+<div class="s-desc">Geometry & Trigonometry — Maharashtra Board SSC</div>
+<div class="s-info">
+<span class="s-tag">25 Questions</span>
+<span class="s-tag">MCQ</span>
+</div>
+</div>
+</div>
+
+<div class="instruction-card">
+<h3>📋 Instructions</h3>
+<div class="instruction-item"><div class="i-dot">1</div><div>Each subject has 25 most repeated SSC Board questions</div></div>
+<div class="instruction-item"><div class="i-dot">2</div><div>Select the correct option — instant result shown after each answer</div></div>
+<div class="instruction-item"><div class="i-dot">3</div><div>Explanation given after every question to help you learn</div></div>
+<div class="instruction-item"><div class="i-dot">4</div><div>Full performance dashboard shown after completing all 25 questions</div></div>
+<div class="instruction-item"><div class="i-dot">5</div><div>You can retry or switch subject anytime from the result screen</div></div>
+</div>
+
 </div>
 
 <!-- QUIZ SCREEN -->
 <div class="quiz-screen" id="quizScreen">
 <div class="quiz-top">
-<span class="quiz-subject" id="quizSubjectLabel"></span>
-<span class="quiz-count" id="quizCount"></span>
+<span class="quiz-subject-badge" id="quizSubjectBadge"></span>
+<span class="quiz-qcount" id="quizQCount"></span>
 </div>
+<div class="progress-wrap">
 <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-<div class="question-card">
-<h3 id="questionText"></h3>
-<div id="optionsContainer"></div>
-<div class="explanation" id="explanationBox"></div>
+<div class="progress-text" id="progressText"></div>
 </div>
-<button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+<div class="question-card">
+<div class="q-number" id="qNumber"></div>
+<h3 id="questionText"></h3>
+</div>
+<div class="options-wrap" id="optionsContainer"></div>
+<div class="explanation-box" id="explanationBox"><strong>💡 Explanation</strong><span id="explanationText"></span></div>
+<button class="next-btn" id="nextBtn" onclick="nextQuestion()">Next Question →</button>
 </div>
 
 <!-- RESULT SCREEN -->
 <div class="result-screen" id="resultScreen">
-<div class="result-card">
+<div class="result-hero">
+<div class="result-content">
 <div class="result-trophy" id="trophyEmoji"></div>
-<h2 id="resultSubject"></h2>
-<div class="score-big" id="scoreBig"></div>
-<div class="score-label">out of 10</div>
+<div class="result-subject" id="resultSubjectLabel"></div>
+<h2 id="resultTitle"></h2>
+<div class="result-score-wrap">
+<div class="result-score-big" id="scoreBig"></div>
+<div class="result-score-denom">/25</div>
+<div class="result-score-label">Questions Correct</div>
+</div>
 <div id="gradeBadge"></div>
+<div class="result-msg" id="resultMsg"></div>
+</div>
+</div>
 <div class="stat-row">
-<div class="stat-box correct-box"><div class="stat-num" id="statCorrect"></div><div class="stat-lbl">✅ Correct</div></div>
-<div class="stat-box wrong-box"><div class="stat-num" id="statWrong"></div><div class="stat-lbl">❌ Wrong</div></div>
-<div class="stat-box skip-box"><div class="stat-num" id="statPercent"></div><div class="stat-lbl">📊 Score%</div></div>
+<div class="stat-box correct-box"><div class="snum" id="statCorrect"></div><div class="slbl">✅ Correct</div></div>
+<div class="stat-box wrong-box"><div class="snum" id="statWrong"></div><div class="slbl">❌ Wrong</div></div>
+<div class="stat-box marks-box"><div class="snum" id="statPct"></div><div class="slbl">📊 Score %</div></div>
 </div>
-<p id="resultMessage" style="color:#555;font-size:14px;margin-top:10px;"></p>
-</div>
-
+<div class="review-section">
 <div class="review-title">📋 Question Review</div>
 <div id="reviewContainer"></div>
-
+</div>
 <button class="action-btn btn-retry" onclick="retryQuiz()">🔄 Retry Same Subject</button>
 <button class="action-btn btn-home" onclick="goHome()">🏠 Choose Another Subject</button>
 </div>
@@ -424,86 +551,148 @@ animation:confettiFall 1.5s ease forwards;
 <div class="confetti-container" id="confettiContainer"></div>
 
 <script>
-const questions = {
-maths:[
-{q:"What is the value of sin²θ + cos²θ?",opts:["0","1","2","−1"],ans:1,exp:"This is a fundamental trigonometric identity always equal to 1."},
-{q:"The HCF of 12 and 18 is:",opts:["2","4","6","9"],ans:2,exp:"Factors of 12: 1,2,3,4,6,12. Factors of 18: 1,2,3,6,9,18. HCF = 6."},
-{q:"The roots of x² − 5x + 6 = 0 are:",opts:["2 and 3","1 and 6","2 and 4","3 and 4"],ans:0,exp:"Factoring: (x−2)(x−3)=0, so x=2 or x=3."},
-{q:"The sum of first 10 natural numbers is:",opts:["45","50","55","60"],ans:2,exp:"Sum = n(n+1)/2 = 10×11/2 = 55."},
-{q:"If the radius of a circle is 7 cm, its area is:",opts:["154 cm²","44 cm²","22 cm²","308 cm²"],ans:0,exp:"Area = πr² = (22/7)×7×7 = 154 cm²."},
-{q:"What is the slope of the line y = 3x + 5?",opts:["5","3","8","1/3"],ans:1,exp:"In y=mx+c, m is the slope. Here m=3."},
-{q:"The median of 3, 7, 8, 10, 15 is:",opts:["7","8","10","9"],ans:1,exp:"Arrange in order and pick middle value: 3,7,8,10,15 → median = 8."},
-{q:"The volume of a cube with side 4 cm is:",opts:["16 cm³","64 cm³","48 cm³","32 cm³"],ans:1,exp:"Volume = side³ = 4³ = 64 cm³."},
-{q:"LCM of 4 and 6 is:",opts:["12","24","6","8"],ans:0,exp:"LCM of 4 and 6 = 12."},
-{q:"If one zero of polynomial 3x²−kx−6 is 2, then k =",opts:["3","6","9","1"],ans:0,exp:"Substituting x=2: 3(4)−2k−6=0 → 12−2k−6=0 → k=3."}
+const questions={
+sci1:[
+{q:"Which of the following is a good conductor of heat and electricity?",opts:["Rubber","Plastic","Copper","Wood"],ans:2,exp:"Copper is a metal and metals are good conductors of both heat and electricity due to free electrons."},
+{q:"The process of rusting of iron requires:",opts:["Only water","Only oxygen","Both water and oxygen","Neither water nor oxygen"],ans:2,exp:"Rusting of iron (Fe₂O₃·xH₂O) requires both water and oxygen to occur."},
+{q:"Which law states that the pressure of a fixed mass of gas is inversely proportional to its volume at constant temperature?",opts:["Charles' Law","Avogadro's Law","Boyle's Law","Gay-Lussac's Law"],ans:2,exp:"Boyle's Law: P ∝ 1/V at constant temperature. PV = constant."},
+{q:"The atomic number of an element is defined as the number of:",opts:["Neutrons in nucleus","Protons in nucleus","Electrons in outermost shell","Nucleons in nucleus"],ans:1,exp:"Atomic number (Z) = number of protons in the nucleus of an atom."},
+{q:"Which of the following is a physical change?",opts:["Burning of paper","Rusting of iron","Melting of ice","Cooking of food"],ans:2,exp:"Melting of ice is a physical change — only the state changes, no new substance is formed."},
+{q:"The SI unit of electric current is:",opts:["Volt","Ohm","Watt","Ampere"],ans:3,exp:"Ampere (A) is the SI unit of electric current. 1 Ampere = 1 Coulomb/second."},
+{q:"According to Ohm's Law, if resistance doubles and voltage is constant, current will:",opts:["Double","Remain same","Become half","Become zero"],ans:2,exp:"Ohm's Law: I = V/R. If R doubles and V is constant, I becomes V/2R = half."},
+{q:"The chemical formula of baking soda is:",opts:["Na₂CO₃","NaOH","NaHCO₃","NaCl"],ans:2,exp:"Baking soda is Sodium Bicarbonate with formula NaHCO₃."},
+{q:"Which mirror is used as a rear-view mirror in vehicles?",opts:["Plane mirror","Concave mirror","Convex mirror","Spherical mirror"],ans:2,exp:"Convex mirror is used as rear-view mirror because it gives a wider field of view and erect image."},
+{q:"The process of gaining electrons is called:",opts:["Oxidation","Reduction","Neutralisation","Displacement"],ans:1,exp:"Reduction = gain of electrons. Oxidation = loss of electrons. Remember: OIL RIG."},
+{q:"Which of the following is an endothermic reaction?",opts:["Combustion","Neutralisation","Photosynthesis","Respiration"],ans:2,exp:"Photosynthesis absorbs energy (light) to convert CO₂ and water to glucose — endothermic."},
+{q:"The focal length of a concave mirror is:",opts:["Positive","Negative","Zero","Infinite"],ans:1,exp:"By sign convention, focal length of a concave mirror is negative (mirror formula)."},
+{q:"Valency of nitrogen is:",opts:["2","3","4","5"],ans:1,exp:"Nitrogen has 5 electrons in outermost shell. Valency = 8-5 = 3."},
+{q:"Which type of chemical reaction takes place when iron displaces copper from copper sulphate solution?",opts:["Decomposition","Double displacement","Single displacement","Combination"],ans:2,exp:"Fe + CuSO₄ → FeSO₄ + Cu is a single displacement reaction."},
+{q:"The unit of electric power is:",opts:["Joule","Coulomb","Watt","Ampere"],ans:2,exp:"Power is measured in Watts. P = VI = I²R = V²/R."},
+{q:"Which lens is used to correct myopia (short-sightedness)?",opts:["Convex lens","Concave lens","Bifocal lens","Cylindrical lens"],ans:1,exp:"Concave (diverging) lens corrects myopia by diverging light rays before they enter the eye."},
+{q:"The pH of a neutral solution is:",opts:["0","7","14","1"],ans:1,exp:"pH 7 is neutral. Below 7 is acidic, above 7 is basic/alkaline."},
+{q:"Newtons second law of motion states F =",opts:["mv","ma","m/a","a/m"],ans:1,exp:"Newton's Second Law: Force = mass × acceleration (F = ma)."},
+{q:"The chemical name of washing soda is:",opts:["Sodium chloride","Sodium bicarbonate","Sodium carbonate","Sodium hydroxide"],ans:2,exp:"Washing soda is Sodium Carbonate (Na₂CO₃·10H₂O)."},
+{q:"When light travels from a denser to rarer medium, it:",opts:["Bends towards normal","Bends away from normal","Does not bend","Gets absorbed"],ans:1,exp:"When going denser→rarer, light bends away from normal (angle of refraction > angle of incidence)."},
+{q:"Which of the following is a noble gas?",opts:["Nitrogen","Fluorine","Argon","Chlorine"],ans:2,exp:"Argon (Ar) is a noble gas — Group 18, with a complete outermost shell."},
+{q:"The image formed by a convex lens when object is at infinity is:",opts:["Virtual, erect, magnified","Real, inverted, at 2F","Real, inverted, at F","Virtual, erect, at F"],ans:2,exp:"When object is at infinity, convex lens forms a real, inverted, highly diminished image at focus F."},
+{q:"Which gas is produced when zinc reacts with dilute sulphuric acid?",opts:["Oxygen","Carbon dioxide","Hydrogen","Nitrogen"],ans:2,exp:"Zn + H₂SO₄ → ZnSO₄ + H₂↑. Hydrogen gas is released with a pop sound."},
+{q:"The resistance of a wire depends on:",opts:["Only its length","Only its area","Length, area and material","Only material"],ans:2,exp:"R = ρL/A — resistance depends on length (L), cross-sectional area (A) and resistivity (ρ) of material."},
+{q:"According to the law of conservation of mass:",opts:["Mass is created in reactions","Mass is destroyed in reactions","Total mass of reactants equals total mass of products","Mass changes during reactions"],ans:2,exp:"Law of Conservation of Mass: matter is neither created nor destroyed in a chemical reaction."}
 ],
-biology:[
-{q:"The powerhouse of the cell is:",opts:["Nucleus","Ribosome","Mitochondria","Chloroplast"],ans:2,exp:"Mitochondria produce ATP (energy) through cellular respiration."},
-{q:"Which blood group is the universal donor?",opts:["A","B","AB","O"],ans:3,exp:"Blood group O negative can donate to all blood groups."},
-{q:"Photosynthesis takes place in:",opts:["Mitochondria","Chloroplast","Nucleus","Cytoplasm"],ans:1,exp:"Chloroplasts contain chlorophyll which is needed for photosynthesis."},
-{q:"The basic unit of heredity is:",opts:["Cell","Gene","Chromosome","DNA"],ans:1,exp:"Genes are segments of DNA that carry hereditary information."},
-{q:"Which organ produces insulin?",opts:["Liver","Kidney","Pancreas","Thyroid"],ans:2,exp:"The pancreas produces insulin which regulates blood sugar."},
-{q:"The process by which plants lose water is called:",opts:["Osmosis","Transpiration","Respiration","Absorption"],ans:1,exp:"Transpiration is loss of water vapour through stomata."},
-{q:"How many chambers does the human heart have?",opts:["2","3","4","5"],ans:2,exp:"The human heart has 4 chambers: 2 atria and 2 ventricles."},
-{q:"Which vitamin is produced when skin is exposed to sunlight?",opts:["Vitamin A","Vitamin B","Vitamin C","Vitamin D"],ans:3,exp:"Sunlight triggers synthesis of Vitamin D in the skin."},
-{q:"The functional unit of kidney is:",opts:["Neuron","Nephron","Alveolus","Villus"],ans:1,exp:"Nephron is the structural and functional unit of the kidney."},
-{q:"Which gas is released during photosynthesis?",opts:["CO₂","N₂","O₂","H₂"],ans:2,exp:"Plants release oxygen (O₂) as a byproduct of photosynthesis."}
+sci2:[
+{q:"The basic unit of life is:",opts:["Tissue","Organ","Cell","Organ system"],ans:2,exp:"Cell is the basic structural and functional unit of all living organisms."},
+{q:"Photosynthesis takes place in:",opts:["Mitochondria","Ribosome","Chloroplast","Nucleus"],ans:2,exp:"Chloroplasts contain chlorophyll and are the site of photosynthesis in plant cells."},
+{q:"Which blood group is called the universal donor?",opts:["A","B","AB","O"],ans:3,exp:"Blood group O (especially O negative) can donate to all blood groups — universal donor."},
+{q:"The process by which plants lose water through leaves is called:",opts:["Osmosis","Transpiration","Respiration","Absorption"],ans:1,exp:"Transpiration is the loss of water vapour through stomata of leaves."},
+{q:"Which organ produces insulin?",opts:["Liver","Kidney","Pancreas","Thyroid"],ans:2,exp:"The beta cells of the islets of Langerhans in the pancreas produce insulin."},
+{q:"The number of chromosomes in a normal human cell is:",opts:["23","44","46","48"],ans:2,exp:"Human somatic cells have 46 chromosomes (23 pairs). Gametes have 23."},
+{q:"DNA stands for:",opts:["Deoxyribose Nucleic Acid","Dioxyribonucleic Acid","Deoxyribonucleic Acid","Diribose Nucleic Acid"],ans:2,exp:"DNA = Deoxyribonucleic Acid — the genetic material carrying hereditary information."},
+{q:"The hormone responsible for the fight-or-flight response is:",opts:["Insulin","Thyroxine","Adrenaline","Oestrogen"],ans:2,exp:"Adrenaline (epinephrine) from the adrenal medulla triggers the fight-or-flight response."},
+{q:"Which part of the brain controls balance and coordination?",opts:["Cerebrum","Medulla","Cerebellum","Hypothalamus"],ans:2,exp:"The cerebellum coordinates voluntary movements, balance and posture."},
+{q:"The functional unit of kidney is:",opts:["Neuron","Nephron","Alveolus","Villus"],ans:1,exp:"Nephron is the structural and functional unit of the kidney responsible for filtration."},
+{q:"Ozone layer is present in:",opts:["Troposphere","Stratosphere","Mesosphere","Thermosphere"],ans:1,exp:"The ozone layer is found in the stratosphere, approximately 15–35 km above Earth's surface."},
+{q:"Which of the following is a non-renewable source of energy?",opts:["Solar energy","Wind energy","Coal","Hydropower"],ans:2,exp:"Coal is a fossil fuel — non-renewable because it takes millions of years to form."},
+{q:"The process of conversion of glucose to pyruvate is called:",opts:["Krebs cycle","Glycolysis","Fermentation","Oxidative phosphorylation"],ans:1,exp:"Glycolysis converts glucose (6C) into 2 pyruvate (3C) molecules in the cytoplasm."},
+{q:"The largest gland in the human body is:",opts:["Pancreas","Thyroid","Liver","Adrenal gland"],ans:2,exp:"The liver is the largest gland and largest internal organ in the human body."},
+{q:"Which vitamin is synthesized by the skin on exposure to sunlight?",opts:["Vitamin A","Vitamin B","Vitamin C","Vitamin D"],ans:3,exp:"Ultraviolet rays from sunlight trigger synthesis of Vitamin D in the skin."},
+{q:"Haemoglobin is found in:",opts:["White blood cells","Platelets","Red blood cells","Plasma"],ans:2,exp:"Haemoglobin is the iron-containing protein in red blood cells (erythrocytes) that carries oxygen."},
+{q:"Which of the following is an example of asexual reproduction?",opts:["Binary fission in Amoeba","Seed formation in plants","Pollination in flowers","Fertilisation in frogs"],ans:0,exp:"Binary fission in Amoeba is asexual reproduction — one parent divides into two daughter cells."},
+{q:"The gas released during photosynthesis is:",opts:["Carbon dioxide","Nitrogen","Oxygen","Hydrogen"],ans:2,exp:"Photosynthesis: 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂. Oxygen is released as a byproduct."},
+{q:"Which part of the flower develops into a fruit?",opts:["Sepal","Petal","Ovary","Stigma"],ans:2,exp:"After fertilisation, the ovary wall develops into the fruit (pericarp)."},
+{q:"The disease caused by deficiency of Vitamin C is:",opts:["Rickets","Scurvy","Night blindness","Beriberi"],ans:1,exp:"Scurvy is caused by Vitamin C (ascorbic acid) deficiency — symptoms include bleeding gums."},
+{q:"Which type of reproduction involves only one parent?",opts:["Sexual","Asexual","Both","Neither"],ans:1,exp:"Asexual reproduction involves only one parent and produces genetically identical offspring (clones)."},
+{q:"Chlorophyll absorbs maximum light in which colour?",opts:["Green","Yellow","Red and Blue","Orange"],ans:2,exp:"Chlorophyll absorbs mainly red and blue light for photosynthesis and reflects green light."},
+{q:"The reflex arc passes through the:",opts:["Brain","Spinal cord","Both brain and spinal cord","Neither"],ans:1,exp:"Spinal cord mediates reflex actions — the reflex arc does not require brain involvement."},
+{q:"Which gas is responsible for global warming?",opts:["Oxygen","Nitrogen","Carbon dioxide","Hydrogen"],ans:2,exp:"CO₂ is the main greenhouse gas causing global warming by trapping heat in the atmosphere."},
+{q:"Stomata are found in:",opts:["Roots","Stem","Leaves","Flowers"],ans:2,exp:"Stomata are tiny pores mainly on leaves for gas exchange (CO₂ in, O₂ out) and transpiration."}
 ],
-physics:[
-{q:"The SI unit of force is:",opts:["Joule","Watt","Newton","Pascal"],ans:2,exp:"Force is measured in Newtons (N). F = ma."},
-{q:"Speed of light in vacuum is approximately:",opts:["3×10⁶ m/s","3×10⁸ m/s","3×10¹⁰ m/s","3×10⁴ m/s"],ans:1,exp:"Speed of light c ≈ 3×10⁸ m/s."},
-{q:"Ohm's law states V =",opts:["I/R","IR","I+R","I²R"],ans:1,exp:"Ohm's law: Voltage = Current × Resistance (V = IR)."},
-{q:"The image formed by a plane mirror is:",opts:["Real and inverted","Virtual and inverted","Virtual and erect","Real and erect"],ans:2,exp:"Plane mirror forms virtual, erect, and laterally inverted images."},
-{q:"Which of these is a scalar quantity?",opts:["Force","Velocity","Displacement","Speed"],ans:3,exp:"Speed has only magnitude, not direction — so it's a scalar."},
-{q:"1 kWh is equal to how many joules?",opts:["3.6×10³ J","3.6×10⁶ J","3.6×10⁹ J","3.6×10⁴ J"],ans:1,exp:"1 kWh = 1000 W × 3600 s = 3.6×10⁶ J."},
-{q:"The angle of incidence equals the angle of reflection. This is:",opts:["Refraction","Dispersion","Reflection","Diffraction"],ans:2,exp:"This is the law of reflection."},
-{q:"Resistance of a wire depends on:",opts:["Color","Length and area","Weight","Temperature only"],ans:1,exp:"R = ρL/A — resistance depends on length and cross-sectional area."},
-{q:"A convex lens is also called a:",opts:["Diverging lens","Converging lens","Concave lens","Plane lens"],ans:1,exp:"Convex (converging) lens bends rays toward a focal point."},
-{q:"The unit of electric power is:",opts:["Volt","Ampere","Ohm","Watt"],ans:3,exp:"Electric power is measured in Watts. P = VI."}
+math1:[
+{q:"If the roots of x² - 5x + 6 = 0 are α and β, then α + β =",opts:["6","5","-5","-6"],ans:1,exp:"By Vieta's formulas, sum of roots = -b/a = -(-5)/1 = 5."},
+{q:"The discriminant of 2x² - 4x + 3 = 0 is:",opts:["8","-8","40","-8"],ans:1,exp:"Discriminant = b² - 4ac = (-4)² - 4(2)(3) = 16 - 24 = -8."},
+{q:"The nth term of an AP is 3n + 2. The common difference is:",opts:["2","3","5","1"],ans:1,exp:"aₙ = 3n + 2. a₁ = 5, a₂ = 8. Common difference d = a₂ - a₁ = 8 - 5 = 3."},
+{q:"The sum of first n natural numbers is:",opts:["n(n+1)","n(n+1)/2","n²","n(n-1)/2"],ans:1,exp:"Sum = 1+2+3...+n = n(n+1)/2. This is a standard formula."},
+{q:"If the mean of 5, 8, x, 12, 14 is 10, then x =",opts:["9","10","11","12"],ans:2,exp:"Mean = (5+8+x+12+14)/5 = 10. So 39+x = 50. x = 11."},
+{q:"The probability of getting a head in one toss of a fair coin is:",opts:["1","0","1/2","1/4"],ans:2,exp:"P(Head) = Favourable outcomes / Total outcomes = 1/2."},
+{q:"If P(A) = 0.6, then P(not A) =",opts:["0.6","0.4","1.6","0"],ans:1,exp:"P(A') = 1 - P(A) = 1 - 0.6 = 0.4. Complementary event formula."},
+{q:"The roots of x² - 4 = 0 are:",opts:["±2","±4","2,0","4,0"],ans:0,exp:"x² = 4, x = ±√4 = ±2."},
+{q:"The value of the determinant |2 3; 1 4| is:",opts:["5","11","8","−5"],ans:0,exp:"|2 3; 1 4| = (2×4) - (3×1) = 8 - 3 = 5."},
+{q:"The median of the data 3, 7, 8, 10, 15 is:",opts:["7","8","10","9"],ans:1,exp:"Arrange in order: 3,7,8,10,15. Middle value (3rd of 5) = 8."},
+{q:"If α and β are roots of x² - 6x + 9 = 0, then αβ =",opts:["6","9","-6","-9"],ans:1,exp:"Product of roots = c/a = 9/1 = 9. (Vieta's formulas)"},
+{q:"The sum of an infinite GP with a=3 and r=1/3 is:",opts:["3","4","4.5","9/2"],ans:2,exp:"S∞ = a/(1-r) = 3/(1-1/3) = 3/(2/3) = 9/2 = 4.5."},
+{q:"A card is drawn from a deck of 52 cards. Probability of getting a king is:",opts:["1/52","1/13","4/52","1/26"],ans:1,exp:"P(King) = 4/52 = 1/13. There are 4 kings in a deck of 52 cards."},
+{q:"The common difference of the AP: 2, 5, 8, 11... is:",opts:["2","3","5","1"],ans:1,exp:"d = a₂ - a₁ = 5 - 2 = 3. Verified: 8-5=3, 11-8=3."},
+{q:"Which of the following is a quadratic equation?",opts:["x³+2x=0","x+5=0","x²-3x+2=0","2/x=5"],ans:2,exp:"A quadratic equation has degree 2. x²-3x+2=0 has highest power 2."},
+{q:"The mode of 2, 3, 4, 3, 2, 5, 3, 4 is:",opts:["2","3","4","5"],ans:1,exp:"Mode = most frequently occurring value. 3 appears 3 times — highest frequency."},
+{q:"The 10th term of the AP 3, 7, 11, 15... is:",opts:["39","43","47","35"],ans:0,exp:"aₙ = a + (n-1)d = 3 + (10-1)×4 = 3 + 36 = 39."},
+{q:"If P(E) = 0, then event E is:",opts:["Sure event","Impossible event","Complementary event","Equally likely"],ans:1,exp:"P(E) = 0 means the event can never occur — it is an impossible event."},
+{q:"The product of roots of 3x² - 5x + 2 = 0 is:",opts:["5/3","2/3","3/2","-5/3"],ans:1,exp:"Product of roots = c/a = 2/3."},
+{q:"The mean of first 10 natural numbers is:",opts:["5","5.5","6","4.5"],ans:1,exp:"Sum = 10×11/2 = 55. Mean = 55/10 = 5.5."},
+{q:"In a frequency distribution, the class with the highest frequency is called:",opts:["Median class","Modal class","Mean class","Ogive class"],ans:1,exp:"The class with the highest frequency is called the modal class."},
+{q:"A bag contains 3 red and 5 blue balls. Probability of picking a red ball is:",opts:["3/5","5/8","3/8","1/2"],ans:2,exp:"P(red) = 3/(3+5) = 3/8."},
+{q:"The nature of roots when discriminant > 0 is:",opts:["No real roots","Equal real roots","Two distinct real roots","Complex roots"],ans:2,exp:"If D > 0, roots are real and distinct. If D=0, equal. If D<0, no real roots."},
+{q:"Sum of all terms of AP: 1, 2, 3...100 is:",opts:["5000","5050","4950","5500"],ans:1,exp:"S = n(a+l)/2 = 100(1+100)/2 = 100×101/2 = 5050."},
+{q:"The HCF of 12 and 18 is:",opts:["2","4","6","9"],ans:2,exp:"12=2²×3, 18=2×3². HCF = 2×3 = 6 (take lowest powers of common factors)."}
 ],
-chemistry:[
-{q:"The chemical formula of water is:",opts:["H₂O₂","H₂O","HO","H₃O"],ans:1,exp:"Water is made of 2 hydrogen atoms and 1 oxygen atom: H₂O."},
-{q:"Atomic number of Carbon is:",opts:["6","8","12","14"],ans:0,exp:"Carbon has atomic number 6, meaning 6 protons."},
-{q:"Which gas is used in fire extinguishers?",opts:["O₂","N₂","CO₂","H₂"],ans:2,exp:"CO₂ displaces oxygen and smothers fire."},
-{q:"pH of a neutral solution is:",opts:["0","7","14","1"],ans:1,exp:"pH 7 is neutral. Below 7 is acidic, above 7 is basic."},
-{q:"NaOH is an example of:",opts:["Acid","Salt","Base","Oxide"],ans:2,exp:"NaOH (Sodium hydroxide) is a strong base."},
-{q:"Which element has the symbol 'Fe'?",opts:["Fluorine","Iron","Francium","Fermium"],ans:1,exp:"Fe comes from Ferrum, the Latin name for iron."},
-{q:"The process of gaining electrons is called:",opts:["Oxidation","Reduction","Combustion","Neutralization"],ans:1,exp:"Reduction = gain of electrons. Oxidation = loss of electrons."},
-{q:"Baking soda has the formula:",opts:["Na₂CO₃","NaHCO₃","NaCl","NaOH"],ans:1,exp:"Baking soda is sodium bicarbonate: NaHCO₃."},
-{q:"Which of the following is a noble gas?",opts:["Nitrogen","Oxygen","Argon","Chlorine"],ans:2,exp:"Argon (Ar) is a noble gas — it has a full outer shell."},
-{q:"The chemical name of common salt is:",opts:["Sodium hydroxide","Sodium carbonate","Sodium chloride","Potassium chloride"],ans:2,exp:"Common salt = NaCl = Sodium Chloride."}
+math2:[
+{q:"The value of sin 30° is:",opts:["√3/2","1/2","1","0"],ans:1,exp:"sin 30° = 1/2. Standard value to memorize: sin 0°=0, 30°=1/2, 45°=1/√2, 60°=√3/2, 90°=1."},
+{q:"The value of cos 60° is:",opts:["√3/2","1","1/2","0"],ans:2,exp:"cos 60° = 1/2. Note: cos and sin swap at complementary angles: cos 60° = sin 30° = 1/2."},
+{q:"In a right triangle, if one angle is 90° and another is 45°, then the triangle is:",opts:["Equilateral","Isoceles right triangle","Scalene","Obtuse"],ans:1,exp:"90° + 45° + 45° = 180°. Two angles are equal so two sides are equal — isoceles right triangle."},
+{q:"The tangent to a circle is perpendicular to the radius at the point of:",opts:["Centre","Contact","Chord","Arc"],ans:1,exp:"The tangent to a circle at any point is perpendicular to the radius drawn to that point."},
+{q:"The area of a circle with radius r is:",opts:["2πr","πr²","2πr²","πd"],ans:1,exp:"Area of circle = πr². Circumference = 2πr."},
+{q:"Two tangents drawn from an external point to a circle are:",opts:["Unequal","Equal in length","Parallel","Perpendicular to each other"],ans:1,exp:"Tangents drawn from an external point to a circle are equal in length."},
+{q:"The value of tan 45° is:",opts:["0","1","√3","1/√3"],ans:1,exp:"tan 45° = sin 45°/cos 45° = (1/√2)/(1/√2) = 1."},
+{q:"In ΔABC, if AB/PQ = BC/QR = AC/PR, then the triangles are:",opts:["Congruent","Similar","Equilateral","Right-angled"],ans:1,exp:"When corresponding sides are proportional, triangles are similar (by SSS similarity)."},
+{q:"The volume of a sphere with radius r is:",opts:["4πr²","(4/3)πr³","(2/3)πr³","πr³"],ans:1,exp:"Volume of sphere = (4/3)πr³. Surface area = 4πr²."},
+{q:"sin²θ + cos²θ =",opts:["0","2","1","-1"],ans:2,exp:"sin²θ + cos²θ = 1 is the fundamental Pythagorean trigonometric identity."},
+{q:"The angle subtended by a semicircle at the centre is:",opts:["90°","180°","270°","360°"],ans:1,exp:"A semicircle subtends an angle of 180° at the centre (straight angle)."},
+{q:"The volume of a cylinder with radius r and height h is:",opts:["πr²h","2πrh","πrh","2πr²h"],ans:0,exp:"Volume of cylinder = πr²h. Curved surface area = 2πrh."},
+{q:"If the diagonals of a quadrilateral bisect each other, it is a:",opts:["Trapezium","Rhombus","Parallelogram","Rectangle only"],ans:2,exp:"If diagonals bisect each other, the quadrilateral is a parallelogram."},
+{q:"The theorem which states that 'the square on the hypotenuse equals the sum of squares on the other two sides' is:",opts:["Thales theorem","Basic proportionality theorem","Pythagoras theorem","Midpoint theorem"],ans:2,exp:"Pythagoras theorem: AC² = AB² + BC² in a right triangle with hypotenuse AC."},
+{q:"The value of sin 90° is:",opts:["0","1/2","√3/2","1"],ans:3,exp:"sin 90° = 1. This is the maximum value of sine function."},
+{q:"The surface area of a cube with side a is:",opts:["a³","4a²","6a²","3a²"],ans:2,exp:"A cube has 6 equal square faces. Total surface area = 6a²."},
+{q:"The angle in a semicircle is:",opts:["60°","90°","180°","45°"],ans:1,exp:"Angle in a semicircle = 90° (Thales theorem — angle subtended by diameter at any point on circle)."},
+{q:"BPT (Basic Proportionality Theorem) is also known as:",opts:["Pythagoras theorem","Midpoint theorem","Thales theorem","Angle bisector theorem"],ans:2,exp:"BPT is also called Thales' theorem: a line parallel to one side of a triangle divides other sides proportionally."},
+{q:"The value of tan 0° is:",opts:["1","∞","0","1/2"],ans:2,exp:"tan 0° = sin 0°/cos 0° = 0/1 = 0."},
+{q:"The curved surface area of a cone with slant height l and radius r is:",opts:["πrl","2πrl","πr²l","πrl²"],ans:0,exp:"Curved surface area of cone = πrl, where l is slant height and r is base radius."},
+{q:"A line that intersects a circle at exactly one point is called:",opts:["Chord","Secant","Tangent","Diameter"],ans:2,exp:"A tangent touches the circle at exactly one point (point of tangency)."},
+{q:"In a right-angled triangle, sin θ =",opts:["Adjacent/Hypotenuse","Opposite/Hypotenuse","Opposite/Adjacent","Hypotenuse/Opposite"],ans:1,exp:"sin θ = Opposite side / Hypotenuse. Remember: SOH CAH TOA."},
+{q:"The total surface area of a cylinder is:",opts:["2πrh","2πr(r+h)","πr²h","πr(r+h)"],ans:1,exp:"Total surface area of cylinder = 2πrh + 2πr² = 2πr(h+r)."},
+{q:"If two circles touch externally, the distance between their centres equals:",opts:["r₁ - r₂","r₁ + r₂","r₁ × r₂","r₁/r₂"],ans:1,exp:"For externally touching circles: distance between centres = r₁ + r₂."},
+{q:"The value of cos 0° is:",opts:["0","1/2","√3/2","1"],ans:3,exp:"cos 0° = 1. This is the maximum value of cosine function."}
 ]
 };
 
-let currentSubject="";
-let currentIndex=0;
-let score=0;
-let wrongCount=0;
-let answered=false;
-let userAnswers=[];
+let currentSubject="",currentIndex=0,score=0,wrongCount=0,answered=false,userAnswers=[];
+const TOTAL=25;
+
+const subjectNames={
+sci1:"🔬 Science 1",
+sci2:"🧬 Science 2",
+math1:"📐 Maths 1",
+math2:"📏 Maths 2"
+};
 
 function startQuiz(subject){
 currentSubject=subject;
-currentIndex=0;
-score=0;
-wrongCount=0;
-userAnswers=[];
-document.getElementById("subjectScreen").style.display="none";
+currentIndex=0;score=0;wrongCount=0;userAnswers=[];
+document.getElementById("homeScreen").style.display="none";
 document.getElementById("quizScreen").style.display="block";
 document.getElementById("resultScreen").style.display="none";
-const labels={maths:"📐 Mathematics",biology:"🧬 Biology",physics:"⚡ Physics",chemistry:"🧪 Chemistry"};
-document.getElementById("quizSubjectLabel").textContent=labels[subject];
+document.getElementById("quizSubjectBadge").textContent=subjectNames[subject];
 loadQuestion();
+window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function loadQuestion(){
 answered=false;
 const q=questions[currentSubject][currentIndex];
-document.getElementById("questionText").textContent=(currentIndex+1)+". "+q.q;
-document.getElementById("quizCount").textContent="Q "+(currentIndex+1)+" / 10";
-document.getElementById("progressFill").style.width=((currentIndex)/10*100)+"%";
+document.getElementById("qNumber").textContent="Question "+(currentIndex+1)+" of "+TOTAL;
+document.getElementById("questionText").textContent=q.q;
+document.getElementById("quizQCount").textContent=(currentIndex+1)+" / "+TOTAL;
+const pct=((currentIndex)/TOTAL*100);
+document.getElementById("progressFill").style.width=pct+"%";
+document.getElementById("progressText").textContent=Math.round(pct)+"% completed";
 document.getElementById("explanationBox").style.display="none";
-document.getElementById("explanationBox").textContent="";
 document.getElementById("nextBtn").style.display="none";
 
 const container=document.getElementById("optionsContainer");
@@ -512,10 +701,8 @@ const labels=["A","B","C","D"];
 q.opts.forEach((opt,i)=>{
 const div=document.createElement("div");
 div.className="option";
-div.innerHTML=`<span class="option-label">${labels[i]}</span>${opt}`;
-div.onclick=function(e){
-if(!answered) selectAnswer(i,div,e);
-};
+div.innerHTML=`<span class="option-label">${labels[i]}</span><span class="option-text">${opt}</span>`;
+div.onclick=function(e){if(!answered)selectAnswer(i,div,e);};
 container.appendChild(div);
 });
 }
@@ -525,43 +712,40 @@ answered=true;
 const q=questions[currentSubject][currentIndex];
 const allOptions=document.querySelectorAll(".option");
 
-// ripple effect
+// Ripple
 const rect=el.getBoundingClientRect();
 const ripple=document.createElement("span");
 ripple.className="ripple";
-ripple.style.width=ripple.style.height="80px";
-ripple.style.left=(e.clientX-rect.left-40)+"px";
-ripple.style.top=(e.clientY-rect.top-40)+"px";
+ripple.style.cssText=`width:80px;height:80px;left:${e.clientX-rect.left-40}px;top:${e.clientY-rect.top-40}px;`;
 el.appendChild(ripple);
 setTimeout(()=>ripple.remove(),600);
 
 if(selected===q.ans){
 el.classList.add("correct");
 score++;
-userAnswers.push({correct:true,selected:selected});
+userAnswers.push({correct:true,selected});
 } else {
 el.classList.add("wrong");
 wrongCount++;
 allOptions[q.ans].classList.add("reveal-correct");
-userAnswers.push({correct:false,selected:selected});
+userAnswers.push({correct:false,selected});
 }
 
-// disable all
 allOptions.forEach(o=>o.style.pointerEvents="none");
 
-// show explanation
-const expBox=document.getElementById("explanationBox");
-expBox.textContent="💡 "+q.exp;
-expBox.style.display="block";
+document.getElementById("explanationText").textContent=q.exp;
+document.getElementById("explanationBox").style.display="block";
 
-document.getElementById("nextBtn").style.display="block";
-document.getElementById("nextBtn").textContent=currentIndex===9?"See Results 🏆":"Next →";
+const nextBtn=document.getElementById("nextBtn");
+nextBtn.style.display="block";
+nextBtn.textContent=currentIndex===TOTAL-1?"🏆 See My Results":"Next Question →";
 }
 
 function nextQuestion(){
 currentIndex++;
-if(currentIndex<10){
+if(currentIndex<TOTAL){
 loadQuestion();
+window.scrollTo({top:0,behavior:"smooth"});
 } else {
 showResult();
 }
@@ -570,31 +754,32 @@ showResult();
 function showResult(){
 document.getElementById("quizScreen").style.display="none";
 document.getElementById("resultScreen").style.display="block";
+window.scrollTo({top:0,behavior:"smooth"});
 
-const labels={maths:"📐 Mathematics",biology:"🧬 Biology",physics:"⚡ Physics",chemistry:"🧪 Chemistry"};
-document.getElementById("resultSubject").textContent=labels[currentSubject]+" Result";
+document.getElementById("resultSubjectLabel").textContent=subjectNames[currentSubject];
 document.getElementById("scoreBig").textContent=score;
 document.getElementById("statCorrect").textContent=score;
 document.getElementById("statWrong").textContent=wrongCount;
-document.getElementById("statPercent").textContent=score*10+"%";
+document.getElementById("statPct").textContent=Math.round((score/TOTAL)*100)+"%";
 
-let grade,gradeClass,trophy,msg;
-if(score>=9){grade="A+";gradeClass="grade-A";trophy="🏆";msg="Outstanding! You're a star student!";}
-else if(score>=7){grade="A";gradeClass="grade-A";trophy="🥇";msg="Excellent work! Keep it up!";}
-else if(score>=5){grade="B";gradeClass="grade-B";trophy="🥈";msg="Good effort! A little more practice and you'll ace it!";}
-else if(score>=3){grade="C";gradeClass="grade-C";trophy="🥉";msg="Keep practising! You can do better!";}
-else{grade="D";gradeClass="grade-D";trophy="📚";msg="Don't give up! Revise and try again!";}
+let trophy,gradeClass,grade,title,msg;
+if(score>=23){trophy="🏆";grade="A+";gradeClass="g-aplus";title="Outstanding Performance!";msg="Brilliant! You're fully prepared for the Maharashtra Board exam. Keep it up!";}
+else if(score>=19){trophy="🥇";grade="A";gradeClass="g-a";title="Excellent Work!";msg="Great performance! A little more revision and you'll ace the board exam.";}
+else if(score>=15){trophy="🥈";grade="B";gradeClass="g-b";title="Good Effort!";msg="Decent score. Focus on the questions you got wrong and revise those topics.";}
+else if(score>=10){trophy="🥉";grade="C";gradeClass="g-c";title="Keep Practising!";msg="You need more practice. Revise your textbook and try again.";}
+else{trophy="📚";grade="D";gradeClass="g-d";title="Needs Improvement";msg="Don't worry! Study the explanations carefully and attempt again. You can do it!";}
 
 document.getElementById("trophyEmoji").textContent=trophy;
-document.getElementById("gradeBadge").innerHTML=`<span class="grade-badge ${gradeClass}">Grade: ${grade}</span>`;
-document.getElementById("resultMessage").textContent=msg;
+document.getElementById("resultTitle").textContent=title;
+document.getElementById("gradeBadge").innerHTML=`<div class="grade-badge ${gradeClass}">Grade: ${grade}</div>`;
+document.getElementById("resultMsg").textContent=msg;
 
-if(score>=7) launchConfetti();
+if(score>=19)launchConfetti();
 
-// review
+// Review
+const qlabels=["A","B","C","D"];
 const reviewContainer=document.getElementById("reviewContainer");
 reviewContainer.innerHTML="";
-const qlabels=["A","B","C","D"];
 questions[currentSubject].forEach((q,i)=>{
 const ua=userAnswers[i];
 const div=document.createElement("div");
@@ -602,41 +787,38 @@ div.className="review-item "+(ua.correct?"r-correct":"r-wrong");
 const yourAns=qlabels[ua.selected]+" – "+q.opts[ua.selected];
 const correctAns=qlabels[q.ans]+" – "+q.opts[q.ans];
 div.innerHTML=`<div class="r-q">${i+1}. ${q.q}</div>
-<div class="r-ans">Your answer: <span class="${ua.correct?'correct-ans':'wrong-ans'}">${yourAns}</span></div>
-${!ua.correct?`<div class="r-ans">Correct: <span class="correct-ans">${correctAns}</span></div>`:''}`;
+<div class="r-ans">Your answer: <span class="${ua.correct?"correct-ans":"wrong-ans"}">${yourAns}</span></div>
+${!ua.correct?`<div class="r-ans">Correct answer: <span class="correct-ans">${correctAns}</span></div>`:""}`;
 reviewContainer.appendChild(div);
 });
-
-document.getElementById("progressFill").style.width="100%";
-window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function launchConfetti(){
 const container=document.getElementById("confettiContainer");
-const colors=["#1a3d8f","#4a7dff","#00c853","#ffd600","#ff1744","#ffffff"];
-for(let i=0;i<60;i++){
-const piece=document.createElement("div");
-piece.className="confetti-piece";
-piece.style.left=Math.random()*100+"%";
-piece.style.top="-10px";
-piece.style.background=colors[Math.floor(Math.random()*colors.length)];
-piece.style.borderRadius=Math.random()>0.5?"50%":"2px";
-piece.style.animationDelay=Math.random()*1.2+"s";
-piece.style.animationDuration=(1+Math.random())+"s";
-container.appendChild(piece);
+const colors=["#1a3d8f","#f5c518","#00c853","#ff1744","#2a5bbf","#ffffff"];
+for(let i=0;i<70;i++){
+const p=document.createElement("div");
+p.className="confetti-piece";
+p.style.cssText=`left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?"50%":"2px"};animation-delay:${Math.random()*1.4}s;animation-duration:${1+Math.random()*0.8}s;`;
+container.appendChild(p);
 }
-setTimeout(()=>container.innerHTML="",3000);
+setTimeout(()=>container.innerHTML="",3500);
 }
 
-function retryQuiz(){
-startQuiz(currentSubject);
-}
-
+function retryQuiz(){startQuiz(currentSubject);}
 function goHome(){
 document.getElementById("resultScreen").style.display="none";
-document.getElementById("subjectScreen").style.display="block";
+document.getElementById("homeScreen").style.display="block";
 window.scrollTo({top:0,behavior:"smooth"});
 }
+
+// Preloader
+window.addEventListener("load",function(){
+setTimeout(function(){
+document.getElementById("preloader").classList.add("hide");
+setTimeout(()=>document.getElementById("preloader").style.display="none",700);
+},2200);
+});
 </script>
 </body>
 </html>
