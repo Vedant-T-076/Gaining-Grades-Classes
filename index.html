@@ -14,19 +14,25 @@
 --white:#ffffff;
 --offwhite:#f4f7ff;
 --light:#dbeafe;
+--max-width: 1200px;
+--header-height-mobile: auto;
+--header-height-tablet: 120px;
+--header-height-desktop: 80px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-html{overflow-x:hidden;scroll-behavior:smooth;}
-body{font-family:'DM Sans',sans-serif;overflow-x:hidden;max-width:100vw;background:var(--white);color:#1a1a2e;}
-a{text-decoration:none;color:inherit;}
-img{max-width:100%;display:block;}
+html{overflow-x:hidden;scroll-behavior:smooth;font-size:16px;}
+body{font-family:'DM Sans',sans-serif;overflow-x:hidden;max-width:100vw;background:var(--white);color:#1a1a2e;line-height:1.5;}
 
+a{text-decoration:none;color:inherit;}
+img{max-width:100%;display:block;height:auto;}
+
+/* ---------- PRELOADER ---------- */
 #preloader{position:fixed;inset:0;background:linear-gradient(135deg,var(--blue3),var(--blue));z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity 0.7s ease,visibility 0.7s ease;}
 #preloader.hide{opacity:0;visibility:hidden;}
 .pre-logo{width:100px;height:100px;border-radius:50%;object-fit:cover;border:4px solid rgba(255,255,255,0.2);animation:logoPulse 2s infinite;}
 @keyframes logoPulse{0%{box-shadow:0 0 0 0 rgba(245,197,24,0.5);}70%{box-shadow:0 0 0 20px rgba(245,197,24,0);}100%{box-shadow:0 0 0 0 rgba(245,197,24,0);}}
-.pre-title{font-family:'Playfair Display',serif;font-size:26px;color:white;letter-spacing:2px;text-align:center;}
-.pre-sub{font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:3px;text-transform:uppercase;margin-top:2px;text-align:center;}
+.pre-title{font-family:'Playfair Display',serif;font-size:clamp(20px,5vw,26px);color:white;letter-spacing:2px;text-align:center;}
+.pre-sub{font-size:clamp(10px,2vw,11px);color:rgba(255,255,255,0.6);letter-spacing:3px;text-transform:uppercase;margin-top:2px;text-align:center;}
 .pre-bar-wrap{width:200px;height:4px;background:rgba(255,255,255,0.15);border-radius:10px;overflow:hidden;}
 .pre-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),#fff176);border-radius:10px;animation:loadBar 2.2s ease forwards;}
 @keyframes loadBar{0%{width:0%;}30%{width:35%;}60%{width:65%;}85%{width:88%;}100%{width:100%;}}
@@ -38,141 +44,513 @@ img{max-width:100%;display:block;}
 @keyframes dotBounce{0%,80%,100%{transform:scale(1);opacity:0.4;}40%{transform:scale(1.4);opacity:1;}}
 .pre-tagline{font-size:12px;color:rgba(255,255,255,0.4);font-style:italic;}
 
+/* ---------- SCROLL LINE ---------- */
 .scroll-line{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--blue2));z-index:9999;width:0%;transition:width 0.1s;}
 
-.header{position:sticky;top:0;z-index:1000;width:100%;overflow:hidden;}
-.banner-img{width:100%;display:block;}
-.logo-overlay{position:absolute;top:10px;left:55px;}
-.logo-overlay img{width:130px;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.15));}
-.menu{position:absolute;top:12px;right:16px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:white;padding:10px 18px;border-radius:50px;font-size:18px;cursor:pointer;box-shadow:0 4px 18px rgba(26,61,143,0.45);z-index:1100;transition:all 0.25s;display:flex;align-items:center;gap:6px;font-weight:600;letter-spacing:0.5px;border:2px solid rgba(255,255,255,0.18);}
+/* ---------- HEADER (MOBILE FIRST) ---------- */
+.header{
+  position:sticky;
+  top:0;
+  z-index:1000;
+  width:100%;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  background: var(--blue3); /* fallback when banner image hidden on desktop */
+}
+.banner-img{
+  width:100%;
+  display:block;
+  object-fit:cover;
+  max-height: 180px; /* mobile */
+}
+.logo-overlay{
+  position:absolute;
+  top:10px;
+  left:15px;
+  z-index:5;
+}
+.logo-overlay img{
+  width:clamp(100px, 20vw, 130px);
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,0.3));
+}
+
+/* ---------- MENU BUTTON (MOBILE) ---------- */
+.menu{
+  position:absolute;
+  top:12px;
+  right:16px;
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  color:white;
+  padding:10px 18px;
+  border-radius:50px;
+  font-size:18px;
+  cursor:pointer;
+  box-shadow:0 4px 18px rgba(26,61,143,0.45);
+  z-index:1100;
+  transition:all 0.25s;
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-weight:600;
+  letter-spacing:0.5px;
+  border:2px solid rgba(255,255,255,0.18);
+}
 .menu:hover{transform:scale(1.06);box-shadow:0 6px 24px rgba(26,61,143,0.55);}
 .menu-icon{font-size:20px;}
 .menu-label{font-size:12px;font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:1px;}
-.call-icon{position:absolute;bottom:12px;right:16px;background:linear-gradient(135deg,var(--blue),var(--blue2));width:auto;height:auto;padding:10px 18px;border-radius:50px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 18px rgba(26,61,143,0.45);cursor:pointer;transition:all 0.25s;border:2px solid rgba(255,255,255,0.18);}
+
+/* Call icon inside header (mobile) */
+.call-icon{
+  position:absolute;
+  bottom:12px;
+  right:16px;
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  padding:10px 18px;
+  border-radius:50px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  box-shadow:0 4px 18px rgba(26,61,143,0.45);
+  cursor:pointer;
+  transition:all 0.25s;
+  border:2px solid rgba(255,255,255,0.18);
+  z-index:5;
+}
 .call-icon:hover{transform:scale(1.06);box-shadow:0 6px 24px rgba(26,61,143,0.55);}
 .call-label{font-size:12px;color:white;font-family:'DM Sans',sans-serif;font-weight:600;letter-spacing:0.5px;}
 
-.nav{display:none;position:fixed;top:100px;right:10px;background:white;padding:16px;box-shadow:0 8px 32px rgba(26,61,143,0.18);border-radius:16px;z-index:2000;width:200px;border-top:4px solid var(--blue);}
-.nav button{width:100%;margin:5px 0;padding:11px 10px;border:none;background:var(--blue);color:white;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;font-family:'DM Sans',sans-serif;letter-spacing:0.3px;transition:all 0.2s;text-align:left;}
+/* ---------- NAVIGATION DROPDOWN (MOBILE) ---------- */
+.nav{
+  display:none;
+  position:fixed;
+  top:100px;
+  right:10px;
+  background:white;
+  padding:16px;
+  box-shadow:0 8px 32px rgba(26,61,143,0.18);
+  border-radius:16px;
+  z-index:2000;
+  width:200px;
+  border-top:4px solid var(--blue);
+  opacity:0;
+  transform:translateY(-10px);
+  transition:opacity 0.3s ease, transform 0.3s ease;
+}
+.nav.show{
+  display:block;
+  opacity:1;
+  transform:translateY(0);
+}
+.nav button{
+  width:100%;
+  margin:5px 0;
+  padding:11px 10px;
+  border:none;
+  background:var(--blue);
+  color:white;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+  font-size:13px;
+  font-family:'DM Sans',sans-serif;
+  letter-spacing:0.3px;
+  transition:all 0.2s;
+  text-align:left;
+}
 .nav button:hover{background:var(--blue2);transform:translateX(3px);}
 
-.banner{background:url('Banner.jpg') center/cover no-repeat;padding:60px 24px;text-align:center;position:relative;overflow:hidden;}
-.banner::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,37,96,0.55),rgba(26,61,143,0.35));}
+/* ---------- BANNER HERO ---------- */
+.banner{
+  background:url('Banner.jpg') center/cover no-repeat;
+  padding:clamp(40px,10vw,100px) 24px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+}
+.banner::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(13,37,96,0.65),rgba(26,61,143,0.45));
+}
 .banner-content{position:relative;z-index:1;}
-.banner-tag{display:inline-block;background:var(--gold);color:var(--blue3);padding:5px 18px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;}
-.banner h1{font-family:'Playfair Display',serif;font-size:38px;color:white;line-height:1.25;letter-spacing:1px;text-shadow:0 3px 16px rgba(0,0,0,0.4);margin-bottom:14px;}
+.banner-tag{
+  display:inline-block;
+  background:var(--gold);
+  color:var(--blue3);
+  padding:5px 18px;
+  border-radius:20px;
+  font-size:clamp(10px,2vw,12px);
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  margin-bottom:16px;
+}
+.banner h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(32px,8vw,64px);
+  color:white;
+  line-height:1.2;
+  letter-spacing:1px;
+  text-shadow:0 3px 16px rgba(0,0,0,0.4);
+  margin-bottom:14px;
+}
 .banner h1 span{color:var(--gold);}
-.banner p{font-size:15px;color:rgba(255,255,255,0.88);font-style:italic;letter-spacing:1px;font-weight:300;}
+.banner p{
+  font-size:clamp(14px,3vw,20px);
+  color:rgba(255,255,255,0.9);
+  font-style:italic;
+  letter-spacing:1px;
+  font-weight:300;
+}
 .banner-line{width:60px;height:3px;background:var(--gold);margin:14px auto;border-radius:2px;}
 
-.seats-banner{background:linear-gradient(90deg,var(--blue3),var(--blue),var(--blue2));padding:13px 20px;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;width:100%;position:relative;overflow:hidden;}
-.seats-banner::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,255,255,0.03) 40px,rgba(255,255,255,0.03) 80px);}
-.pulse-dot{width:10px;height:10px;background:#ff4444;border-radius:50%;animation:pulseDot 1.2s infinite;flex-shrink:0;box-shadow:0 0 0 0 rgba(255,68,68,0.4);}
+/* ---------- SEATS BANNER ---------- */
+.seats-banner{
+  background:linear-gradient(90deg,var(--blue3),var(--blue),var(--blue2));
+  padding:13px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  width:100%;
+  position:relative;
+  overflow:hidden;
+}
+.seats-banner::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(255,255,255,0.03) 40px,rgba(255,255,255,0.03) 80px);
+}
+.pulse-dot{
+  width:10px;height:10px;background:#ff4444;border-radius:50%;
+  animation:pulseDot 1.2s infinite;
+  flex-shrink:0;
+  box-shadow:0 0 0 0 rgba(255,68,68,0.4);
+}
 @keyframes pulseDot{0%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,68,68,0.4);}70%{transform:scale(1.2);box-shadow:0 0 0 8px rgba(255,68,68,0);}100%{transform:scale(1);}}
-.seats-banner p{color:white;font-weight:500;font-size:13px;margin:0;text-align:center;position:relative;}
+.seats-banner p{color:white;font-weight:500;font-size:clamp(12px,2.5vw,14px);margin:0;text-align:center;position:relative;}
 .seats-highlight{color:var(--gold);font-weight:700;}
 .seats-tag{background:#ff4444;color:white;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1px;position:relative;}
 
-section{padding:32px 20px;width:100%;}
-.section-label{display:inline-flex;align-items:center;gap:8px;color:var(--blue);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;}
+/* ---------- SECTION UNIVERSAL ---------- */
+section{padding:clamp(24px,5vw,60px) clamp(16px,4vw,40px);width:100%;}
+.section-label{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  color:var(--blue);
+  font-size:clamp(10px,2vw,11px);
+  font-weight:700;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  margin-bottom:8px;
+}
 .section-label::before{content:'';width:24px;height:2px;background:var(--gold);}
-h2{font-family:'Playfair Display',serif;color:var(--blue);font-size:26px;margin-bottom:6px;line-height:1.3;}
+h2{
+  font-family:'Playfair Display',serif;
+  color:var(--blue);
+  font-size:clamp(22px,5vw,40px);
+  margin-bottom:6px;
+  line-height:1.3;
+}
 .section-divider{width:40px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:20px;}
 
+/* ---------- CLASSROOM IMAGES ---------- */
 .row{display:flex;gap:10px;width:100%;}
-.row img{width:50%;border-radius:14px;object-fit:cover;box-shadow:0 4px 16px rgba(26,61,143,0.12);}
-.big{width:100%;margin-top:10px;border-radius:14px;box-shadow:0 4px 16px rgba(26,61,143,0.12);}
-.timing-card{background:linear-gradient(135deg,var(--blue),var(--blue2));color:white;padding:16px 20px;border-radius:14px;margin-top:16px;display:flex;align-items:center;gap:12px;box-shadow:0 6px 20px rgba(26,61,143,0.3);}
+.row img{width:50%;border-radius:14px;object-fit:cover;box-shadow:0 4px 16px rgba(26,61,143,0.12);flex:1;}
+.big{width:100%;margin-top:10px;border-radius:14px;box-shadow:0 4px 16px rgba(26,61,143,0.12);object-fit:cover;}
+.timing-card{
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  color:white;
+  padding:16px 20px;
+  border-radius:14px;
+  margin-top:16px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  box-shadow:0 6px 20px rgba(26,61,143,0.3);
+}
 .timing-icon{font-size:28px;}
-.timing-text{font-size:13px;font-weight:500;line-height:1.6;}
-.timing-text strong{font-size:15px;display:block;margin-bottom:2px;}
+.timing-text{font-size:clamp(12px,2.5vw,14px);font-weight:500;line-height:1.6;}
+.timing-text strong{font-size:clamp(14px,3vw,16px);display:block;margin-bottom:2px;}
 
-.quality-banner{background:url('Banner1.jpg') center/cover no-repeat;padding:50px 24px;color:white;width:100%;position:relative;overflow:hidden;}
-.quality-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,37,96,0.88),rgba(26,61,143,0.75));}
+/* ---------- WHY CHOOSE US ---------- */
+.quality-banner{
+  background:url('Banner1.jpg') center/cover no-repeat;
+  padding:50px 24px;
+  color:white;
+  width:100%;
+  position:relative;
+  overflow:hidden;
+}
+.quality-banner::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,rgba(13,37,96,0.88),rgba(26,61,143,0.75));
+}
 .quality-content{position:relative;z-index:1;}
 .quality-banner h2{color:white;text-align:center;margin-bottom:6px;}
 .quality-banner .section-label{color:var(--gold);justify-content:center;display:flex;width:100%;}
 .quality-banner .section-divider{margin:8px auto 24px;}
-.quality-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:420px;margin:auto;}
-.quality-item{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:14px 12px;display:flex;align-items:flex-start;gap:10px;backdrop-filter:blur(4px);}
+.quality-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  max-width:420px;
+  margin:auto;
+}
+.quality-item{
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  border-radius:12px;
+  padding:14px 12px;
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+  backdrop-filter:blur(4px);
+}
 .quality-item .q-icon{font-size:22px;flex-shrink:0;}
-.quality-item p{font-size:12px;font-weight:500;line-height:1.4;color:white;}
+.quality-item p{font-size:clamp(11px,2vw,13px);font-weight:500;line-height:1.4;color:white;}
 
+/* ---------- COURSES GRID ---------- */
 #courses{background:var(--offwhite);}
-.courses-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.course-card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(26,61,143,0.08);border:1px solid rgba(26,61,143,0.06);transition:transform 0.3s,box-shadow 0.3s;}
+.courses-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
+  gap:14px;
+}
+.course-card{
+  background:white;
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 4px 16px rgba(26,61,143,0.08);
+  border:1px solid rgba(26,61,143,0.06);
+  transition:transform 0.3s,box-shadow 0.3s;
+}
 .course-card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(26,61,143,0.15);}
-.course-card img{width:100%;height:110px;object-fit:cover;}
+.course-card img{
+  width:100%;
+  height:110px;
+  object-fit:cover;
+}
 .course-info{padding:12px 10px;}
-.course-name{font-family:'Playfair Display',serif;font-size:14px;color:var(--blue);font-weight:700;margin-bottom:6px;}
+.course-name{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(12px,2.5vw,15px);
+  color:var(--blue);
+  font-weight:700;
+  margin-bottom:6px;
+}
 .course-price{display:flex;flex-direction:column;gap:3px;}
-.price-row{display:flex;align-items:center;gap:6px;font-size:11px;color:#555;}
-.price-tag{background:var(--offwhite);border:1px solid rgba(26,61,143,0.15);color:var(--blue);padding:2px 7px;border-radius:20px;font-size:10px;font-weight:600;white-space:nowrap;}
-.price-amount{font-weight:600;color:#222;font-size:12px;}
+.price-row{display:flex;align-items:center;gap:6px;font-size:clamp(10px,2vw,12px);color:#555;}
+.price-tag{
+  background:var(--offwhite);
+  border:1px solid rgba(26,61,143,0.15);
+  color:var(--blue);
+  padding:2px 7px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:600;
+  white-space:nowrap;
+}
+.price-amount{font-weight:600;color:#222;font-size:clamp(11px,2vw,13px);}
 
-.stats-strip{background:linear-gradient(135deg,var(--blue3),var(--blue));padding:28px 20px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center;}
-.stat-num{font-family:'Playfair Display',serif;font-size:32px;color:var(--gold);font-weight:900;line-height:1;}
-.stat-label{font-size:11px;color:rgba(255,255,255,0.75);margin-top:4px;font-weight:500;letter-spacing:0.5px;}
+/* ---------- STATS STRIP ---------- */
+.stats-strip{
+  background:linear-gradient(135deg,var(--blue3),var(--blue));
+  padding:28px 20px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  text-align:center;
+}
+.stat-num{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(28px,6vw,46px);
+  color:var(--gold);
+  font-weight:900;
+  line-height:1;
+}
+.stat-label{font-size:clamp(10px,2vw,13px);color:rgba(255,255,255,0.75);margin-top:4px;font-weight:500;letter-spacing:0.5px;}
 
+/* ---------- FOUNDER ---------- */
 .founder-section{background:white;padding:36px 24px;text-align:center;}
-.founder-card{background:var(--offwhite);border-radius:20px;padding:28px 20px;position:relative;overflow:hidden;border:1px solid rgba(26,61,143,0.08);}
-.founder-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--blue),var(--gold),var(--blue2));}
+.founder-card{
+  background:var(--offwhite);
+  border-radius:20px;
+  padding:28px 20px;
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(26,61,143,0.08);
+  max-width:500px;
+  margin:auto;
+}
+.founder-card::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:4px;
+  background:linear-gradient(90deg,var(--blue),var(--gold),var(--blue2));
+}
 .founder-img-wrap{position:relative;display:inline-block;margin-bottom:16px;}
-.founder-img-wrap img{width:110px;height:110px;border-radius:50%;object-fit:cover;border:4px solid var(--blue);box-shadow:0 8px 24px rgba(26,61,143,0.25);}
-.founder-badge{position:absolute;bottom:4px;right:4px;background:var(--gold);color:var(--blue3);font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;letter-spacing:0.5px;}
-.founder-name{font-family:'Playfair Display',serif;font-size:22px;color:var(--blue);margin-bottom:4px;}
+.founder-img-wrap img{
+  width:110px;height:110px;
+  border-radius:50%;
+  object-fit:cover;
+  border:4px solid var(--blue);
+  box-shadow:0 8px 24px rgba(26,61,143,0.25);
+}
+.founder-badge{
+  position:absolute;
+  bottom:4px;right:4px;
+  background:var(--gold);
+  color:var(--blue3);
+  font-size:10px;
+  font-weight:700;
+  padding:3px 8px;
+  border-radius:10px;
+  letter-spacing:0.5px;
+}
+.founder-name{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,24px);color:var(--blue);margin-bottom:4px;}
 .founder-title{font-size:13px;color:#666;margin-bottom:12px;}
 .founder-tags{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
 .f-tag{background:white;border:2px solid var(--blue);color:var(--blue);padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;}
 
+/* ---------- MAP SECTION ---------- */
 .map-section{padding:32px 20px;width:100%;background:var(--offwhite);}
 .map-section h2{color:var(--blue);margin-bottom:4px;}
 .map-sub{color:#666;font-size:13px;margin-bottom:16px;}
 .map-tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
-.map-tab{padding:8px 16px;border:2px solid var(--blue);border-radius:20px;font-size:12px;font-weight:600;color:var(--blue);background:white;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.map-tab{
+  padding:8px 16px;
+  border:2px solid var(--blue);
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+  color:var(--blue);
+  background:white;
+  cursor:pointer;
+  transition:all 0.2s;
+  font-family:'DM Sans',sans-serif;
+}
 .map-tab.active{background:var(--blue);color:white;}
-.map-frame{border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(26,61,143,0.15);border:3px solid var(--blue);display:none;width:100%;}
+.map-frame{
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 4px 20px rgba(26,61,143,0.15);
+  border:3px solid var(--blue);
+  display:none;
+  width:100%;
+}
 .map-frame.active{display:block;}
 .map-frame iframe{width:100%;height:220px;border:none;display:block;}
-.map-address{background:white;border-left:4px solid var(--gold);padding:14px;border-radius:0 12px 12px 0;margin-top:10px;font-size:13px;color:#333;box-shadow:0 2px 10px rgba(26,61,143,0.06);}
+.map-address{
+  background:white;
+  border-left:4px solid var(--gold);
+  padding:14px;
+  border-radius:0 12px 12px 0;
+  margin-top:10px;
+  font-size:13px;
+  color:#333;
+  box-shadow:0 2px 10px rgba(26,61,143,0.06);
+}
 .map-address strong{color:var(--blue);display:block;margin-bottom:4px;font-size:14px;}
-.directions-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;background:var(--blue);color:white;padding:13px;border-radius:12px;text-align:center;font-weight:600;font-size:14px;box-shadow:0 4px 14px rgba(26,61,143,0.3);transition:all 0.2s;}
+.directions-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:12px;
+  background:var(--blue);
+  color:white;
+  padding:13px;
+  border-radius:12px;
+  text-align:center;
+  font-weight:600;
+  font-size:14px;
+  box-shadow:0 4px 14px rgba(26,61,143,0.3);
+  transition:all 0.2s;
+}
 .directions-btn:hover{background:var(--blue2);}
 
-.contact{background:linear-gradient(135deg,var(--blue3),var(--blue));color:white;text-align:center;padding:40px 24px;width:100%;position:relative;overflow:hidden;}
+/* ---------- CONTACT SECTION ---------- */
+.contact{
+  background:linear-gradient(135deg,var(--blue3),var(--blue));
+  color:white;
+  text-align:center;
+  padding:40px 24px;
+  width:100%;
+  position:relative;
+  overflow:hidden;
+}
 .contact::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:rgba(245,197,24,0.06);border-radius:50%;}
 .contact::after{content:'';position:absolute;bottom:-40px;left:-40px;width:150px;height:150px;background:rgba(255,255,255,0.04);border-radius:50%;}
-.contact-content{position:relative;z-index:1;}
-.contact h2{font-family:'Playfair Display',serif;color:white;margin-bottom:6px;font-size:28px;}
+.contact-content{position:relative;z-index:1;max-width:700px;margin:auto;}
+.contact h2{font-family:'Playfair Display',serif;color:white;margin-bottom:6px;font-size:clamp(24px,5vw,32px);}
 .contact-sub{color:var(--light);font-size:13px;margin-bottom:24px;}
-.contact-btn{display:flex;align-items:center;justify-content:center;gap:10px;background:white;color:var(--blue);padding:14px 20px;border-radius:12px;font-weight:700;font-size:15px;margin:10px auto;width:85%;box-shadow:0 4px 16px rgba(0,0,0,0.15);transition:all 0.2s;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.contact-btn{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  background:white;color:var(--blue);
+  padding:14px 20px;
+  border-radius:12px;
+  font-weight:700;
+  font-size:15px;
+  margin:10px auto;
+  width:85%;
+  max-width:350px;
+  box-shadow:0 4px 16px rgba(0,0,0,0.15);
+  transition:all 0.2s;
+  border:none;
+  cursor:pointer;
+  font-family:'DM Sans',sans-serif;
+}
 .contact-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.2);}
 .contact-btn.gold{background:var(--gold);color:var(--blue3);}
-.contact-addresses{margin-top:24px;text-align:left;}
-.addr-item{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:14px;margin-bottom:10px;display:flex;gap:10px;align-items:flex-start;}
+.contact-addresses{margin-top:24px;text-align:left;display:grid;grid-template-columns:1fr;gap:10px;}
+.addr-item{
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:12px;
+  padding:14px;
+  display:flex;
+  gap:10px;
+  align-items:flex-start;
+}
 .addr-icon{font-size:20px;flex-shrink:0;margin-top:2px;}
 .addr-text{font-size:12px;color:rgba(255,255,255,0.85);line-height:1.6;}
 .addr-text strong{color:var(--gold);display:block;font-size:13px;margin-bottom:2px;}
 
-/* ══ ENQUIRY FORM ══ */
+/* ---------- ENQUIRY FORM ---------- */
 .enquiry-section{
-background:linear-gradient(135deg,var(--blue3),var(--blue));
-padding:40px 24px;
-width:100%;
-position:relative;
-overflow:hidden;
+  background:linear-gradient(135deg,var(--blue3),var(--blue));
+  padding:40px 24px;
+  width:100%;
+  position:relative;
+  overflow:hidden;
 }
 .enquiry-section::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;background:rgba(245,197,24,0.06);border-radius:50%;}
 .enquiry-section::after{content:'';position:absolute;bottom:-50px;left:-50px;width:180px;height:180px;background:rgba(255,255,255,0.03);border-radius:50%;}
-.enquiry-inner{position:relative;z-index:1;}
+.enquiry-inner{position:relative;z-index:1;max-width:700px;margin:auto;}
 .enquiry-top{text-align:center;margin-bottom:24px;}
 .enquiry-top .section-label{color:var(--gold);justify-content:center;display:flex;width:100%;}
-.enquiry-top h2{color:white;font-size:26px;}
+.enquiry-top h2{color:white;font-size:clamp(22px,5vw,30px);}
 .enquiry-top p{color:rgba(255,255,255,0.7);font-size:13px;margin-top:8px;line-height:1.6;}
 .enquiry-top .section-divider{margin:10px auto 0;}
 
-.enquiry-card{background:white;border-radius:22px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.2);}
-.enquiry-card-header{background:linear-gradient(135deg,var(--gold),#ffe57f);padding:20px 24px;display:flex;align-items:center;gap:14px;}
+.enquiry-card{
+  background:white;
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 12px 40px rgba(0,0,0,0.2);
+}
+.enquiry-card-header{
+  background:linear-gradient(135deg,var(--gold),#ffe57f);
+  padding:20px 24px;
+  display:flex;align-items:center;gap:14px;
+}
 .enquiry-card-icon{font-size:36px;}
 .enquiry-card-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--blue3);font-weight:900;}
 .enquiry-card-sub{font-size:12px;color:rgba(13,37,96,0.7);margin-top:2px;}
@@ -180,34 +558,262 @@ overflow:hidden;
 
 .form-group{margin-bottom:16px;}
 .form-label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
-.form-input{width:100%;padding:14px 16px;border:2px solid #dde6ff;border-radius:12px;font-size:14px;font-family:'DM Sans',sans-serif;color:#1a1a2e;background:#f8faff;outline:none;transition:all 0.25s;}
+.form-input{
+  width:100%;
+  padding:14px 16px;
+  border:2px solid #dde6ff;
+  border-radius:12px;
+  font-size:14px;
+  font-family:'DM Sans',sans-serif;
+  color:#1a1a2e;
+  background:#f8faff;
+  outline:none;
+  transition:all 0.25s;
+}
 .form-input:focus{border-color:var(--blue);background:white;box-shadow:0 0 0 4px rgba(26,61,143,0.08);}
 .form-input::placeholder{color:#aab4d4;font-size:13px;}
-select.form-input{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%231a3d8f'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-size:20px;padding-right:40px;}
+select.form-input{
+  cursor:pointer;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='%231a3d8f'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right 14px center;
+  background-size:20px;
+  padding-right:40px;
+}
 
-.form-submit{width:100%;padding:16px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:white;border:none;border-radius:14px;font-size:16px;font-weight:700;font-family:'DM Sans',sans-serif;cursor:pointer;letter-spacing:0.5px;box-shadow:0 6px 20px rgba(26,61,143,0.35);transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px;}
+.form-submit{
+  width:100%;
+  padding:16px;
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  color:white;
+  border:none;
+  border-radius:14px;
+  font-size:16px;
+  font-weight:700;
+  font-family:'DM Sans',sans-serif;
+  cursor:pointer;
+  letter-spacing:0.5px;
+  box-shadow:0 6px 20px rgba(26,61,143,0.35);
+  transition:all 0.25s;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:8px;
+}
 .form-submit:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(26,61,143,0.45);}
 .form-submit:active{transform:scale(0.98);}
 .form-submit:disabled{opacity:0.75;cursor:not-allowed;transform:none;}
 
-.form-success{display:none;background:linear-gradient(135deg,#e6fff0,#d4f7e7);border:2px solid #00c853;border-radius:14px;padding:22px;text-align:center;margin-top:16px;}
+.form-success{
+  display:none;
+  background:linear-gradient(135deg,#e6fff0,#d4f7e7);
+  border:2px solid #00c853;
+  border-radius:14px;
+  padding:22px;
+  text-align:center;
+  margin-top:16px;
+}
 .form-success .s-icon{font-size:44px;margin-bottom:8px;}
 .form-success h4{color:#00691a;font-size:17px;font-family:'Playfair Display',serif;margin-bottom:6px;}
 .form-success p{color:#00691a;font-size:13px;opacity:0.85;line-height:1.5;}
 
-.form-error{display:none;background:#fff0f0;border:2px solid #ff1744;border-radius:12px;padding:13px 16px;text-align:center;margin-top:14px;font-size:13px;color:#b71c1c;font-weight:500;}
+.form-error{
+  display:none;
+  background:#fff0f0;
+  border:2px solid #ff1744;
+  border-radius:12px;
+  padding:13px 16px;
+  text-align:center;
+  margin-top:14px;
+  font-size:13px;
+  color:#b71c1c;
+  font-weight:500;
+}
 
-.privacy-note{display:flex;align-items:flex-start;gap:8px;background:var(--offwhite);border-radius:10px;padding:10px 14px;margin-top:16px;font-size:11px;color:#888;line-height:1.5;border:1px solid #e0e8ff;}
+.privacy-note{
+  display:flex;align-items:flex-start;gap:8px;
+  background:var(--offwhite);
+  border-radius:10px;
+  padding:10px 14px;
+  margin-top:16px;
+  font-size:11px;
+  color:#888;
+  line-height:1.5;
+  border:1px solid #e0e8ff;
+}
 .privacy-note .picon{font-size:16px;flex-shrink:0;margin-top:1px;}
 
-.footer{background:var(--blue3);color:rgba(255,255,255,0.5);text-align:center;padding:20px;font-size:12px;border-top:3px solid var(--gold);}
+/* ---------- FOOTER ---------- */
+.footer{
+  background:var(--blue3);
+  color:rgba(255,255,255,0.5);
+  text-align:center;
+  padding:20px;
+  font-size:12px;
+  border-top:3px solid var(--gold);
+}
 .footer span{color:var(--gold);}
 
-.whatsapp{position:fixed;bottom:24px;right:20px;background:#25D366;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,0.5);z-index:999;cursor:pointer;transition:transform 0.2s;}
+/* ---------- WHATSAPP BUTTON ---------- */
+.whatsapp{
+  position:fixed;
+  bottom:24px;right:20px;
+  background:#25D366;
+  width:56px;height:56px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 20px rgba(37,211,102,0.5);
+  z-index:999;
+  cursor:pointer;
+  transition:transform 0.2s;
+}
 .whatsapp:hover{transform:scale(1.1);}
 
+/* ---------- REVEAL ANIMATION ---------- */
 .reveal{opacity:0;transform:translateY(50px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1);}
 .reveal.active{opacity:1;transform:translateY(0);}
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE MEDIA QUERIES (EXPERT LEVEL)
+   ══════════════════════════════════════════════ */
+
+/* Tablet: 600px and up */
+@media (min-width: 600px) {
+  .header { max-height: 140px; }
+  .banner-img { max-height: 140px; }
+  .logo-overlay img { width: 150px; }
+  .courses-grid { grid-template-columns: repeat(3, 1fr); }
+  .course-card img { height: 130px; }
+}
+
+/* Tablet landscape / small desktop: 768px */
+@media (min-width: 768px) {
+  .header { max-height: 160px; }
+  .banner-img { max-height: 160px; }
+  .banner { padding: 80px 30px; }
+  .banner h1 { font-size: 48px; }
+  .banner p { font-size: 16px; }
+  h2 { font-size: 36px; }
+  .row { gap: 16px; }
+  .row img { width: 50%; }
+  .big { margin-top: 16px; }
+  .courses-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .course-card[style*="grid-column:span 2"] { grid-column: span 1 !important; }
+  .quality-grid { max-width: 600px; }
+  .stats-strip { padding: 36px 30px; }
+  .stat-num { font-size: 40px; }
+  .map-frame iframe { height: 300px; }
+  .contact-btn { max-width: 400px; }
+  .contact-addresses { grid-template-columns: 1fr 1fr; }
+  .enquiry-card { max-width: 600px; margin: 0 auto; }
+}
+
+/* Desktop: 1024px and up – full navigation bar */
+@media (min-width: 1024px) {
+  /* Header becomes a proper navbar */
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    max-height: none;
+    height: var(--header-height-desktop);
+    padding: 0 40px;
+    background: var(--blue3);
+    overflow: visible;
+    position: sticky;
+    top:0;
+  }
+  .banner-img { display: none; } /* hide the large banner image inside header */
+  .logo-overlay {
+    position: static;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+  }
+  .logo-overlay img { width: 170px; }
+  /* Hide mobile menu button and call icon inside header */
+  .menu { display: none; }
+  .call-icon { 
+    position: static;
+    margin-left: 16px;
+    background: linear-gradient(135deg,var(--blue),var(--blue2));
+    box-shadow: none;
+  }
+  /* Convert the dropdown nav into a horizontal menu */
+  .nav {
+    display: flex !important;
+    position: static;
+    width: auto;
+    box-shadow: none;
+    border-radius: 0;
+    border-top: none;
+    background: transparent;
+    opacity: 1;
+    transform: none;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    margin-right: 16px;
+  }
+  .nav button {
+    width: auto;
+    font-size: 12px;
+    padding: 8px 14px;
+    margin: 0;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 25px;
+    color: white;
+    font-weight: 500;
+  }
+  .nav button:hover { background: rgba(255,255,255,0.15); transform: translateY(-2px); }
+
+  /* Hero banner */
+  .banner { padding: 120px 40px; }
+  .banner h1 { font-size: 60px; }
+  .banner p { font-size: 18px; }
+
+  h2 { font-size: 40px; }
+
+  .row { gap: 20px; }
+
+  .courses-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .course-card[style*="grid-column:span 2"] { grid-column: span 1 !important; }
+  .course-card img { height: 160px; } /* taller on desktop */
+
+  .quality-grid { max-width: 720px; }
+  .quality-item { padding: 16px; }
+  .quality-item p { font-size: 14px; }
+
+  .stats-strip { padding: 42px 40px; }
+  .stat-num { font-size: 46px; }
+
+  .map-frame iframe { height: 350px; }
+  .contact-btn { max-width: 450px; }
+  .enquiry-card { max-width: 700px; }
+}
+
+/* Large screens: 1200px+ (centered container) */
+@media (min-width: 1200px) {
+  .header { padding: 0 60px; }
+  .banner,
+  .seats-banner,
+  section,
+  .quality-banner,
+  .contact,
+  .enquiry-section,
+  .footer {
+    max-width: var(--max-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .logo-overlay img { width: 200px; }
+  .courses-grid { gap: 24px; }
+}
 </style>
 </head>
 <body>
@@ -232,8 +838,8 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 
 <!-- HEADER -->
 <div class="header">
-<img src="bannerimage.jpg" class="banner-img">
-<div class="logo-overlay"><img src="logo.jpg"></div>
+<img src="bannerimage.jpg" class="banner-img" alt="header banner">
+<div class="logo-overlay"><img src="logo.jpg" alt="Gaining Grades Logo"></div>
 <div class="menu" id="menuBtn">
 <span class="menu-icon">☰</span>
 <span class="menu-label">MENU</span>
@@ -246,7 +852,7 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 </a>
 </div>
 
-<!-- NAV -->
+<!-- NAVIGATION (same HTML, transformed by CSS on desktop) -->
 <div class="nav" id="menu">
 <button onclick="scrollToSection('classroom')">🏫 Classrooms</button>
 <button onclick="scrollToSection('quality')">⭐ Why Choose Us</button>
@@ -289,10 +895,10 @@ JEE — <strong>Only 5 left</strong>
 <h2>World-Class Classrooms</h2>
 <div class="section-divider"></div>
 <div class="row">
-<img src="Class2.jpg">
-<img src="Class3.jpg">
+<img src="Class2.jpg" alt="Classroom 2">
+<img src="Class3.jpg" alt="Classroom 3">
 </div>
-<img src="Class1.jpg" class="big">
+<img src="Class1.jpg" class="big" alt="Classroom 1">
 <div class="timing-card">
 <div class="timing-icon">🕗</div>
 <div class="timing-text">
@@ -325,17 +931,17 @@ Monday to Saturday &nbsp;•&nbsp; 8:00 AM – 9:00 PM
 <h2>Our Courses</h2>
 <div class="section-divider"></div>
 <div class="courses-grid">
-<div class="course-card"><img src="foundation.jpg"><div class="course-info"><div class="course-name">Class 1 – 5</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹800/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹7,500/-</span></div></div></div></div>
-<div class="course-card"><img src="6th.jpg"><div class="course-info"><div class="course-name">Class 6</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹900/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹8,500/-</span></div></div></div></div>
-<div class="course-card"><img src="7th.jpg"><div class="course-info"><div class="course-name">Class 7</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹1,000/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹12,000/-</span></div></div></div></div>
-<div class="course-card"><img src="8th.jpg"><div class="course-info"><div class="course-name">Class 8</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹1,100/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹13,000/-</span></div></div></div></div>
-<div class="course-card"><img src="9th.jpg"><div class="course-info"><div class="course-name">Class 9</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹1,800/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹15,000/-</span></div></div></div></div>
-<div class="course-card"><img src="10th.jpg"><div class="course-info"><div class="course-name">Class 10</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹2,500/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹20,000/-</span></div></div></div></div>
-<div class="course-card"><img src="11th and 12th(science).jpg"><div class="course-info"><div class="course-name">11–12 Science</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹35,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹60,000/-</span></div></div></div></div>
-<div class="course-card"><img src="11th and 12th(commerce).jpg"><div class="course-info"><div class="course-name">11–12 Commerce</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹15,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹25,000/-</span></div></div></div></div>
-<div class="course-card"><img src="Jee.jpg"><div class="course-info"><div class="course-name">JEE</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹50,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹80,000/-</span></div></div></div></div>
-<div class="course-card"><img src="Neet.jpg"><div class="course-info"><div class="course-name">NEET</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹50,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹80,000/-</span></div></div></div></div>
-<div class="course-card" style="grid-column:span 2;"><img src="NDA.jpg" style="height:130px;object-fit:cover;width:100%;"><div class="course-info"><div class="course-name">NDA / Airforce / Navy</div><div class="course-price"><div class="price-row"><span class="price-tag">Available</span><span class="price-amount">Contact Us</span></div></div></div></div>
+<div class="course-card"><img src="foundation.jpg" alt=""><div class="course-info"><div class="course-name">Class 1 – 5</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹800/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹7,500/-</span></div></div></div></div>
+<div class="course-card"><img src="6th.jpg" alt=""><div class="course-info"><div class="course-name">Class 6</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹900/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹8,500/-</span></div></div></div></div>
+<div class="course-card"><img src="7th.jpg" alt=""><div class="course-info"><div class="course-name">Class 7</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹1,000/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹12,000/-</span></div></div></div></div>
+<div class="course-card"><img src="8th.jpg" alt=""><div class="course-info"><div class="course-name">Class 8</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹1,100/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹13,000/-</span></div></div></div></div>
+<div class="course-card"><img src="9th.jpg" alt=""><div class="course-info"><div class="course-name">Class 9</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹1,800/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹15,000/-</span></div></div></div></div>
+<div class="course-card"><img src="10th.jpg" alt=""><div class="course-info"><div class="course-name">Class 10</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹2,500/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹20,000/-</span></div></div></div></div>
+<div class="course-card"><img src="11th and 12th(science).jpg" alt=""><div class="course-info"><div class="course-name">11–12 Science</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹35,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹60,000/-</span></div></div></div></div>
+<div class="course-card"><img src="11th and 12th(commerce)2.jpg" alt=""><div class="course-info"><div class="course-name">11–12 Commerce</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹15,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹25,000/-</span></div></div></div></div>
+<div class="course-card"><img src="Jee.jpg" alt=""><div class="course-info"><div class="course-name">JEE</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹50,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹80,000/-</span></div></div></div></div>
+<div class="course-card"><img src="Neet.jpg" alt=""><div class="course-info"><div class="course-name">NEET</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹50,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹80,000/-</span></div></div></div></div>
+<div class="course-card" style="grid-column:span 2;"><img src="NDA.jpg" style="height:130px;object-fit:cover;width:100%;" alt=""><div class="course-info"><div class="course-name">NDA / Airforce / Navy</div><div class="course-price"><div class="price-row"><span class="price-tag">Available</span><span class="price-amount">Contact Us</span></div></div></div></div>
 </div>
 </section>
 
@@ -353,7 +959,7 @@ Monday to Saturday &nbsp;•&nbsp; 8:00 AM – 9:00 PM
 <div class="section-divider"></div>
 <div class="founder-card">
 <div class="founder-img-wrap">
-<img src="Founder1.jpg">
+<img src="Founder1.jpg" alt="Founder">
 <div class="founder-badge">⭐ Founder</div>
 </div>
 <div class="founder-name">Ashwani Dubey</div>
@@ -416,17 +1022,15 @@ WhatsApp Us
 </div>
 </div>
 
-<!-- ══ ENQUIRY FORM — VERY LAST ══ -->
+<!-- ENQUIRY FORM -->
 <div class="enquiry-section reveal" id="enquiry">
 <div class="enquiry-inner">
-
 <div class="enquiry-top">
 <div class="section-label">Join Us</div>
 <h2>Student Enquiry Form</h2>
 <div class="section-divider"></div>
 <p>Fill in your details and our team will contact you within 24 hours</p>
 </div>
-
 <div class="enquiry-card">
 <div class="enquiry-card-header">
 <div class="enquiry-card-icon">📋</div>
@@ -435,25 +1039,12 @@ WhatsApp Us
 <div class="enquiry-card-sub">We'll guide you to the right course</div>
 </div>
 </div>
-
 <div class="enquiry-body">
-
-<!-- FORMSPREE FORM -->
 <form id="enquiryForm">
-
 <div class="form-group">
 <label class="form-label">👤 Student Name</label>
-<input
-type="text"
-name="student_name"
-id="studentName"
-class="form-input"
-placeholder="Enter full name"
-maxlength="60"
-autocomplete="off"
->
+<input type="text" name="student_name" id="studentName" class="form-input" placeholder="Enter full name" maxlength="60" autocomplete="off">
 </div>
-
 <div class="form-group">
 <label class="form-label">📘 Class / Course</label>
 <select name="course_name" id="courseName" class="form-input">
@@ -471,45 +1062,30 @@ autocomplete="off"
 <option>NDA / Airforce / Navy</option>
 </select>
 </div>
-
 <div class="form-group">
 <label class="form-label">📞 Phone Number</label>
-<input
-type="tel"
-name="phone_number"
-id="phoneNumber"
-class="form-input"
-placeholder="Enter 10-digit mobile number"
-maxlength="10"
-autocomplete="off"
->
+<input type="tel" name="phone_number" id="phoneNumber" class="form-input" placeholder="Enter 10-digit mobile number" maxlength="10" autocomplete="off">
 </div>
-
 <button type="button" class="form-submit" id="submitBtn" onclick="submitEnquiry()">
 <span id="submitText">🚀 Submit Enquiry</span>
 </button>
-
 </form>
-
 <div class="form-success" id="formSuccess">
 <div class="s-icon">🎉</div>
 <h4>Enquiry Submitted Successfully!</h4>
 <p>Thank you! Our team will contact you on <strong id="confirmedPhone"></strong> within 24 hours.</p>
 </div>
-
 <div class="form-error" id="formError"></div>
-
 <div class="privacy-note">
 <span class="picon">🔒</span>
 <div>Your details are safe with us and will only be used to contact you about your admission enquiry.</div>
 </div>
-
 </div>
 </div>
 </div>
 </div>
 
-<!-- FOOTER — ABSOLUTE LAST -->
+<!-- FOOTER -->
 <div class="footer">
 <p>© 2025 <span>Gaining Grades Classes</span> — Titwala East, Maharashtra 🇮🇳</p>
 <p style="margin-top:6px;">Believe in Education • Empowering the future of Bharat</p>
@@ -600,20 +1176,22 @@ setTimeout(()=>document.getElementById("preloader").style.display="none",700);
 },2400);
 });
 
-// MENU
+// MENU TOGGLE (mobile only, desktop nav always visible)
 const menuBtn=document.getElementById("menuBtn");
 const menu=document.getElementById("menu");
 menuBtn.onclick=function(e){
-menu.style.display=menu.style.display==="block"?"none":"block";
+menu.classList.toggle("show");
 e.stopPropagation();
 }
-document.onclick=function(){menu.style.display="none";}
+document.onclick=function(){
+menu.classList.remove("show");
+}
 function scrollToSection(id){
 document.getElementById(id).scrollIntoView({behavior:"smooth"});
-menu.style.display="none";
+menu.classList.remove("show");
 }
 
-// MAP
+// MAP SWITCH
 function switchMap(index,el){
 document.querySelectorAll(".map-tab").forEach(t=>t.classList.remove("active"));
 document.querySelectorAll(".map-frame").forEach(f=>f.classList.remove("active"));
@@ -621,10 +1199,10 @@ el.classList.add("active");
 document.getElementById("map"+index).classList.add("active");
 }
 
-// REVEAL
+// REVEAL ON SCROLL
 function reveal(){
 document.querySelectorAll(".reveal").forEach(el=>{
-if(el.getBoundingClientRect().top<window.innerHeight-80)el.classList.add("active");
+if(el.getBoundingClientRect().top < window.innerHeight-80) el.classList.add("active");
 });
 }
 window.addEventListener("scroll",reveal);
