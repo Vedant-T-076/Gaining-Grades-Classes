@@ -1,0 +1,14 @@
+{
+  "name": "Gaining Grades Classes",
+  "short_name": "Gaining Grades",
+  "description": "Best coaching in Titwala — Class 1-12, JEE, NEET",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0d2560",
+  "theme_color": "#1a3d8f",
+  "orientation": "portrait",
+  "icons": [
+    {"src": "logo.jpg","sizes": "192x192","type": "image/jpeg"},
+    {"src": "logo.jpg","sizes": "512x512","type": "image/jpeg"}
+  ]
+}
