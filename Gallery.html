@@ -10,9 +10,16 @@
 <style>
 /* ══ INHERITED THEME VARIABLES ══ */
 :root{
---blue:#1a3d8f;--blue2:#2a5bbf;--blue3:#0d2560;
---gold:#f5c518;--white:#ffffff;--offwhite:#f4f7ff;--light:#dbeafe;
+  --blue:#1a3d8f;
+  --blue2:#2a5bbf;
+  --blue3:#0d2560;
+  --gold:#f5c518;
+  --white:#ffffff;
+  --offwhite:#f4f7ff;
+  --light:#dbeafe;
+  --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
 *{box-sizing:border-box;margin:0;padding:0;}
 html{overflow-x:hidden;scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;overflow-x:hidden;max-width:100vw;background:var(--white);color:#1a1a2e;}
@@ -20,61 +27,92 @@ a{text-decoration:none;color:inherit;}
 img{max-width:100%;display:block;}
 
 /* ══ HEADER & GLOBAL COMPONENTS ══ */
-.header{position:sticky;top:0;z-index:1000;width:100%;overflow:hidden;background:var(--white);box-shadow:0 4px 16px rgba(26,61,143,0.08);padding:15px 20px;display:flex;justify-content:space-between;align-items:center;}
-.header-logo{display:flex;align-items:center;gap:10px;}
-.header-logo img{width:45px;border-radius:50%;}
-.header-brand{font-family:'Playfair Display',serif;font-size:18px;color:var(--blue);font-weight:900;line-height:1.1;}
-.header-brand small{display:block;font-size:10px;font-family:'DM Sans',sans-serif;color:#666;font-weight:500;letter-spacing:1px;}
-.back-btn{background:linear-gradient(135deg,var(--blue),var(--blue2));color:white;padding:8px 16px;border-radius:50px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(26,61,143,0.3);}
+.header{position:sticky;top:0;z-index:1000;width:100%;overflow:hidden;background:var(--white);box-shadow:0 4px 20px rgba(26,61,143,0.06);padding:15px 24px;display:flex;justify-content:space-between;align-items:center;}
+.header-logo{display:flex;align-items:center;gap:12px;}
+.header-logo img{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--light);}
+.header-brand{font-family:'Playfair Display',serif;font-size:19px;color:var(--blue);font-weight:900;line-height:1.1;}
+.header-brand small{display:block;font-size:11px;font-family:'DM Sans',sans-serif;color:#666;font-weight:500;letter-spacing:1px;margin-top:2px;}
+.back-btn{background:linear-gradient(135deg,var(--blue),var(--blue2));color:white;padding:10px 20px;border-radius:50px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;box-shadow:0 4px 14px rgba(26,61,143,0.2);transition: var(--transition);}
+.back-btn:hover{transform: translateY(-2px);box-shadow:0 6px 20px rgba(26,61,143,0.35);}
 
 /* ══ PAGE BANNER ══ */
-.page-banner{background:linear-gradient(135deg,var(--blue3),var(--blue));padding:50px 24px;text-align:center;color:white;position:relative;overflow:hidden;}
-.page-banner::before{content:'';position:absolute;top:-50px;left:-50px;width:150px;height:150px;background:rgba(245,197,24,0.08);border-radius:50%;}
-.page-banner h1{font-family:'Playfair Display',serif;font-size:32px;color:white;margin-bottom:10px;}
+.page-banner{background:linear-gradient(135deg,var(--blue3),var(--blue));padding:65px 24px;text-align:center;color:white;position:relative;overflow:hidden;}
+.page-banner::before{content:'';position:absolute;top:-50px;left:-50px;width:180px;height:180px;background:rgba(245,197,24,0.06);border-radius:50%;}
+.page-banner::after{content:'';position:absolute;bottom:-30px;right:-30px;width:120px;height:120px;background:rgba(219,234,254,0.04);border-radius:50%;}
+.page-banner h1{font-family:'Playfair Display',serif;font-size:38px;color:white;margin-bottom:12px;letter-spacing: -0.5px;}
 .page-banner h1 span{color:var(--gold);}
-.page-banner p{font-size:14px;color:rgba(255,255,255,0.8);font-style:italic;}
+.page-banner p{font-size:15px;color:rgba(255,255,255,0.85);font-style:italic;max-width:600px;margin: 0 auto;}
 
 /* ══ REUSABLE UTILS ══ */
-section{padding:40px 20px;width:100%;}
-.section-label{display:inline-flex;align-items:center;gap:8px;color:var(--blue);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;}
+section{padding:60px 24px;max-width:1200px;margin:0 auto;}
+.section-label{display:inline-flex;align-items:center;gap:8px;color:var(--blue2);font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
 .section-label::before{content:'';width:24px;height:2px;background:var(--gold);}
-h2{font-family:'Playfair Display',serif;color:var(--blue);font-size:26px;margin-bottom:6px;line-height:1.3;}
-.section-divider{width:40px;height:3px;background:var(--gold);border-radius:2px;margin-bottom:24px;}
+h2{font-family:'Playfair Display',serif;color:var(--blue);font-size:32px;margin-bottom:8px;line-height:1.2;}
+.section-divider{width:50px;height:4px;background:var(--gold);border-radius:2px;margin-bottom:35px;}
 
 /* ══ BLOG SECTION ══ */
-#blogs{background:var(--offwhite);}
-.blog-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:20px;}
-.blog-card{background:white;border-radius:18px;overflow:hidden;box-shadow:0 6px 20px rgba(26,61,143,0.06);border:1px solid rgba(26,61,143,0.05);transition:transform 0.3s;}
-.blog-card:hover{transform:translateY(-5px);box-shadow:0 12px 30px rgba(26,61,143,0.12);}
-.blog-img{width:100%;height:180px;object-fit:cover;background:#e0e8ff;}
-.blog-content{padding:20px;}
-.blog-meta{display:flex;justify-content:space-between;font-size:11px;color:#888;margin-bottom:10px;font-weight:600;}
-.blog-tag{color:var(--blue);background:var(--light);padding:3px 10px;border-radius:20px;}
-.blog-title{font-family:'Playfair Display',serif;font-size:18px;color:var(--blue3);margin-bottom:8px;line-height:1.3;}
-.blog-excerpt{font-size:13px;color:#555;line-height:1.6;margin-bottom:16px;}
-.read-more{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--blue2);transition:gap 0.2s;cursor:pointer;}
-.read-more:hover{gap:10px;}
+#blogs-container{background:var(--offwhite);width:100vw;position:relative;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:28px;}
+.blog-card{background:white;border-radius:20px;overflow:hidden;box-shadow:0 10px 30px rgba(26,61,143,0.04);border:1px solid rgba(26,61,143,0.03);transition: var(--transition);}
+.blog-card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(26,61,143,0.12);}
+.blog-img{width:100%;height:210px;object-fit:cover;background:#e0e8ff;transition: var(--transition);}
+.blog-card:hover .blog-img{transform: scale(1.03);}
+.blog-content{padding:24px;}
+.blog-meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#777;margin-bottom:14px;font-weight:600;}
+.blog-tag{color:var(--blue);background:var(--light);padding:4px 12px;border-radius:20px;}
+.blog-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--blue3);margin-bottom:10px;line-height:1.35;transition: color 0.3s;}
+.blog-card:hover .blog-title{color: var(--blue2);}
+.blog-excerpt{font-size:14px;color:#555;line-height:1.6;margin-bottom:20px;}
+.read-more{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--blue2);transition:gap 0.2s;cursor:pointer;}
+.read-more:hover{gap:10px;color: var(--blue3);}
 
-/* ══ GALLERY SECTION ══ */
+/* ══ MODERN MASONRY-STYLE GALLERY SECTION ══ */
 #gallery{background:white;}
-.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(140px, 1fr));gap:12px;}
-@media(min-width:768px){.gallery-grid{grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:16px;}}
-.gallery-item{border-radius:12px;overflow:hidden;position:relative;box-shadow:0 4px 12px rgba(26,61,143,0.1);cursor:pointer;background:#f0f4ff;aspect-ratio:1/1;}
-.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease;}
-.gallery-item::after{content:'🔍';position:absolute;inset:0;background:linear-gradient(to top, rgba(13,37,96,0.8), rgba(26,61,143,0.2));display:flex;align-items:center;justify-content:center;font-size:24px;color:white;opacity:0;transition:opacity 0.3s;}
-.gallery-item:hover img{transform:scale(1.1);}
-.gallery-item:hover::after{opacity:1;}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));grid-auto-rows: 240px;gap:20px;}
+@media(max-width:480px){
+  .gallery-grid{grid-template-columns: 1fr;grid-auto-rows: 280px;gap:16px;}
+}
+
+.gallery-item{border-radius:16px;overflow:hidden;position:relative;box-shadow:0 8px 24px rgba(26,61,143,0.06);cursor:pointer;background:#f0f4ff;transition: var(--transition);}
+
+/* Dynamic Spacing Effects to resemble an Elegant Staggered Grid */
+@media(min-width: 768px) {
+  .gallery-item:nth-child(2n) { grid-row: span 2; }
+  .gallery-item:nth-child(5n) { grid-column: span 2; }
+}
+
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);}
+.gallery-item::after{
+  content:'View Image';
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top, rgba(13,37,96,0.85), rgba(26,61,143,0.3));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:14px;
+  color:white;
+  opacity:0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: scale(1.05);
+}
+.gallery-item:hover img{transform:scale(1.08);}
+.gallery-item:hover::after{opacity:1;transform: scale(1);}
 
 /* ══ LIGHTBOX ══ */
-.lightbox{position:fixed;inset:0;background:rgba(13,37,96,0.95);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.3s;backdrop-filter:blur(5px);}
+.lightbox{position:fixed;inset:0;background:rgba(13,37,96,0.96);z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.4s ease;backdrop-filter:blur(10px);}
 .lightbox.active{opacity:1;pointer-events:all;}
-.lightbox-img{max-width:90%;max-height:80vh;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.5);transform:scale(0.9);transition:transform 0.3s;}
+.lightbox-img{max-width:90%;max-height:82vh;border-radius:16px;box-shadow:0 25px 50px rgba(0,0,0,0.5);transform:scale(0.95);transition:transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);border: 1px solid rgba(255,255,255,0.1);}
 .lightbox.active .lightbox-img{transform:scale(1);}
-.lightbox-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;width:40px;height:40px;border-radius:50%;font-size:20px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
-.lightbox-close:hover{background:var(--gold);color:var(--blue3);}
+.lightbox-close{position:absolute;top:24px;right:24px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);color:white;width:46px;height:46px;border-radius:50%;font-size:22px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition: var(--transition);}
+.lightbox-close:hover{background:var(--gold);color:var(--blue3);transform: rotate(90deg);border-color: var(--gold);}
 
 /* ══ FOOTER ══ */
-.footer{background:var(--blue3);color:rgba(255,255,255,0.5);text-align:center;padding:28px 20px;font-size:12px;border-top:3px solid var(--gold);}
+.footer{background:var(--blue3);color:rgba(255,255,255,0.6);text-align:center;padding:36px 20px;font-size:13px;border-top:4px solid var(--gold);line-height: 1.6;}
 </style>
 </head>
 <body>
@@ -91,38 +129,40 @@ h2{font-family:'Playfair Display',serif;color:var(--blue);font-size:26px;margin-
 <!-- PAGE BANNER -->
 <div class="page-banner">
     <h1>Our <span>Student Life</span></h1>
-    <p>Discover the moments, memories, and milestones at Gaining Grades.</p>
+    <p>Discover the memorable moments, interactive spaces, and milestones at Gaining Grades.</p>
 </div>
 
-<!-- BLOG SECTION -->
-<section id="blogs">
-    <div class="section-label">Knowledge Hub</div>
-    <h2>Latest Blogs & Articles</h2>
-    <div class="section-divider"></div>
-    
-    <div class="blog-grid">
-        <!-- Blog 1 -->
-        <div class="blog-card">
-            <div class="blog-img" style="background: url('Class1.jpg') center/cover;"></div>
-            <div class="blog-content">
-                <div class="blog-meta"><span class="blog-tag">Study Tips</span><span>12 May 2025</span></div>
-                <div class="blog-title">How to Prepare for SSC Board Exams Effectively</div>
-                <div class="blog-excerpt">Discover top strategies used by our 95%+ scorers to manage time, build concepts, and tackle board exam anxiety.</div>
-                <div class="read-more">Read Article →</div>
+<!-- BLOG SECTION CONTAINER -->
+<div id="blogs-container">
+    <section id="blogs">
+        <div class="section-label">Knowledge Hub</div>
+        <h2>Latest Blogs & Articles</h2>
+        <div class="section-divider"></div>
+        
+        <div class="blog-grid">
+            <!-- Blog 1 -->
+            <div class="blog-card">
+                <div class="blog-img" style="background: url('Class1.jpg') center/cover;"></div>
+                <div class="blog-content">
+                    <div class="blog-meta"><span class="blog-tag">Study Tips</span><span>12 May 2025</span></div>
+                    <div class="blog-title">How to Prepare for SSC Board Exams Effectively</div>
+                    <div class="blog-excerpt">Discover top strategies used by our 95%+ scorers to manage time, build concepts, and tackle board exam anxiety.</div>
+                    <div class="read-more">Read Article →</div>
+                </div>
+            </div>
+            <!-- Blog 2 -->
+            <div class="blog-card">
+                <div class="blog-img" style="background: url('Jee.jpg') center/cover;"></div>
+                <div class="blog-content">
+                    <div class="blog-meta"><span class="blog-tag">JEE / NEET</span><span>05 Jun 2025</span></div>
+                    <div class="blog-title">The Right Time to Start JEE & NEET Preparation</div>
+                    <div class="blog-excerpt">Should you start in Class 9 or Class 11? Our Founder Ashwani Dubey breaks down the ideal timeline for competitive exams.</div>
+                    <div class="read-more">Read Article →</div>
+                </div>
             </div>
         </div>
-        <!-- Blog 2 -->
-        <div class="blog-card">
-            <div class="blog-img" style="background: url('Jee.jpg') center/cover;"></div>
-            <div class="blog-content">
-                <div class="blog-meta"><span class="blog-tag">JEE / NEET</span><span>05 Jun 2025</span></div>
-                <div class="blog-title">The Right Time to Start JEE & NEET Preparation</div>
-                <div class="blog-excerpt">Should you start in Class 9 or Class 11? Our Founder Ashwani Dubey breaks down the ideal timeline for competitive exams.</div>
-                <div class="read-more">Read Article →</div>
-            </div>
-        </div>
-    </div>
-</section>
+    </section>
+</div>
 
 <!-- GALLERY SECTION -->
 <section id="gallery">
@@ -130,7 +170,7 @@ h2{font-family:'Playfair Display',serif;color:var(--blue);font-size:26px;margin-
     <h2>Photo Gallery</h2>
     <div class="section-divider"></div>
     
-    <!-- Gallery Images will be injected here by JavaScript -->
+    <!-- Gallery Images injected securely here via modern JavaScript -->
     <div class="gallery-grid" id="galleryGrid"></div>
 </section>
 
@@ -142,43 +182,42 @@ h2{font-family:'Playfair Display',serif;color:var(--blue);font-size:26px;margin-
 
 <!-- FOOTER -->
 <div class="footer">
-    <p>© 2025 <span style="color:#f5c518;">Gaining Grades Classes</span> — Titwala East, Maharashtra 🇮🇳</p>
-    <p style="margin-top:6px;">Believe in Education • Empowering the future of Bharat</p>
+    <p>© 2025 <span style="color:#f5c518; font-weight: 600;">Gaining Grades Classes</span> — Titwala East, Maharashtra 🇮🇳</p>
+    <p style="margin-top:6px; opacity: 0.85;">Believe in Education • Empowering the future of Bharat</p>
 </div>
 
 <script>
-    // ══ DYNAMICALLY GENERATE 10 GALLERY IMAGES ══
-    // This loop automatically creates the image tags for 1P.jpg to 10P.jpg
+    // ══ DYNAMICALLY GENERATE 10 GALLERY IMAGES WITH EXACT NAMES ══
     const galleryGrid = document.getElementById('galleryGrid');
     const totalImages = 10;
     let galleryHTML = '';
 
     for(let i = 1; i <= totalImages; i++) {
-        const imageSrc = `${i}p.jpg`;
+        // Enforcing capitalization for file paths (e.g., 1P.jpg, 2P.jpg)
+        const imageSrc = `${i}P.jpg`; 
         galleryHTML += `
             <div class="gallery-item" onclick="openLightbox('${imageSrc}')">
-                <img src="${imageSrc}" loading="lazy" alt="Gaining Grades Event ${i}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2RiZWFmZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFhM2Q4ZiIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SW1hZ2UgJHtpfXAuanBnPC90ZXh0Pjwvc3ZnPg=='">
+                <img src="${imageSrc}" loading="lazy" alt="Gaining Grades Event ${i}" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48cmVjdCB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2RiZWFmZSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFhM2Q4ZiIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SW1hZ2UgJHtpfVAuanBnPC90ZXh0Pjwvc3ZnPg=='">
             </div>
         `;
     }
-    // Inject into the DOM
+    // Inject components into layout
     galleryGrid.innerHTML = galleryHTML;
 
-    // ══ LIGHTBOX FUNCTIONALITY ══
+    // ══ LIGHTBOX INTERACTION FUNCTIONALITY ══
     const lightbox = document.getElementById('lightbox');
     const lightboxImg = document.getElementById('lightboxImg');
 
     function openLightbox(imageSrc) {
         lightboxImg.src = imageSrc;
         lightbox.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling when open
+        document.body.style.overflow = 'hidden'; 
     }
 
     function closeLightbox(e) {
-        // Only close if clicking the background or the close button (not the image itself)
         if(e.target === lightbox || e.target.classList.contains('lightbox-close')) {
             lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto'; // Restore scrolling
+            document.body.style.overflow = ''; 
         }
     }
 </script>
