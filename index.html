@@ -390,11 +390,88 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 
 .reveal{opacity:0;transform:translateY(50px);transition:all 0.8s cubic-bezier(0.16,1,0.3,1);}
 .reveal.active{opacity:1;transform:translateY(0);}
+
+/* ══ RESPONSIVE OVERRIDES FOR DESKTOP & TABLET ══ */
+@media (min-width: 768px) {
+  /* Sticky Header Fix */
+  .header { height: 80px; display: flex; align-items: center; background: var(--blue3); }
+  .banner-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+  .logo-overlay { position: relative; top: auto; left: 40px; z-index: 1; }
+  .logo-overlay img { width: 150px; }
+  .menu-btn { position: absolute; top: 50%; transform: translateY(-50%); right: 40px; z-index: 1; }
+  .call-icon { position: absolute; top: 50%; bottom: auto; transform: translateY(-50%); right: 160px; z-index: 1; }
+  .menu-btn:hover, .call-icon:hover { transform: translateY(-50%) scale(1.06); }
+
+  /* Global Section Constraints */
+  section, .map-section { display: flex; flex-direction: column; align-items: center; padding: 60px 5%; }
+  section > *, .map-section > * { width: 100%; max-width: 1100px; }
+  section > .section-label, section > h2, section > .section-divider, section > .map-sub, section > p { align-self: flex-start; }
+  
+  .founder-section > .section-label, .founder-section > h2, .founder-section > .section-divider { align-self: center; }
+  .founder-section > .section-divider { margin-left: auto; margin-right: auto; }
+  
+  .quality-banner, .contact, .enquiry-section { padding: 60px 5%; }
+  .quality-content, .contact-content, .enquiry-inner { max-width: 1100px; margin: 0 auto; width: 100%; }
+  
+  .testimonials-section { display: flex; flex-direction: column; align-items: center; padding: 60px 5%; }
+  .testimonials-section > * { width: 100%; max-width: 1100px; }
+  .testimonials-section > .section-label, .testimonials-section > h2, .testimonials-section > .section-divider { align-self: flex-start; }
+  .testimonial-card { padding: 40px; }
+
+  /* Hero Banner */
+  .banner { padding: 120px 5%; }
+  .banner h1 { font-size: 64px; }
+  .banner p { font-size: 20px; }
+
+  /* Grids */
+  .courses-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .quality-grid { grid-template-columns: repeat(3, 1fr); max-width: 100%; gap: 20px; }
+  .toppers-grid { grid-template-columns: repeat(4, 1fr); gap: 24px; }
+  .map-addr-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+  
+  /* Map Adjustment */
+  .map-frame-single iframe { height: 400px; }
+
+  /* Stats Row */
+  .stats-strip { display: flex; justify-content: space-around; padding: 50px 5%; }
+  .stat-num { font-size: 56px; }
+  .stat-label { font-size: 16px; }
+  
+  /* Contact Elements */
+  .contact-addresses { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 800px; margin: 30px auto 0; }
+  .contact-btn { display: inline-flex; width: auto; padding: 14px 36px; margin: 10px; }
+  
+  /* Enquiry Form */
+  .enquiry-card { max-width: 800px; margin: 0 auto; }
+  
+  /* Container adjustments for specific elements */
+  .row, .big, .timing-card, .faq-list { max-width: 1100px; }
+}
+
+@media (min-width: 1024px) {
+  .courses-grid { grid-template-columns: repeat(4, 1fr); }
+  .course-card[style*="grid-column:span 2;"] { grid-column: span 2; }
+  
+  /* Enquiry Form Layout Update */
+  .enquiry-card { display: flex; flex-direction: row; align-items: stretch; max-width: 1000px; }
+  .enquiry-card-header { width: 40%; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px; }
+  .enquiry-card-icon { font-size: 64px; margin-bottom: 16px; }
+  .enquiry-card-title { font-size: 26px; }
+  .enquiry-body { width: 60%; padding: 40px; }
+  .form-submit { margin-top: 16px; }
+  
+  /* Testimonial width */
+  .testimonial-card { max-width: 800px; margin: 0 auto; min-width: 100%; }
+  
+  /* Footer */
+  .footer { padding: 40px 5%; font-size: 14px; }
+  .footer-links { gap: 30px; font-size: 14px; }
+  .footer-links a { font-size: 14px; }
+}
 </style>
 </head>
 <body>
 
-<!-- PRELOADER -->
 <div id="preloader">
 <img src="logo.jpg" class="pre-logo" onerror="this.style.display='none'">
 <div>
@@ -411,7 +488,6 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <button class="sticky-enquire" onclick="scrollToSection('enquiry')">📋 Enquire Now</button>
 
-<!-- ══ NOTICE FLOATING BUTTON ══ -->
 <div class="notice-float" onclick="openNotice()">
 <div class="notice-float-btn">
 <div class="notice-float-icon">🔔</div>
@@ -427,7 +503,6 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 
 <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
 
-<!-- HEADER -->
 <div class="header">
 <img src="bannerimage.jpg" class="banner-img">
 <div class="logo-overlay"><img src="logo.jpg"></div>
@@ -441,7 +516,6 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 </a>
 </div>
 
-<!-- NAV PANEL -->
 <div class="nav" id="navPanel">
 <div class="nav-header">
 <div class="nav-logo-row">
@@ -476,7 +550,6 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 </div>
 </div>
 
-<!-- HERO BANNER -->
 <div class="banner">
 <div class="banner-content">
 <div class="banner-tag">🎓 Titwala's Premier Institute</div>
@@ -493,7 +566,7 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 
 <div class="seats-banner">
 <div class="pulse-dot"></div>
-<p><span class="seats-highlight">⚠️ Limited Seats!</span>&nbsp;Class 10 — <strong>Only 4 left</strong> &nbsp;|&nbsp; Class 9 — <strong>Only 3 left</strong> &nbsp;|&nbsp; JEE — <strong>Only 5 left</strong></p>
+<p><span class="seats-highlight">⚠️ Limited Seats!</span> Class 10 — <strong>Only 4 left</strong>  |  Class 9 — <strong>Only 3 left</strong>  |  JEE — <strong>Only 5 left</strong></p>
 <span class="seats-tag">HURRY!</span>
 </div>
 
@@ -507,7 +580,6 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 </div>
 </div>
 
-<!-- CLASSROOMS -->
 <section id="classroom">
 <div class="section-label">Our Campus</div>
 <h2>World-Class Classrooms</h2>
@@ -516,11 +588,10 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 <img src="Class1.jpg" class="big">
 <div class="timing-card">
 <div class="timing-icon">🕗</div>
-<div class="timing-text"><strong>Class Timings</strong>Monday to Saturday &nbsp;•&nbsp; 8:00 AM – 9:00 PM</div>
+<div class="timing-text"><strong>Class Timings</strong>Monday to Saturday  •  8:00 AM – 9:00 PM</div>
 </div>
 </section>
 
-<!-- WHY CHOOSE US -->
 <div class="quality-banner reveal" id="quality">
 <div class="quality-content">
 <div class="section-label">Excellence</div>
@@ -537,7 +608,6 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 </div>
 </div>
 
-<!-- COURSES -->
 <section id="courses" class="reveal">
 <div class="section-label">Enroll Now</div>
 <h2>Our Courses</h2>
@@ -557,14 +627,12 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 </div>
 </section>
 
-<!-- STATS -->
 <div class="stats-strip reveal" id="stats">
 <div class="stat-item"><div class="stat-num" data-target="500">0</div><div class="stat-label">Students Enrolled</div></div>
 <div class="stat-item"><div class="stat-num" data-target="10">0</div><div class="stat-label">Years Experience</div></div>
 <div class="stat-item"><div class="stat-num" data-target="95">0</div><div class="stat-label">% Result Rate</div></div>
 </div>
 
-<!-- TOPPERS -->
 <section class="toppers-section reveal" id="toppers">
 <div class="section-label">Pride of Gaining Grades</div>
 <h2>🏆 Our Toppers</h2>
@@ -577,7 +645,6 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 </div>
 </section>
 
-<!-- TESTIMONIALS -->
 <div class="testimonials-section reveal" id="testimonials">
 <div class="section-label">What Parents Say</div>
 <h2>Student Reviews</h2>
@@ -602,7 +669,6 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 </div>
 </div>
 
-<!-- FOUNDER -->
 <section class="founder-section reveal" id="founder">
 <div class="section-label">Leadership</div>
 <h2>Meet Our Founder</h2>
@@ -615,7 +681,6 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 </div>
 </section>
 
-<!-- FAQ -->
 <section class="faq-section reveal" id="faq">
 <div class="section-label">Common Questions</div>
 <h2>Frequently Asked Questions</h2>
@@ -630,7 +695,6 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 </div>
 </section>
 
-<!-- MAP -->
 <section class="map-section reveal" id="location">
 <div class="section-label">Find Us</div>
 <h2>📍 Our Location</h2>
@@ -650,7 +714,6 @@ Shree Apartment, opposite Narayan Nagar Society, near Ganpati Mandir, Titwala Ea
 <a href="https://maps.app.goo.gl/ser194srxXjJB7xo9" target="_blank" class="directions-btn">🗺️ Open in Google Maps</a>
 </section>
 
-<!-- CONTACT -->
 <div class="contact reveal" id="contact">
 <div class="contact-content">
 <div class="section-label" style="color:var(--gold);justify-content:center;display:flex;width:100%;">Get In Touch</div>
@@ -672,7 +735,6 @@ WhatsApp Us
 </div>
 </div>
 
-<!-- ENQUIRY FORM -->
 <div class="enquiry-section reveal" id="enquiry">
 <div class="enquiry-inner">
 <div class="enquiry-top">
@@ -708,7 +770,6 @@ WhatsApp Us
 </div>
 </div>
 
-<!-- FOOTER -->
 <div class="footer">
 <div class="footer-social">
 <a href="#" class="social-btn">📸</a>
@@ -728,7 +789,6 @@ WhatsApp Us
 <p style="margin-top:6px;">Believe in Education • Empowering the future of Bharat</p>
 </div>
 
-<!-- WHATSAPP -->
 <a href="https://wa.me/918433601642" class="whatsapp" target="_blank">
 <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
