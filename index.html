@@ -33,12 +33,24 @@ body{font-family:'DM Sans',sans-serif;overflow-x:hidden;max-width:100vw;backgrou
 a{text-decoration:none;color:inherit;}
 img{max-width:100%;display:block;}
 
-#preloader{position:fixed;inset:0;background:linear-gradient(135deg,var(--blue3),var(--blue));z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity 0.7s ease,visibility 0.7s ease;}
+/* ══ PRELOADER ══ */
+#preloader{position:fixed;inset:0;background:linear-gradient(135deg,var(--blue3),var(--blue));z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;transition:opacity 0.7s ease,visibility 0.7s ease;}
 #preloader.hide{opacity:0;visibility:hidden;}
 .pre-logo{width:100px;height:100px;border-radius:50%;object-fit:cover;border:4px solid rgba(255,255,255,0.2);animation:logoPulse 2s infinite;}
 @keyframes logoPulse{0%{box-shadow:0 0 0 0 rgba(245,197,24,0.5);}70%{box-shadow:0 0 0 20px rgba(245,197,24,0);}100%{box-shadow:0 0 0 0 rgba(245,197,24,0);}}
 .pre-title{font-family:'Playfair Display',serif;font-size:26px;color:white;letter-spacing:2px;text-align:center;}
-.pre-sub{font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:3px;text-transform:uppercase;margin-top:2px;text-align:center;}
+.pre-sub{font-size:11px;color:rgba(255,255,255,0.6);letter-spacing:3px;text-transform:uppercase;text-align:center;}
+.pre-reg{
+font-size:11px;
+color:var(--gold);
+letter-spacing:2px;
+font-weight:700;
+text-transform:uppercase;
+background:rgba(245,197,24,0.12);
+border:1px solid rgba(245,197,24,0.3);
+padding:5px 14px;
+border-radius:20px;
+}
 .pre-bar-wrap{width:200px;height:4px;background:rgba(255,255,255,0.15);border-radius:10px;overflow:hidden;}
 .pre-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),#fff176);border-radius:10px;animation:loadBar 2.2s ease forwards;}
 @keyframes loadBar{0%{width:0%;}30%{width:35%;}60%{width:65%;}85%{width:88%;}100%{width:100%;}}
@@ -63,6 +75,72 @@ img{max-width:100%;display:block;}
 .cookie-text span{color:var(--gold);font-weight:700;}
 .cookie-btn{background:var(--gold);color:var(--blue3);border:none;padding:8px 20px;border-radius:20px;font-weight:700;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap;flex-shrink:0;}
 
+/* ══ NOTICE BUTTON — FLOATING ══ */
+.notice-float{
+position:fixed;
+top:50%;
+right:0;
+transform:translateY(-50%);
+z-index:997;
+cursor:pointer;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:0;
+}
+.notice-float-btn{
+background:linear-gradient(135deg,#ff6b35,#ff4500);
+color:white;
+width:48px;
+border-radius:12px 0 0 12px;
+padding:14px 8px;
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:6px;
+box-shadow:-4px 0 18px rgba(255,69,0,0.4);
+transition:all 0.3s;
+border:none;
+cursor:pointer;
+}
+.notice-float-btn:hover{
+width:56px;
+box-shadow:-6px 0 24px rgba(255,69,0,0.55);
+}
+.notice-float-icon{
+font-size:22px;
+animation:bellRing 2.5s ease infinite;
+}
+@keyframes bellRing{
+0%,70%,100%{transform:rotate(0);}
+72%{transform:rotate(12deg);}
+74%{transform:rotate(-12deg);}
+76%{transform:rotate(8deg);}
+78%{transform:rotate(-8deg);}
+80%{transform:rotate(0);}
+}
+.notice-float-text{
+font-size:9px;
+font-weight:700;
+letter-spacing:1px;
+text-transform:uppercase;
+writing-mode:vertical-rl;
+text-orientation:mixed;
+transform:rotate(180deg);
+color:white;
+font-family:'DM Sans',sans-serif;
+line-height:1;
+}
+.notice-float-badge{
+background:var(--gold);
+color:var(--blue3);
+font-size:9px;
+font-weight:700;
+padding:2px 5px;
+border-radius:8px;
+}
+
+/* ══ HEADER ══ */
 .header{position:sticky;top:0;z-index:1000;width:100%;overflow:hidden;}
 .banner-img{width:100%;display:block;}
 .logo-overlay{position:absolute;top:10px;left:55px;}
@@ -110,71 +188,6 @@ img{max-width:100%;display:block;}
 .banner h1 span{color:var(--gold);}
 .banner p{font-size:15px;color:rgba(255,255,255,0.88);font-style:italic;letter-spacing:1px;font-weight:300;}
 .banner-line{width:60px;height:3px;background:var(--gold);margin:14px auto;border-radius:2px;}
-
-/* ══ NOTICE BOARD ══ */
-.notice-board{
-background:linear-gradient(135deg,var(--blue3),var(--blue));
-padding:0;
-overflow:hidden;
-border-bottom:3px solid var(--gold);
-display:flex;
-align-items:center;
-}
-.notice-label{
-background:var(--gold);
-color:var(--blue3);
-padding:10px 16px;
-font-weight:700;
-font-size:12px;
-letter-spacing:1px;
-text-transform:uppercase;
-white-space:nowrap;
-display:flex;
-align-items:center;
-gap:6px;
-flex-shrink:0;
-}
-.notice-scroll-wrap{
-overflow:hidden;
-flex:1;
-padding:10px 0;
-}
-.notice-scroll{
-display:flex;
-gap:40px;
-animation:scrollNotice 28s linear infinite;
-white-space:nowrap;
-}
-.notice-scroll:hover{animation-play-state:paused;}
-@keyframes scrollNotice{
-0%{transform:translateX(0);}
-100%{transform:translateX(-50%);}
-}
-.notice-item{
-display:inline-flex;
-align-items:center;
-gap:8px;
-font-size:13px;
-color:white;
-font-weight:500;
-flex-shrink:0;
-}
-.notice-dot{
-width:6px;height:6px;
-background:var(--gold);
-border-radius:50%;
-flex-shrink:0;
-}
-.notice-new{
-background:#ff4444;
-color:white;
-font-size:9px;
-font-weight:700;
-padding:2px 6px;
-border-radius:8px;
-letter-spacing:0.5px;
-flex-shrink:0;
-}
 
 .live-count-bar{background:white;border-bottom:2px solid var(--offwhite);padding:10px 20px;display:flex;align-items:center;justify-content:center;gap:10px;}
 .live-dot{width:8px;height:8px;background:#00c853;border-radius:50%;animation:livePulse 1.5s infinite;flex-shrink:0;}
@@ -242,7 +255,6 @@ h2{font-family:'Playfair Display',serif;color:var(--blue);font-size:26px;margin-
 .stat-num{font-family:'Playfair Display',serif;font-size:32px;color:var(--gold);font-weight:900;line-height:1;}
 .stat-label{font-size:11px;color:rgba(255,255,255,0.75);margin-top:4px;font-weight:500;letter-spacing:0.5px;}
 
-/* ══ TOPPERS — WITH REAL PHOTOS ══ */
 .toppers-section{background:var(--offwhite);padding:32px 20px;}
 .toppers-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .topper-card{background:white;border-radius:18px;padding:18px 14px;text-align:center;box-shadow:0 4px 16px rgba(26,61,143,0.08);border:1px solid rgba(26,61,143,0.06);position:relative;overflow:hidden;transition:transform 0.3s;}
@@ -252,15 +264,7 @@ h2{font-family:'Playfair Display',serif;color:var(--blue);font-size:26px;margin-
 .topper-card.silver-border::before{background:linear-gradient(90deg,#aaa,#ddd);}
 .topper-card.blue-border::before{background:linear-gradient(90deg,var(--blue),var(--blue2));}
 .topper-rank{position:absolute;top:12px;right:12px;font-size:20px;}
-.topper-photo{
-width:75px;height:75px;
-border-radius:50%;
-object-fit:cover;
-margin:0 auto 10px;
-border:3px solid var(--blue);
-box-shadow:0 4px 14px rgba(26,61,143,0.22);
-display:block;
-}
+.topper-photo{width:75px;height:75px;border-radius:50%;object-fit:cover;margin:0 auto 10px;border:3px solid var(--blue);box-shadow:0 4px 14px rgba(26,61,143,0.22);display:block;}
 .topper-card.gold-border .topper-photo{border-color:#ffd700;box-shadow:0 4px 14px rgba(255,215,0,0.35);}
 .topper-name{font-family:'Playfair Display',serif;font-size:14px;color:var(--blue);font-weight:700;margin-bottom:3px;}
 .topper-class{font-size:11px;color:#888;margin-bottom:8px;}
@@ -311,7 +315,6 @@ display:block;
 .faq-answer{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.3s;font-size:13px;color:#555;line-height:1.7;padding:0 18px;}
 .faq-item.open .faq-answer{max-height:200px;padding:0 18px 16px;}
 
-/* ══ MAP — SINGLE LOCATION ══ */
 .map-section{padding:32px 20px;width:100%;background:white;}
 .map-section h2{color:var(--blue);margin-bottom:4px;}
 .map-sub{color:#666;font-size:13px;margin-bottom:16px;}
@@ -319,7 +322,7 @@ display:block;
 .map-frame-single iframe{width:100%;height:240px;border:none;display:block;}
 .map-address{background:var(--offwhite);border-left:4px solid var(--gold);padding:14px;border-radius:0 12px 12px 0;margin-top:12px;font-size:13px;color:#333;box-shadow:0 2px 10px rgba(26,61,143,0.06);}
 .map-address strong{color:var(--blue);display:block;margin-bottom:4px;font-size:14px;}
-.map-address-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px;}
+.map-addr-grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:12px;}
 .map-addr-item{background:white;border-radius:12px;padding:12px 14px;border-left:3px solid var(--blue);box-shadow:0 2px 8px rgba(26,61,143,0.06);font-size:12px;color:#444;line-height:1.6;}
 .map-addr-item strong{color:var(--blue);display:block;margin-bottom:3px;font-size:13px;}
 .directions-btn{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:12px;background:var(--blue);color:white;padding:13px;border-radius:12px;text-align:center;font-weight:600;font-size:14px;box-shadow:0 4px 14px rgba(26,61,143,0.3);transition:all 0.2s;}
@@ -394,7 +397,11 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 <!-- PRELOADER -->
 <div id="preloader">
 <img src="logo.jpg" class="pre-logo" onerror="this.style.display='none'">
-<div><div class="pre-title">Gaining Grades</div><div class="pre-sub">Believe in Education</div></div>
+<div>
+<div class="pre-title">Gaining Grades</div>
+<div class="pre-sub">Believe in Education</div>
+</div>
+<div class="pre-reg">Reg No: 4822786</div>
 <div class="pre-bar-wrap"><div class="pre-bar"></div></div>
 <div class="pre-dots"><div class="pre-dot"></div><div class="pre-dot"></div><div class="pre-dot"></div></div>
 <div class="pre-tagline">Empowering the future of Bharat 🇮🇳</div>
@@ -403,6 +410,16 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 <div class="scroll-line" id="scrollLine"></div>
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <button class="sticky-enquire" onclick="scrollToSection('enquiry')">📋 Enquire Now</button>
+
+<!-- ══ NOTICE FLOATING BUTTON ══ -->
+<div class="notice-float" onclick="openNotice()">
+<div class="notice-float-btn">
+<div class="notice-float-icon">🔔</div>
+<div class="notice-float-badge">NEW</div>
+<div class="notice-float-text">NOTICE</div>
+</div>
+</div>
+
 <div class="cookie-banner" id="cookieBanner">
 <div class="cookie-text">🍪 We use cookies to improve your experience. By continuing, you agree to our <span>Privacy Policy</span>.</div>
 <button class="cookie-btn" onclick="acceptCookie()">Got it ✓</button>
@@ -466,31 +483,6 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 <h1>Gaining Grades<br><span>Classes</span></h1>
 <div class="banner-line"></div>
 <p>Empowering the future of Bharat</p>
-</div>
-</div>
-
-<!-- ══ NOTICE BOARD — RIGHT AFTER BANNER ══ -->
-<div class="notice-board">
-<div class="notice-label">📌 Notice Board</div>
-<div class="notice-scroll-wrap">
-<div class="notice-scroll" id="noticeScroll">
-<!-- First copy -->
-<div class="notice-item"><div class="notice-dot"></div><span class="notice-new">NEW</span>Admissions open for 2025-26 batch — Limited seats available!</div>
-<div class="notice-item"><div class="notice-dot"></div><span class="notice-new">NEW</span>JEE 2025 batch starting 15th July — Enroll now</div>
-<div class="notice-item"><div class="notice-dot"></div>Class 10 Special Board Exam preparation batch — Starting 1st July</div>
-<div class="notice-item"><div class="notice-dot"></div>Free demo class available — Call 8433601642 to book</div>
-<div class="notice-item"><div class="notice-dot"></div>NEET 2025 batch — Seats filling fast, register today</div>
-<div class="notice-item"><div class="notice-dot"></div>Weekly tests every Saturday for all classes</div>
-<div class="notice-item"><div class="notice-dot"></div>Sibling discount available — Contact us for details</div>
-<!-- Duplicate for seamless loop -->
-<div class="notice-item"><div class="notice-dot"></div><span class="notice-new">NEW</span>Admissions open for 2025-26 batch — Limited seats available!</div>
-<div class="notice-item"><div class="notice-dot"></div><span class="notice-new">NEW</span>JEE 2025 batch starting 15th July — Enroll now</div>
-<div class="notice-item"><div class="notice-dot"></div>Class 10 Special Board Exam preparation batch — Starting 1st July</div>
-<div class="notice-item"><div class="notice-dot"></div>Free demo class available — Call 8433601642 to book</div>
-<div class="notice-item"><div class="notice-dot"></div>NEET 2025 batch — Seats filling fast, register today</div>
-<div class="notice-item"><div class="notice-dot"></div>Weekly tests every Saturday for all classes</div>
-<div class="notice-item"><div class="notice-dot"></div>Sibling discount available — Contact us for details</div>
-</div>
 </div>
 </div>
 
@@ -559,8 +551,8 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 <a href="Class10th.html" class="course-card"><img src="10th.jpg"><div class="course-info"><div class="course-name">Class 10</div><div class="course-price"><div class="price-row"><span class="price-tag">Monthly</span><span class="price-amount">₹2,500/-</span></div><div class="price-row"><span class="price-tag">Yearly</span><span class="price-amount">₹20,000/-</span></div></div><div class="course-tap-hint">👆 Tap to know more</div></div></a>
 <a href="Class11Science.html" class="course-card"><img src="11th and 12th(science).jpg"><div class="course-info"><div class="course-name">11–12 Science</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹35,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹60,000/-</span></div></div><div class="course-tap-hint">👆 Tap to know more</div></div></a>
 <a href="Class11Commerce.html" class="course-card"><img src="11th and 12th(commerce).jpg"><div class="course-info"><div class="course-name">11–12 Commerce</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹15,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹25,000/-</span></div></div><div class="course-tap-hint">👆 Tap to know more</div></div></a>
-<a href="JEECourse.html" class="course-card"><img src="Jee.jpg"><div class="course-info"><div class="course-name">JEE</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹50,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹80,000/-</span></div></div><div class="course-tap-hint">👆 Tap to know more</div></div></a>
-<a href="NEETCourse.html" class="course-card"><img src="Neet.jpg"><div class="course-info"><div class="course-name">NEET</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹50,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹80,000/-</span></div></div><div class="course-tap-hint">👆 Tap to know more</div></div></a>
+<a href="JEECourse.html" class="course-card"><img src="jee.jpg"><div class="course-info"><div class="course-name">JEE</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹50,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹80,000/-</span></div></div><div class="course-tap-hint">👆 Tap to know more</div></div></a>
+<a href="NEETCourse.html" class="course-card"><img src="neet.jpg"><div class="course-info"><div class="course-name">NEET</div><div class="course-price"><div class="price-row"><span class="price-tag">1 Year</span><span class="price-amount">₹50,000/-</span></div><div class="price-row"><span class="price-tag">2 Years</span><span class="price-amount">₹80,000/-</span></div></div><div class="course-tap-hint">👆 Tap to know more</div></div></a>
 <a href="NDACourse.html" class="course-card" style="grid-column:span 2;"><img src="NDA.jpg" style="height:130px;object-fit:cover;width:100%;"><div class="course-info"><div class="course-name">NDA / Airforce / Navy</div><div class="course-price"><div class="price-row"><span class="price-tag">Available</span><span class="price-amount">Contact Us</span></div></div><div class="course-tap-hint">👆 Tap to know more</div></div></a>
 </div>
 </section>
@@ -572,49 +564,16 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 <div class="stat-item"><div class="stat-num" data-target="95">0</div><div class="stat-label">% Result Rate</div></div>
 </div>
 
-<!-- ══ TOPPERS — WITH REAL PHOTOS ══ -->
+<!-- TOPPERS -->
 <section class="toppers-section reveal" id="toppers">
 <div class="section-label">Pride of Gaining Grades</div>
 <h2>🏆 Our Toppers</h2>
 <div class="section-divider"></div>
 <div class="toppers-grid">
-
-<div class="topper-card gold-border">
-<div class="topper-rank">🥇</div>
-<img src="Topper1.jpg" class="topper-photo" onerror="this.style.display='none'">
-<div class="topper-name">Lucky Tiwari</div>
-<div class="topper-class">Class 10 • SSC Board</div>
-<div class="topper-score gold-score">97%</div>
-<div class="topper-year">2024 Board Exam</div>
-</div>
-
-<div class="topper-card silver-border">
-<div class="topper-rank">🥈</div>
-<img src="Topper2.jpg" class="topper-photo" onerror="this.style.display='none'">
-<div class="topper-name">Vedant Tiwari</div>
-<div class="topper-class">Class 10 • SSC Board</div>
-<div class="topper-score">93.2%</div>
-<div class="topper-year">2026 Board Exam</div>
-</div>
-
-<div class="topper-card blue-border">
-<div class="topper-rank">🥉</div>
-<img src="Topper3.jpg" class="topper-photo" onerror="this.style.display='none'">
-<div class="topper-name">Rupa Behera</div>
-<div class="topper-class">Class 10 • SSC Board</div>
-<div class="topper-score">92.6%</div>
-<div class="topper-year">2025 Board Exam</div>
-</div>
-
-<div class="topper-card blue-border">
-<div class="topper-rank">⭐</div>
-<img src="Topper4.jpg" class="topper-photo" onerror="this.style.display='none'">
-<div class="topper-name">Vidhi Tiwari</div>
-<div class="topper-class">Class 10 • SSC Board</div>
-<div class="topper-score">90%</div>
-<div class="topper-year">2026 Board Exam</div>
-</div>
-
+<div class="topper-card gold-border"><div class="topper-rank">🥇</div><img src="Topper1.jpg" class="topper-photo" onerror="this.style.display='none'"><div class="topper-name">Rahul Sharma</div><div class="topper-class">Class 10 • SSC Board</div><div class="topper-score gold-score">95.6%</div><div class="topper-year">2024 Board Exam</div></div>
+<div class="topper-card silver-border"><div class="topper-rank">🥈</div><img src="Topper2.jpg" class="topper-photo" onerror="this.style.display='none'"><div class="topper-name">Priya Patil</div><div class="topper-class">Class 10 • SSC Board</div><div class="topper-score">93.2%</div><div class="topper-year">2024 Board Exam</div></div>
+<div class="topper-card blue-border"><div class="topper-rank">🥉</div><img src="Topper3.jpg" class="topper-photo" onerror="this.style.display='none'"><div class="topper-name">Amit Dubey</div><div class="topper-class">Class 10 • SSC Board</div><div class="topper-score">91.8%</div><div class="topper-year">2024 Board Exam</div></div>
+<div class="topper-card blue-border"><div class="topper-rank">⭐</div><img src="Topper4.jpg" class="topper-photo" onerror="this.style.display='none'"><div class="topper-name">Sneha Joshi</div><div class="topper-class">Class 10 • SSC Board</div><div class="topper-score">90.4%</div><div class="topper-year">2024 Board Exam</div></div>
 </div>
 </section>
 
@@ -671,35 +630,24 @@ select.form-input{cursor:pointer;appearance:none;background-image:url("data:imag
 </div>
 </section>
 
-<!-- ══ MAP — SINGLE EXACT LOCATION ══ -->
+<!-- MAP -->
 <section class="map-section reveal" id="location">
 <div class="section-label">Find Us</div>
 <h2>📍 Our Location</h2>
 <div class="section-divider"></div>
 <p class="map-sub">Gaining Grades Classes — Titwala East, Maharashtra</p>
-
 <div class="map-frame-single">
-<iframe
-src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3766.3!2d73.2!3d19.31!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7933b3e123a45%3A0x1234567890abcdef!2sGaining%20Grades%20Classes!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin"
-allowfullscreen=""
-loading="lazy"
-referrerpolicy="no-referrer-when-downgrade">
-</iframe>
+<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3766.3!2d73.2!3d19.31!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7933b3e123a45%3A0x1234567890abcdef!2sGaining%20Grades%20Classes!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
 </div>
-
 <div class="map-address">
 <strong>📍 Gaining Grades Classes — Head Office</strong>
 Shree Apartment, opposite Narayan Nagar Society, near Ganpati Mandir, Titwala East, Maharashtra 🇮🇳
 </div>
-
 <div class="map-addr-grid">
 <div class="map-addr-item"><strong>🏫 Branch 1</strong>Opposite Abhishek Residency, near Shiv Sena Sakha, Titwala East</div>
 <div class="map-addr-item"><strong>🏫 Branch 2</strong>Indra Nagar, near G.R. Patil College, Titwala East</div>
 </div>
-
-<a href="https://maps.app.goo.gl/ser194srxXjJB7xo9" target="_blank" class="directions-btn">
-🗺️ Open in Google Maps
-</a>
+<a href="https://maps.app.goo.gl/ser194srxXjJB7xo9" target="_blank" class="directions-btn">🗺️ Open in Google Maps</a>
 </section>
 
 <!-- CONTACT -->
@@ -763,10 +711,10 @@ WhatsApp Us
 <!-- FOOTER -->
 <div class="footer">
 <div class="footer-social">
-<a href="#" class="social-btn" title="Instagram">📸</a>
-<a href="#" class="social-btn" title="YouTube">▶️</a>
-<a href="https://wa.me/918433601642" target="_blank" class="social-btn" title="WhatsApp">💬</a>
-<a href="mailto:gaininggradesofficial@gmail.com" class="social-btn" title="Email">✉️</a>
+<a href="#" class="social-btn">📸</a>
+<a href="#" class="social-btn">▶️</a>
+<a href="https://wa.me/918433601642" target="_blank" class="social-btn">💬</a>
+<a href="mailto:gaininggradesofficial@gmail.com" class="social-btn">✉️</a>
 </div>
 <div class="footer-links">
 <a onclick="scrollToSection('classroom')">Classrooms</a>
@@ -793,6 +741,70 @@ document.getElementById("preloader").classList.add("hide");
 setTimeout(()=>document.getElementById("preloader").style.display="none",700);
 },2400);
 });
+
+// NOTICE — opens Notice.html with letter animation
+function openNotice(){
+// Create overlay
+const overlay=document.createElement("div");
+overlay.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:99990;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);animation:fadeIn 0.3s ease;";
+
+// Create envelope wrapper
+const envelope=document.createElement("div");
+envelope.style.cssText="position:relative;width:90%;max-width:360px;cursor:pointer;";
+
+// Envelope body
+const envBody=document.createElement("div");
+envBody.style.cssText="background:linear-gradient(135deg,#f5e6c8,#ede0c4);border-radius:4px 4px 12px 12px;padding:60px 20px 20px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4);position:relative;animation:envelopeDrop 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;";
+
+// Envelope flap (top triangle)
+const flap=document.createElement("div");
+flap.style.cssText="position:absolute;top:0;left:0;right:0;height:60px;background:linear-gradient(135deg,#e8d5a3,#d4bc7a);clip-path:polygon(0 0,50% 60%,100% 0);border-radius:4px 4px 0 0;transform-origin:top center;animation:flapOpen 0.5s ease 0.8s both;";
+
+// Letter inside
+const letter=document.createElement("div");
+letter.style.cssText="background:white;border-radius:8px;padding:20px 16px;margin-bottom:16px;box-shadow:0 4px 12px rgba(0,0,0,0.1);animation:letterRise 0.6s ease 1s both;text-align:left;";
+letter.innerHTML=`
+<div style="font-family:'Playfair Display',serif;font-size:16px;color:#1a3d8f;font-weight:700;margin-bottom:4px;text-align:center;">📋 Notice Board</div>
+<div style="width:40px;height:2px;background:#f5c518;margin:0 auto 12px;border-radius:2px;"></div>
+<div style="font-size:12px;color:#555;line-height:1.6;text-align:center;">Tap to open full notice board</div>
+`;
+
+const openBtn=document.createElement("div");
+openBtn.style.cssText="background:linear-gradient(135deg,#1a3d8f,#2a5bbf);color:white;padding:12px 28px;border-radius:25px;font-size:14px;font-weight:700;font-family:'DM Sans',sans-serif;display:inline-block;box-shadow:0 4px 14px rgba(26,61,143,0.4);animation:letterRise 0.6s ease 1.1s both;cursor:pointer;letter-spacing:0.5px;";
+openBtn.textContent="📜 Open Notice Board";
+
+const closeHint=document.createElement("div");
+closeHint.style.cssText="color:rgba(255,255,255,0.6);font-size:11px;margin-top:14px;font-family:'DM Sans',sans-serif;animation:letterRise 0.6s ease 1.2s both;";
+closeHint.textContent="Tap outside to close";
+
+// Add styles
+const style=document.createElement("style");
+style.textContent=`
+@keyframes envelopeDrop{from{transform:translateY(-60px) scale(0.8);opacity:0;}to{transform:translateY(0) scale(1);opacity:1;}}
+@keyframes flapOpen{from{transform:rotateX(0deg);}to{transform:rotateX(-180deg);}}
+@keyframes letterRise{from{transform:translateY(20px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+`;
+document.head.appendChild(style);
+
+// Navigate on click
+openBtn.onclick=function(e){
+e.stopPropagation();
+document.body.removeChild(overlay);
+window.location.href="Notice.html";
+};
+
+// Close on overlay click
+overlay.onclick=function(){document.body.removeChild(overlay);};
+envelope.onclick=function(e){e.stopPropagation();};
+
+envBody.appendChild(flap);
+envBody.appendChild(letter);
+envBody.appendChild(openBtn);
+envelope.appendChild(envBody);
+overlay.appendChild(envelope);
+overlay.appendChild(closeHint);
+document.body.appendChild(overlay);
+}
 
 // NAV
 function openNav(){
@@ -829,16 +841,10 @@ document.querySelectorAll(".stat-num[data-target]").forEach(el=>{
 const target=parseInt(el.getAttribute("data-target"));
 let current=0;
 const step=Math.ceil(target/40);
-const timer=setInterval(()=>{
-current+=step;
-if(current>=target){current=target;clearInterval(timer);}
-el.textContent=current+(target>=100?"%":"+");
-},40);
+const timer=setInterval(()=>{current+=step;if(current>=target){current=target;clearInterval(timer);}el.textContent=current+(target>=100?"%":"+");},40);
 });
 }
-const statsObserver=new IntersectionObserver((entries)=>{
-entries.forEach(e=>{if(e.isIntersecting){animateCounters();statsObserver.disconnect();}});
-},{threshold:0.3});
+const statsObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){animateCounters();statsObserver.disconnect();}});},{threshold:0.3});
 const statsEl=document.getElementById("stats");
 if(statsEl)statsObserver.observe(statsEl);
 
@@ -849,32 +855,24 @@ setTimeout(()=>{if(!localStorage.getItem("gg_cookie"))document.getElementById("c
 // COUNTDOWN
 const batchDate=new Date("2025-07-15T08:00:00");
 function updateCountdown(){
-const now=new Date();
-const diff=batchDate-now;
+const now=new Date();const diff=batchDate-now;
 if(diff<=0){["cdDays","cdHours","cdMins","cdSecs"].forEach(id=>document.getElementById(id).textContent="00");return;}
 document.getElementById("cdDays").textContent=String(Math.floor(diff/86400000)).padStart(2,"0");
 document.getElementById("cdHours").textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,"0");
 document.getElementById("cdMins").textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,"0");
 document.getElementById("cdSecs").textContent=String(Math.floor((diff%60000)/1000)).padStart(2,"0");
 }
-updateCountdown();
-setInterval(updateCountdown,1000);
+updateCountdown();setInterval(updateCountdown,1000);
 
 // TESTIMONIALS
-let currentSlide=0;
-const totalSlides=4;
+let currentSlide=0;const totalSlides=4;
 function goToSlide(n){currentSlide=n;document.getElementById("tTrack").style.transform=`translateX(-${n*100}%)`;document.querySelectorAll(".t-dot").forEach((d,i)=>d.classList.toggle("active",i===n));}
 function nextSlide(){goToSlide((currentSlide+1)%totalSlides);}
 function prevSlide(){goToSlide((currentSlide-1+totalSlides)%totalSlides);}
 setInterval(nextSlide,5000);
 
 // FAQ
-function toggleFaq(el){
-const item=el.parentElement;
-const isOpen=item.classList.contains("open");
-document.querySelectorAll(".faq-item").forEach(i=>i.classList.remove("open"));
-if(!isOpen)item.classList.add("open");
-}
+function toggleFaq(el){const item=el.parentElement;const isOpen=item.classList.contains("open");document.querySelectorAll(".faq-item").forEach(i=>i.classList.remove("open"));if(!isOpen)item.classList.add("open");}
 
 // FORMSPREE
 async function submitEnquiry(){
@@ -893,10 +891,7 @@ try{
 const response=await fetch("https://formspree.io/f/mgorgrwp",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({student_name:name,course_name:course,phone_number:phone})});
 if(response.ok){document.getElementById("confirmedPhone").textContent=phone;sucBox.style.display="block";document.getElementById("enquiryForm").reset();document.getElementById("submitText").textContent="🚀 Submit Enquiry";btn.disabled=false;}
 else{throw new Error();}
-}catch(err){
-errBox.textContent="❌ Failed to send. Please call us at 8433601642.";errBox.style.display="block";
-document.getElementById("submitText").textContent="🚀 Submit Enquiry";btn.disabled=false;
-}
+}catch(err){errBox.textContent="❌ Failed to send. Please call us at 8433601642.";errBox.style.display="block";document.getElementById("submitText").textContent="🚀 Submit Enquiry";btn.disabled=false;}
 }
 document.getElementById("phoneNumber").addEventListener("input",function(){this.value=this.value.replace(/[^0-9]/g,"");});
 
